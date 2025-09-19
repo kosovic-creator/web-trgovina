@@ -71,12 +71,12 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        const su = session.user as CustomSessionUser;
-        su.id = (token as CustomToken).id;
-        su.uloga = (token as CustomToken).uloga;
-        su.ime = (token as CustomToken).ime;
-        su.slika = (token as CustomToken).slika;
+      // Dodajemo polje uloga iz tokena u session.user
+      if (token && session.user) {
+        (session.user as CustomSessionUser).uloga = (token as CustomToken).uloga;
+        (session.user as CustomSessionUser).ime = (token as CustomToken).ime;
+        (session.user as CustomSessionUser).slika = (token as CustomToken).slika;
+        (session.user as CustomSessionUser).id = (token as CustomToken).id;
       }
       return session;
     },

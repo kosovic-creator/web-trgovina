@@ -1,0 +1,112 @@
+'use client';
+import { useState, useEffect } from 'react';
+import { Proizvod } from '@/types';
+
+export default function AdminProizvodiPage() {
+  const [proizvodi, setProizvodi] = useState<Proizvod[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [form, setForm] = useState({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
+  const [editId, setEditId] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch(`/api/proizvodi?page=${page}&pageSize=${pageSize}`)
+      .then(res => res.json())
+      .then(data => {
+        setProizvodi(data.proizvodi);
+        setTotal(data.total);
+      });
+  }, [page, pageSize]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (editId) {
+      await fetch('/api/proizvodi', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: editId, ...form })
+      });
+      setEditId(null);
+    } else {
+      await fetch('/api/proizvodi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+    }
+    setForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
+    fetch(`/api/proizvodi?page=${page}&pageSize=${pageSize}`)
+      .then(res => res.json())
+      .then(data => {
+        setProizvodi(data.proizvodi);
+        setTotal(data.total);
+      });
+  };
+
+  const handleEdit = (p: Proizvod) => {
+    setForm({ naziv: p.naziv, cena: p.cena, slika: p.slika || '', opis: p.opis || '', kolicina: p.kolicina });
+    setEditId(p.id);
+  };
+
+  const handleDelete = async (id: string) => {
+    await fetch('/api/proizvodi', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
+    });
+    fetch(`/api/proizvodi?page=${page}&pageSize=${pageSize}`)
+      .then(res => res.json())
+      .then(data => {
+        setProizvodi(data.proizvodi);
+        setTotal(data.total);
+      });
+  };
+
+  return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Proizvodi</h1>
+      <form onSubmit={handleSubmit} className="mb-4 flex flex-col gap-2 max-w-md">
+        <input type="text" placeholder="Naziv" value={form.naziv} onChange={e => setForm(f => ({ ...f, naziv: e.target.value }))} required className="border p-2 rounded" />
+        <input type="number" placeholder="Cena" value={form.cena} onChange={e => setForm(f => ({ ...f, cena: Number(e.target.value) }))} required className="border p-2 rounded" />
+        <input type="text" placeholder="Slika (URL)" value={form.slika} onChange={e => setForm(f => ({ ...f, slika: e.target.value }))} className="border p-2 rounded" />
+        <input type="text" placeholder="Opis" value={form.opis} onChange={e => setForm(f => ({ ...f, opis: e.target.value }))} className="border p-2 rounded" />
+        <input type="number" placeholder="Količina" value={form.kolicina} onChange={e => setForm(f => ({ ...f, kolicina: Number(e.target.value) }))} required className="border p-2 rounded" />
+        <button type="submit" className="btn">{editId ? 'Spremi' : 'Dodaj'}</button>
+        {editId && <button type="button" onClick={() => { setEditId(null); setForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 }); }} className="btn">Odustani</button>}
+      </form>
+      <table className="w-full border mb-4">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="p-2">Naziv</th>
+            <th className="p-2">Cena</th>
+            <th className="p-2">Slika</th>
+            <th className="p-2">Opis</th>
+            <th className="p-2">Količina</th>
+            <th className="p-2">Akcije</th>
+          </tr>
+        </thead>
+        <tbody>
+          {proizvodi.map((p: Proizvod) => (
+            <tr key={p.id}>
+              <td className="p-2">{p.naziv}</td>
+              <td className="p-2">{p.cena}</td>
+              <td className="p-2">{p.slika ? <img src={p.slika} alt={p.naziv} className="w-12 h-12 object-cover" /> : '-'}</td>
+              <td className="p-2">{p.opis}</td>
+              <td className="p-2">{p.kolicina}</td>
+              <td className="p-2">
+                <button className="btn mr-2" onClick={() => handleEdit(p)}>Uredi</button>
+                <button className="btn" onClick={() => handleDelete(p.id)}>Obriši</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="flex justify-center items-center gap-2">
+        <button className="btn" disabled={page === 1} onClick={() => setPage(p => p - 1)}>Prethodna</button>
+        <span>Stranica {page}</span>
+        <button className="btn" disabled={page * pageSize >= total} onClick={() => setPage(p => p + 1)}>Sljedeća</button>
+      </div>
+    </div>
+  );
+}
