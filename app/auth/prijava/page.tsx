@@ -2,14 +2,14 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+
 
 export default function PrijavaPage() {
   const [email, setEmail] = useState("");
   const [lozinka, setLozinka] = useState("");
   const [error, setError] = useState("");
     const router = useRouter();
-    const { data: session } = useSession();
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
