@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Proizvod } from '@/types';
 
 export default function AdminProizvodiPage() {
@@ -90,8 +91,20 @@ export default function AdminProizvodiPage() {
           {proizvodi.map((p: Proizvod) => (
             <tr key={p.id}>
               <td className="p-2">{p.naziv}</td>
-              <td className="p-2">{p.cena}</td>
-              <td className="p-2">{p.slika ? <img src={p.slika} alt={p.naziv} className="w-12 h-12 object-cover" /> : '-'}</td>
+                  <td className="p-2">
+                      {p.slika ? (
+                          <Image
+                              src={p.slika}
+                              alt={p.naziv}
+                              width={48}
+                              height={48}
+                              className="w-12 h-12 object-cover"
+                          />
+                      ) : (
+                          '-'
+                      )}
+                  </td>
+                  <td className="p-2">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover" /> : '-'}</td>
               <td className="p-2">{p.opis}</td>
               <td className="p-2">{p.kolicina}</td>
               <td className="p-2">

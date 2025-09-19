@@ -1,9 +1,9 @@
 'use client';
 import { useSession } from 'next-auth/react';
-import { authOptions } from '@/lib/authOptions';
-import { StavkaKorpe, Proizvod } from '../../types';
+import React from 'react'
+import { StavkaKorpe } from '../../types';
 import { useState, useEffect } from 'react';
-import { getKorpa, updateStavkaKorpe, deleteStavkaKorpe } from '../../actions/korpa';
+import { updateStavkaKorpe, deleteStavkaKorpe } from '../../actions/korpa';
 
 export default function KorpaPage() {
   const { data: session } = useSession();
