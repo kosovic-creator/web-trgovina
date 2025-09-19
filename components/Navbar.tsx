@@ -10,9 +10,9 @@ export default function Navbar() {
 
   return (
     <nav className="flex items-center gap-4 p-4 border-b border-gray-200">
-      {/* Hamburger Icon */}
+      {/* Hamburger Icon - uvijek vidljiva */}
       <button
-        className="p-2 focus:outline-none md:hidden"
+        className="p-2 focus:outline-none"
         onClick={() => setSidebarOpen(true)}
         aria-label="Open sidebar"
       >

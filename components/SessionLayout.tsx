@@ -7,6 +7,7 @@ export default function SessionLayout({ children }: { children: React.ReactNode 
     <SessionProvider>
       <Navbar />
       {children}
+     
     </SessionProvider>
   );
 }
