@@ -25,19 +25,28 @@ export default function AdminProizvodiPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    let res;
     if (editId) {
-      await fetch('/api/proizvodi', {
+      res = await fetch('/api/proizvodi', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: editId, ...form })
       });
+      if (!res.ok) {
+        const err = await res.json();
+        alert('Greška: ' + (err.error || 'Neuspješan update'));
+      }
       setEditId(null);
     } else {
-      await fetch('/api/proizvodi', {
+      res = await fetch('/api/proizvodi', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
       });
+      if (!res.ok) {
+        const err = await res.json();
+        alert('Greška: ' + (err.error || 'Neuspješan unos'));
+      }
     }
     setForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
     fetch(`/api/proizvodi?page=${page}&pageSize=${pageSize}`)
@@ -54,11 +63,15 @@ export default function AdminProizvodiPage() {
   };
 
   const handleDelete = async (id: string) => {
-    await fetch('/api/proizvodi', {
+    const res = await fetch('/api/proizvodi', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
     });
+    if (!res.ok) {
+      const err = await res.json();
+      alert('Greška: ' + (err.error || 'Neuspješno brisanje'));
+    }
     fetch(`/api/proizvodi?page=${page}&pageSize=${pageSize}`)
       .then(res => res.json())
       .then(data => {
