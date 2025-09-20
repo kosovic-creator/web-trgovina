@@ -13,16 +13,14 @@ export default function Navbar({ setSidebarOpen = () => { } }: { setSidebarOpen?
   const isAdmin = session?.user?.uloga === 'admin';
 
   useEffect(() => {
-    // Pretpostavljam da postoji API ili localStorage za broj proizvoda u korpi
-    // Ovdje je primjer s localStorage
     const broj = Number(localStorage.getItem('brojUKorpi') || 0);
     setBrojUKorpi(broj);
-    // Ako koristiš globalni state, zamijeni s odgovarajućim dohvatom
-
-    // Pretpostavljam da imaš način za dohvat uloge korisnika (npr. iz sessiona)
-    // Ovdje je primjer s localStorage
-    // const uloga = localStorage.getItem('uloga');
-    // Ako koristiš globalni state/session, zamijeni s odgovarajućim dohvatom
+    const handler = () => {
+      const broj = Number(localStorage.getItem('brojUKorpi') || 0);
+      setBrojUKorpi(broj);
+    };
+    window.addEventListener('korpaChanged', handler);
+    return () => window.removeEventListener('korpaChanged', handler);
   }, []);
 
   return (
@@ -65,7 +63,7 @@ export default function Navbar({ setSidebarOpen = () => { } }: { setSidebarOpen?
       </Link>
       {isAdmin && (
         <Link href="/admin" className="ml-4 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">
-          {t('admin')}
+          Admin
         </Link>
       )}
       <div className="flex gap-2 ml-auto">

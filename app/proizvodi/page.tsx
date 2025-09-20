@@ -34,7 +34,12 @@ export default function ProizvodiPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ korisnikId, proizvodId: proizvod.id, kolicina: 1 })
     });
-    // Po želji: osvježi brojUKorpi ili prikaz poruke
+    // Dohvati broj stavki iz korpe
+    const res = await fetch(`/api/korpa?korisnikId=${korisnikId}`);
+    const data = await res.json();
+    const broj = data.stavke.reduce((acc: number, s: { kolicina: number }) => acc + s.kolicina, 0);
+    localStorage.setItem('brojUKorpi', broj.toString());
+    window.dispatchEvent(new Event('korpaChanged'));
   };
 
   return (

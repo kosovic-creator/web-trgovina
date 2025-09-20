@@ -31,3 +31,20 @@ export async function GET(request: Request) {
   });
   return NextResponse.json({ stavke });
 }
+
+export async function PUT(request: Request) {
+  const { id, kolicina } = await request.json();
+  if (!id || !kolicina) return NextResponse.json({ error: 'Neispravni podaci' }, { status: 400 });
+  const stavka = await prisma.stavkaKorpe.update({
+    where: { id },
+    data: { kolicina },
+  });
+  return NextResponse.json({ stavka });
+}
+
+export async function DELETE(request: Request) {
+  const { id } = await request.json();
+  if (!id) return NextResponse.json({ error: 'Neispravan ID' }, { status: 400 });
+  const stavka = await prisma.stavkaKorpe.delete({ where: { id } });
+  return NextResponse.json({ stavka });
+}
