@@ -52,6 +52,31 @@ export default function KorpaPage() {
     setStavke(data.stavke);
   };
 
+  const potvrdiPorudzbinu = async () => {
+    try {
+      const response = await fetch('/api/porudzbine', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          proizvodi: stavke, // zameni sa tvojim state-om
+          korisnikId: session?.user?.id, // zameni sa tvojim state-om
+          adresa: '', // zameni sa tvojim state-om
+          napomena: '', // zameni sa tvojim state-om
+        }),
+      });
+      if (response.ok) {
+        // Uspeh, možeš dodati redirect ili poruku
+        alert('Porudžbina uspešno poslata!');
+      } else {
+        alert('Greška pri slanju porudžbine.');
+      }
+    } catch {
+      alert('Greška pri slanju porudžbine.');
+    }
+  };
+
     if (loading) return <div className="p-4">{t('loading')}</div>;
 
     if (!stavke.length) return <div className="p-4">{t('empty')}</div>;
@@ -107,8 +132,17 @@ export default function KorpaPage() {
             <span>Ukupno</span>
             <span>{stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0).toFixed(2)} EUR</span>
           </div>
-          <button className="w-full bg-green-600 text-white py-2 rounded font-bold mb-2">Završi kupovinu</button>
-          <button className="w-full bg-gray-200 text-gray-700 py-2 rounded">Nastavi kupovinu</button>
+          <button className="w-full bg-green-600 text-white py-2 rounded font-bold mb-2" onClick={() => window.location.href = '/placanje'}>Završi kupovinu</button>
+          <button className="w-full flex items-center justify-center gap-2 bg-yellow-400 text-gray-900 py-2 rounded font-bold mb-2" onClick={() => window.location.href = '/placanje/paypal'}>
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="6" fill="#fff" />
+              <path d="M10 22L12 10H18C21 10 22 12 21.5 14.5C21 17 19 18 16.5 18H14.5L14 22H10Z" fill="#003087" />
+              <path d="M14 22L14.5 18H16.5C19 18 21 17 21.5 14.5C22 12 21 10 18 10H12L10 22H14Z" fill="#009CDE" fillOpacity={0.7} />
+              <path d="M14.5 18L15 14H17C18.5 14 19 15 18.5 16C18 17 17 18 15.5 18H14.5Z" fill="#012169" />
+            </svg>
+            PayPal
+          </button>
+          <button className="w-full bg-gray-200 text-gray-700 py-2 rounded" onClick={potvrdiPorudzbinu}>Potvrdi</button>
         </div>
       </div>
     </div>
