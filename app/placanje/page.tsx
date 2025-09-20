@@ -16,8 +16,7 @@ export default function PlacanjePage() {
     // add other fields if needed
   }
 
-  const handlePotvrdi = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handlePotvrdi = async () => {
     const korisnikId = session?.user?.id;
     if (!korisnikId) return;
     // Dohvati stavke iz korpe
@@ -56,7 +55,7 @@ export default function PlacanjePage() {
             <input type="radio" name="nacin" value="pouzece" checked={nacin === 'pouzece'} onChange={() => setNacin('pouzece')} />
             Plaćanje po uručenju
           </label>
-          <button type="submit" className="bg-blue-600 text-white py-2 rounded font-bold mt-4">Potvrdi</button>
+          <button onClick={handlePotvrdi} className="bg-blue-600 text-white py-2 rounded font-bold mt-4">Potvrdi</button>
         </form>
       </div>
     </div>
