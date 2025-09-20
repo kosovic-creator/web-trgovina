@@ -1,16 +1,14 @@
 'use client';
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import Sidebar from "./Sidebar";
 import React, { useState, useEffect } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n/config';
 
-export default function Navbar() {
+export default function Navbar({ setSidebarOpen = () => { } }: { setSidebarOpen?: (open: boolean) => void }) {
   const { t } = useTranslation('navbar');
   const { data: session } = useSession();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [brojUKorpi, setBrojUKorpi] = useState(0);
   const isAdmin = session?.user?.uloga === 'admin';
 
@@ -45,7 +43,6 @@ export default function Navbar() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <Link href="/">{t('home')}</Link>
       {session?.user ? (
         <>
