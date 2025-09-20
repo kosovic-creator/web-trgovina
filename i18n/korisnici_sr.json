@@ -1,0 +1,14 @@
+{
+  "title": "Korisnici",
+  "email": "Email",
+  "ime": "Ime",
+  "uloga": "Uloga",
+  "akcije": "Akcije",
+  "lozinka": "Lozinka",
+  "slika": "Slika",
+  "korisnik": "Korisnik",
+  "admin": "Admin",
+  "spremi": "Spremi",
+  "dodaj": "Dodaj",
+  "odustani": "Odustani"
+}

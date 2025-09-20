@@ -2,8 +2,11 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Proizvod } from '@/types';
+import { useTranslation } from 'react-i18next';
+import '@/i18n/config';
 
 export default function AdminProizvodiPage() {
+  const { t } = useTranslation('proizvodi');
   const [proizvodi, setProizvodi] = useState<Proizvod[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -66,59 +69,59 @@ export default function AdminProizvodiPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Proizvodi</h1>
+      <h1 className="text-2xl font-bold mb-4">{t('title')}</h1>
       <form onSubmit={handleSubmit} className="mb-4 flex flex-col gap-2 max-w-md">
-        <input type="text" placeholder="Naziv" value={form.naziv} onChange={e => setForm(f => ({ ...f, naziv: e.target.value }))} required className="border p-2 rounded" />
-        <input type="number" placeholder="Cena" value={form.cena} onChange={e => setForm(f => ({ ...f, cena: Number(e.target.value) }))} required className="border p-2 rounded" />
-        <input type="text" placeholder="Slika (URL)" value={form.slika} onChange={e => setForm(f => ({ ...f, slika: e.target.value }))} className="border p-2 rounded" />
-        <input type="text" placeholder="Opis" value={form.opis} onChange={e => setForm(f => ({ ...f, opis: e.target.value }))} className="border p-2 rounded" />
-        <input type="number" placeholder="Količina" value={form.kolicina} onChange={e => setForm(f => ({ ...f, kolicina: Number(e.target.value) }))} required className="border p-2 rounded" />
-        <button type="submit" className="btn">{editId ? 'Spremi' : 'Dodaj'}</button>
-        {editId && <button type="button" onClick={() => { setEditId(null); setForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 }); }} className="btn">Odustani</button>}
+        <input type="text" placeholder={t('naziv')} value={form.naziv} onChange={e => setForm(f => ({ ...f, naziv: e.target.value }))} required className="border p-2 rounded" />
+        <input type="number" placeholder={t('cena')} value={form.cena} onChange={e => setForm(f => ({ ...f, cena: Number(e.target.value) }))} required className="border p-2 rounded" />
+        <input type="text" placeholder={t('slika')} value={form.slika} onChange={e => setForm(f => ({ ...f, slika: e.target.value }))} className="border p-2 rounded" />
+        <input type="text" placeholder={t('opis')} value={form.opis} onChange={e => setForm(f => ({ ...f, opis: e.target.value }))} className="border p-2 rounded" />
+        <input type="number" placeholder={t('kolicina')} value={form.kolicina} onChange={e => setForm(f => ({ ...f, kolicina: Number(e.target.value) }))} required className="border p-2 rounded" />
+        <button type="submit" className="btn">{editId ? t('spremi') : t('dodaj')}</button>
+        {editId && <button type="button" onClick={() => { setEditId(null); setForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 }); }} className="btn">{t('odustani')}</button>}
       </form>
       <table className="w-full border mb-4">
         <thead>
           <tr className="bg-gray-100">
-            <th className="p-2">Naziv</th>
-            <th className="p-2">Cena</th>
-            <th className="p-2">Slika</th>
-            <th className="p-2">Opis</th>
-            <th className="p-2">Količina</th>
-            <th className="p-2">Akcije</th>
+            <th className="p-2">{t('naziv')}</th>
+            <th className="p-2">{t('cena')}</th>
+            <th className="p-2">{t('slika')}</th>
+            <th className="p-2">{t('opis')}</th>
+            <th className="p-2">{t('kolicina')}</th>
+            <th className="p-2">{t('akcije')}</th>
           </tr>
         </thead>
         <tbody>
           {proizvodi.map((p: Proizvod) => (
             <tr key={p.id}>
               <td className="p-2">{p.naziv}</td>
-                  <td className="p-2">
-                      {p.slika ? (
-                          <Image
-                              src={p.slika}
-                              alt={p.naziv}
-                              width={48}
-                              height={48}
-                              className="w-12 h-12 object-cover"
-                          />
-                      ) : (
-                          '-'
-                      )}
-                  </td>
-                  <td className="p-2">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover" /> : '-'}</td>
+              <td className="p-2">
+                {p.slika ? (
+                  <Image
+                    src={p.slika}
+                    alt={p.naziv}
+                    width={48}
+                    height={48}
+                    className="w-12 h-12 object-cover"
+                  />
+                ) : (
+                  '-'
+                )}
+              </td>
+              <td className="p-2">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover" /> : '-'}</td>
               <td className="p-2">{p.opis}</td>
               <td className="p-2">{p.kolicina}</td>
               <td className="p-2">
-                <button className="btn mr-2" onClick={() => handleEdit(p)}>Uredi</button>
-                <button className="btn" onClick={() => handleDelete(p.id)}>Obriši</button>
+                <button className="btn mr-2" onClick={() => handleEdit(p)}>{t('uredi')}</button>
+                <button className="btn" onClick={() => handleDelete(p.id)}>{t('obrisi')}</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <div className="flex justify-center items-center gap-2">
-        <button className="btn" disabled={page === 1} onClick={() => setPage(p => p - 1)}>Prethodna</button>
-        <span>Stranica {page}</span>
-        <button className="btn" disabled={page * pageSize >= total} onClick={() => setPage(p => p + 1)}>Sljedeća</button>
+        <button className="btn" disabled={page === 1} onClick={() => setPage(p => p - 1)}>{t('prethodna')}</button>
+        <span>{t('stranica')} {page}</span>
+        <button className="btn" disabled={page * pageSize >= total} onClick={() => setPage(p => p + 1)}>{t('sljedeca')}</button>
       </div>
     </div>
   );

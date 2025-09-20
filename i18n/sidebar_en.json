@@ -1,0 +1,14 @@
+{
+  "sidebar": "Sidebar",
+  "home": "Home",
+  "shop": "Shop",
+  "contact": "Contact",
+  "products": "Products",
+  "orders": "Orders",
+  "cart": "Cart",
+  "profile": "Profile",
+  "login": "Login",
+  "logout": "Logout",
+  "register": "Register",
+  "admin": "Admin"
+}

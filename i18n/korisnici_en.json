@@ -1,0 +1,14 @@
+{
+  "title": "Users",
+  "email": "Email",
+  "ime": "Name",
+  "uloga": "Role",
+  "akcije": "Actions",
+  "lozinka": "Password",
+  "slika": "Image",
+  "korisnik": "User",
+  "admin": "Admin",
+  "spremi": "Save",
+  "dodaj": "Add",
+  "odustani": "Cancel"
+}

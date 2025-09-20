@@ -1,0 +1,9 @@
+{
+  "title": "Orders",
+  "status": "Status",
+  "total": "Total",
+  "date": "Date",
+  "prethodna": "Previous",
+  "sljedeca": "Next",
+  "empty": "No orders found."
+}

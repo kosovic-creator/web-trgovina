@@ -1,8 +1,11 @@
 'use client'
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from 'react-i18next';
+import '@/i18n/config';
 
 export default function RegistracijaPage() {
+  const { t } = useTranslation('register');
   const [email, setEmail] = useState("");
   const [lozinka, setLozinka] = useState("");
   const [ime, setIme] = useState("");
@@ -25,12 +28,13 @@ export default function RegistracijaPage() {
   };
 
   return (
-    <div>
-      <h1>Registracija</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="p-4 max-w-md mx-auto">
+      <h1 className="text-2xl font-bold mb-4">{t('title')}</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <input
           type="email"
-          placeholder="Email"
+          placeholder={t('email')}
+          className="border p-2 rounded"
           value={email}
           onChange={e => setEmail(e.target.value)}
           required
@@ -43,12 +47,13 @@ export default function RegistracijaPage() {
         />
         <input
           type="password"
-          placeholder="Lozinka"
+          placeholder={t('password')}
+          className="border p-2 rounded"
           value={lozinka}
           onChange={e => setLozinka(e.target.value)}
           required
         />
-        <button type="submit">Registriraj se</button>
+        <button type="submit" className="btn">{t('register')}</button>
       </form>
       {error && <p style={{color: 'red'}}>{error}</p>}
     </div>

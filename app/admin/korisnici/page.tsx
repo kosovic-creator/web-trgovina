@@ -1,8 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Korisnik } from '@/types';
+import { useTranslation } from 'react-i18next';
+import '@/i18n/config';
 
 export default function AdminKorisniciPage() {
+    const { t } = useTranslation('korisnici');
   const [korisnici, setKorisnici] = useState<Korisnik[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -65,26 +68,26 @@ export default function AdminKorisniciPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Korisnici</h1>
+          <h1 className="text-2xl font-bold mb-4">{t('title')}</h1>
       <form onSubmit={handleSubmit} className="mb-4 flex flex-col gap-2 max-w-md">
-        <input type="email" placeholder="Email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} required className="border p-2 rounded" />
-        <input type="password" placeholder="Lozinka" value={form.lozinka} onChange={e => setForm(f => ({ ...f, lozinka: e.target.value }))} required className="border p-2 rounded" />
-        <input type="text" placeholder="Ime" value={form.ime} onChange={e => setForm(f => ({ ...f, ime: e.target.value }))} className="border p-2 rounded" />
-        <input type="text" placeholder="Slika (URL)" value={form.slika} onChange={e => setForm(f => ({ ...f, slika: e.target.value }))} className="border p-2 rounded" />
+              <input type="email" placeholder={t('email')} value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} required className="border p-2 rounded" />
+              <input type="password" placeholder={t('lozinka')} value={form.lozinka} onChange={e => setForm(f => ({ ...f, lozinka: e.target.value }))} required className="border p-2 rounded" />
+              <input type="text" placeholder={t('ime')} value={form.ime} onChange={e => setForm(f => ({ ...f, ime: e.target.value }))} className="border p-2 rounded" />
+              <input type="text" placeholder={t('slika')} value={form.slika} onChange={e => setForm(f => ({ ...f, slika: e.target.value }))} className="border p-2 rounded" />
         <select value={form.uloga} onChange={e => setForm(f => ({ ...f, uloga: e.target.value }))} className="border p-2 rounded">
-          <option value="korisnik">Korisnik</option>
-          <option value="admin">Admin</option>
+                  <option value="korisnik">{t('korisnik')}</option>
+                  <option value="admin">{t('admin')}</option>
         </select>
-        <button type="submit" className="btn">{editId ? 'Spremi' : 'Dodaj'}</button>
-        {editId && <button type="button" onClick={() => { setEditId(null); setForm({ email: '', lozinka: '', uloga: 'korisnik', ime: '', slika: '' }); }} className="btn">Odustani</button>}
+              <button type="submit" className="btn">{editId ? t('spremi') : t('dodaj')}</button>
+              {editId && <button type="button" onClick={() => { setEditId(null); setForm({ email: '', lozinka: '', uloga: 'korisnik', ime: '', slika: '' }); }} className="btn">{t('odustani')}</button>}
       </form>
       <table className="w-full border mb-4">
         <thead>
           <tr className="bg-gray-100">
-            <th className="p-2">Email</th>
-            <th className="p-2">Ime</th>
-            <th className="p-2">Uloga</th>
-            <th className="p-2">Akcije</th>
+                      <th className="p-2">{t('email')}</th>
+                      <th className="p-2">{t('ime')}</th>
+                      <th className="p-2">{t('uloga')}</th>
+                      <th className="p-2">{t('akcije')}</th>
           </tr>
         </thead>
         <tbody>
@@ -94,17 +97,17 @@ export default function AdminKorisniciPage() {
               <td className="p-2">{k.ime}</td>
               <td className="p-2">{k.uloga}</td>
               <td className="p-2">
-                <button className="btn mr-2" onClick={() => handleEdit(k)}>Uredi</button>
-                <button className="btn" onClick={() => handleDelete(k.id)}>Obriši</button>
+                      <button className="btn mr-2" onClick={() => handleEdit(k)}>{t('uredi')}</button>
+                      <button className="btn" onClick={() => handleDelete(k.id)}>{t('obriši')}</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <div className="flex justify-center items-center gap-2">
-        <button className="btn" disabled={page === 1} onClick={() => setPage(p => p - 1)}>Prethodna</button>
-        <span>Stranica {page}</span>
-        <button className="btn" disabled={page * pageSize >= total} onClick={() => setPage(p => p + 1)}>Sljedeća</button>
+              <button className="btn" disabled={page === 1} onClick={() => setPage(p => p - 1)}>{t('prethodna')}</button>
+              <span>{t('stranica')} {page}</span>
+              <button className="btn" disabled={page * pageSize >= total} onClick={() => setPage(p => p + 1)}>{t('sljedeća')}</button>
       </div>
     </div>
   );

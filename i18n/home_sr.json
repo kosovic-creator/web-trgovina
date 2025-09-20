@@ -1,0 +1,9 @@
+{
+  "title": "Početna",
+  "welcome": "Dobrodošli u našu prodavnicu!",
+  "welcome_user": "Dobrodošao, {{ime}}!",
+  "admin_panel": "Admin Panel",
+  "users": "Korisnici",
+  "products": "Proizvodi",
+  "orders": "Porudžbine"
+}

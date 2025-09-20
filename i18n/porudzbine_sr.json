@@ -1,0 +1,9 @@
+{
+  "title": "Porudžbine",
+  "status": "Status",
+  "total": "Ukupno",
+  "date": "Datum",
+  "prethodna": "Prethodna",
+  "sljedeca": "Sljedeća",
+  "empty": "Nema pronađenih porudžbina."
+}

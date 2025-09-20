@@ -1,0 +1,11 @@
+{
+  "title": "Products",
+  "add_to_cart": "Add to cart",
+  "kolicina": "Quantity",
+  "cena": "Price",
+  "opis": "Description",
+  "prethodna": "Previous",
+  "sljedeca": "Next",
+  "empty": "No products found.",
+  "naziv": "Name"
+}

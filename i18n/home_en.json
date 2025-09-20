@@ -1,0 +1,9 @@
+{
+  "title": "Home",
+  "welcome": "Welcome to our shop!",
+  "welcome_user": "Welcome, {{ime}}!",
+  "admin_panel": "Admin Panel",
+  "users": "Users",
+  "products": "Products",
+  "orders": "Orders"
+}

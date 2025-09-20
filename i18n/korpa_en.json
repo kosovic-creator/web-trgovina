@@ -1,0 +1,8 @@
+{
+  "title": "Cart",
+  "product": "Product",
+  "quantity": "Quantity",
+  "price": "Price",
+  "actions": "Actions",
+  "empty": "Your cart is empty."
+}

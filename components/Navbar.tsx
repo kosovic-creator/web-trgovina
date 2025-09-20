@@ -4,8 +4,11 @@ import { useSession, signOut } from "next-auth/react";
 import Sidebar from "./Sidebar";
 import React, { useState, useEffect } from "react";
 import { FaShoppingCart } from "react-icons/fa";
+import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n/config';
 
 export default function Navbar() {
+  const { t } = useTranslation('navbar');
   const { data: session } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [brojUKorpi, setBrojUKorpi] = useState(0);
@@ -43,16 +46,16 @@ export default function Navbar() {
         </svg>
       </button>
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <Link href="/">Početna</Link>
+      <Link href="/">{t('home')}</Link>
       {session?.user ? (
         <>
-          <Link href="/profil">Profil</Link>
-          <button onClick={() => signOut({ callbackUrl: "/auth/prijava" })}>Odjava</button>
+          <Link href="/profil">{t('profile')}</Link>
+          <button onClick={() => signOut({ callbackUrl: "/auth/prijava" })}>{t('logout')}</button>
         </>
       ) : (
         <>
-          <Link href="/auth/prijava">Prijava</Link>
-          <Link href="/auth/registracija">Registracija</Link>
+            <Link href="/auth/prijava">{t('login')}</Link>
+            <Link href="/auth/registracija">{t('register')}</Link>
         </>
       )}
       <Link href="/korpa" className="relative flex items-center ml-4">
@@ -65,9 +68,17 @@ export default function Navbar() {
       </Link>
       {isAdmin && (
         <Link href="/admin" className="ml-4 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">
-          Admin
+          {t('admin')}
         </Link>
       )}
+      <div className="flex gap-2 ml-auto">
+        <button onClick={() => i18n.changeLanguage('en')} aria-label="English" className="p-1">
+          <span role="img" aria-label="English">🇬🇧</span>
+        </button>
+        <button onClick={() => i18n.changeLanguage('sr')} aria-label="Srpski" className="p-1">
+          <span role="img" aria-label="Srpski">🇷🇸</span>
+        </button>
+      </div>
     </nav>
   );
 }
