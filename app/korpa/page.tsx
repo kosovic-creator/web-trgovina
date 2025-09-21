@@ -6,12 +6,14 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '@/i18n/config';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function KorpaPage() {
   const { t } = useTranslation('korpa');
   const { data: session } = useSession();
   const [stavke, setStavke] = useState<StavkaKorpe[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchKorpa() {
@@ -77,6 +79,11 @@ export default function KorpaPage() {
     }
   };
 
+  const handleZavrsiKupovinu = () => {
+    potvrdiPorudzbinu(); // prvo unesi stavke u Porudžbine
+    router.push('/placanje'); // zatim preusmjeri na Placanje
+  };
+
     if (loading) return <div className="p-4">{t('loading')}</div>;
 
     if (!stavke.length) return <div className="p-4">{t('empty')}</div>;
@@ -132,8 +139,9 @@ export default function KorpaPage() {
             <span>Ukupno</span>
             <span>{stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0).toFixed(2)} EUR</span>
           </div>
-          <button className="w-full bg-green-600 text-white py-2 rounded font-bold mb-2" onClick={() => window.location.href = '/placanje'}>Završi kupovinu</button>
+
           <button className="w-full flex items-center justify-center gap-2 bg-yellow-400 text-gray-900 py-2 rounded font-bold mb-2" onClick={() => window.location.href = '/placanje/paypal'}>
+            {/* PayPal dugme */}
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="32" height="32" rx="6" fill="#fff" />
               <path d="M10 22L12 10H18C21 10 22 12 21.5 14.5C21 17 19 18 16.5 18H14.5L14 22H10Z" fill="#003087" />
@@ -142,7 +150,17 @@ export default function KorpaPage() {
             </svg>
             PayPal
           </button>
-          <button className="w-full bg-gray-200 text-gray-700 py-2 rounded" onClick={potvrdiPorudzbinu}>Potvrdi</button>
+          {/* Stripe dugme */}
+          <button className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white py-2 rounded font-bold mb-2" onClick={() => window.location.href = '/placanje/stripe'}>
+            {/* Stripe logo SVG */}
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="6" fill="#fff" />
+              <text x="16" y="21" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#635BFF">Stripe</text>
+            </svg>
+            Stripe
+          </button>
+          {/* <button className="w-full bg-gray-200 text-gray-700 py-2 rounded" onClick={handlePotvrdi}>Potvrdi</button> */}
+          <button className="w-full bg-green-600 text-white py-2 rounded font-bold" onClick={handleZavrsiKupovinu}>Završi kupovinu</button>
         </div>
       </div>
     </div>
