@@ -19,5 +19,5 @@ export async function POST(req: Request) {
       ime,
     },
   });
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ uspjesno_placanje: true });
 }

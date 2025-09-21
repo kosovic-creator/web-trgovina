@@ -75,5 +75,5 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: 'ID je obavezan.' }, { status: 400 });
   }
   await prisma.porudzbina.delete({ where: { id } });
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ uspjesno_placanje: true });
 }

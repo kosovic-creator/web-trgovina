@@ -20,8 +20,8 @@ export async function POST() {
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: process.env.success_url || 'https://web-trgovina.vercel.app/success',
-      cancel_url: process.env.cancel_url || 'https://web-trgovina.vercel.app/cancel',
+      success_url: process.env.uspjesno_placanje_url || 'https://localhost:3000/uspjesno_placanje',
+      cancel_url: process.env.cancel_url || 'https://localhost:3000/cancel',
     });
 
     return NextResponse.json({ url: session.url });

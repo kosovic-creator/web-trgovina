@@ -5,5 +5,5 @@ export async function POST(request: Request) {
   const { korisnikId } = await request.json();
   if (!korisnikId) return NextResponse.json({ error: 'Neispravan korisnikId' }, { status: 400 });
   await prisma.stavkaKorpe.deleteMany({ where: { korisnikId } });
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ uspjesno_placanje: true });
 }

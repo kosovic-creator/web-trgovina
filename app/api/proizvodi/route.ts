@@ -63,5 +63,5 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: 'Proizvod nije pronađen.' }, { status: 404 });
   }
   await prisma.proizvod.delete({ where: { id } });
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ uspjesno_placanje: true });
 }

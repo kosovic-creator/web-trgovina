@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useKorpa } from '@/components/KorpaContext';
 import { useSession } from 'next-auth/react';
 
-export default function SuccessPage() {
+export default function uspjesno_placanjePage() {
   const { resetKorpa } = useKorpa();
   const { data: session } = useSession();
 

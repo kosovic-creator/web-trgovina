@@ -19,5 +19,5 @@ export async function POST(request: Request) {
     text,
   });
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ uspjesno_placanje: true });
 }
