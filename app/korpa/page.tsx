@@ -8,7 +8,7 @@ import '@/i18n/config';
 import Image from 'next/image';
 
 export default function KorpaPage() {
-    const { t } = useTranslation('korpa');
+  const { t } = useTranslation('korpa');
   const { data: session } = useSession();
   const [stavke, setStavke] = useState<StavkaKorpe[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,14 +60,14 @@ export default function KorpaPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          proizvodi: stavke, // zameni sa tvojim state-om
-          korisnikId: session?.user?.id, // zameni sa tvojim state-om
-          adresa: '', // zameni sa tvojim state-om
-          napomena: '', // zameni sa tvojim state-om
+          korisnikId: session?.user?.id,
+          ukupno: stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0),
+          status: 'Na čekanju', // ili drugi status
+          email: session?.user?.email, // ako treba
+          idPlacanja: crypto.randomUUID(), // generiši jedinstven ID
         }),
       });
       if (response.ok) {
-        // Uspeh, možeš dodati redirect ili poruku
         alert('Porudžbina uspešno poslata!');
       } else {
         alert('Greška pri slanju porudžbine.');

@@ -11,6 +11,9 @@ type Porudzbina = {
   ukupno: number;
   status: string;
   kreiran: string;
+  email?: string;
+  idPlacanja?: string;
+  korisnikId?: string;
 };
 
 interface Proizvod {
@@ -35,7 +38,7 @@ export default function AdminHome() {
   const { t } = useTranslation('home');
   const [tab, setTab] = useState<'korisnici' | 'proizvodi' | 'porudzbine'>('korisnici');
   const [porudzbine, setPorudzbine] = useState<Porudzbina[]>([]);
-  const [porudzbinaForm, setPorudzbinaForm] = useState({ korisnik: '', ukupno: 0, status: '', kreiran: '' });
+  const [porudzbinaForm, setPorudzbinaForm] = useState({ korisnikId: '', korisnik: '', ukupno: 0, status: '', kreiran: '', email: '', idPlacanja: '' });
   const [editPorudzbinaId, setEditPorudzbinaId] = useState<string | null>(null);
   const [proizvodForm, setProizvodForm] = useState({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
   const [proizvodi, setProizvodi] = React.useState<Proizvod[]>([]);
@@ -65,19 +68,7 @@ export default function AdminHome() {
       });
   }, []);
 
-  const handleEdit = (p: Porudzbina) => {
-    setPorudzbinaForm({ korisnik: p.korisnik, ukupno: p.ukupno, status: p.status, kreiran: p.kreiran });
-    setEditPorudzbinaId(p.id);
-  };
-
-  const handleDelete = async (id: string) => {
-    await fetch('/api/porudzbine', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id })
-    });
-    // Dodaj ponovno učitavanje porudžbina
-  };
+ 
 
   const handleProizvodSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -95,11 +86,11 @@ export default function AdminHome() {
       });
   };
 
-  const handleProizvodEdit = async (id: number) => {
+  const handleProizvodEdit = async (id: string) => {
     // Primer: otvori formu za edit, ili direktno izmeni
     // Ovde možeš dodati logiku za editovanje proizvoda
     // npr. setProizvodForm sa podacima proizvoda za edit
-    const proizvod = proizvodi.find(p => p.id === String(id));
+    const proizvod = proizvodi.find(p => p.id === id);
     if (proizvod) {
       setProizvodForm({
         naziv: proizvod.naziv,
@@ -197,6 +188,66 @@ export default function AdminHome() {
     fetch('/api/korisnici?page=1&pageSize=10')
       .then(res => res.json())
       .then(data => setKorisnici(data.korisnici || []));
+  };
+
+  const handlePorudzbinaDelete = async (id: string) => {
+    await fetch('/api/porudzbine', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    });
+    fetch('/api/porudzbine?page=1&pageSize=10')
+      .then(res => res.json())
+      .then(data => setPorudzbine(data.porudzbine || []));
+  };
+
+  const handlePorudzbinaEdit = (p: Porudzbina) => {
+    setPorudzbinaForm({
+      korisnikId: p.korisnikId ?? '',
+      korisnik: p.korisnik,
+      ukupno: p.ukupno,
+      status: p.status,
+      kreiran: p.kreiran,
+      email: p.email ?? '',
+      idPlacanja: p.idPlacanja ?? ''
+    });
+    setEditPorudzbinaId(p.id);
+  };
+
+  // Dodaj funkciju za kreiranje nove porudžbine
+  const handlePorudzbinaSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await fetch('/api/porudzbine', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(porudzbinaForm),
+    });
+    setPorudzbinaForm({ korisnikId: '', korisnik: '', ukupno: 0, status: '', kreiran: '', email: '', idPlacanja: '' });
+    fetch('/api/porudzbine?page=1&pageSize=10')
+      .then(res => res.json())
+      .then(data => setPorudzbine(data.porudzbine || []));
+  };
+
+  const handlePorudzbinaUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!editPorudzbinaId) return;
+    await fetch('/api/porudzbine', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: editPorudzbinaId,
+        korisnikId: porudzbinaForm.korisnikId, // dodaj ovo polje!
+        ukupno: porudzbinaForm.ukupno,
+        status: porudzbinaForm.status,
+        email: porudzbinaForm.email, // ako treba
+        idPlacanja: porudzbinaForm.idPlacanja, // ako treba
+      }),
+    });
+    setPorudzbinaForm({ korisnikId: '', korisnik: '', ukupno: 0, status: '', kreiran: '', email: '', idPlacanja: '' });
+    setEditPorudzbinaId(null);
+    fetch('/api/porudzbine?page=1&pageSize=10')
+      .then(res => res.json())
+      .then(data => setPorudzbine(data.porudzbine || []));
   };
 
   return (
@@ -308,6 +359,50 @@ export default function AdminHome() {
       {tab === 'porudzbine' && (
         <div className="bg-white rounded shadow p-6">
           <h2 className="font-semibold mb-4">Lista porudžbina</h2>
+
+          {/* Forma za edit/unos porudžbine */}
+          <form onSubmit={editPorudzbinaId ? handlePorudzbinaUpdate : handlePorudzbinaSubmit} className="mb-6 flex gap-4 flex-wrap">
+            <input
+              type="text"
+              placeholder="Korisnik ID"
+              value={porudzbinaForm.korisnikId}
+              onChange={e => setPorudzbinaForm(f => ({ ...f, korisnikId: e.target.value }))}
+              className="border p-2 rounded"
+            />
+            <input
+              type="number"
+              placeholder="Ukupno"
+              value={porudzbinaForm.ukupno}
+              onChange={e => setPorudzbinaForm(f => ({ ...f, ukupno: Number(e.target.value) }))}
+              className="border p-2 rounded"
+            />
+            <input
+              type="text"
+              placeholder="Status"
+              value={porudzbinaForm.status}
+              onChange={e => setPorudzbinaForm(f => ({ ...f, status: e.target.value }))}
+              className="border p-2 rounded"
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={porudzbinaForm.email}
+              onChange={e => setPorudzbinaForm(f => ({ ...f, email: e.target.value }))}
+              className="border p-2 rounded"
+            />
+            <input
+              type="text"
+              placeholder="ID plaćanja"
+              value={porudzbinaForm.idPlacanja}
+              onChange={e => setPorudzbinaForm(f => ({ ...f, idPlacanja: e.target.value }))}
+              className="border p-2 rounded"
+            />
+            <button type="submit" className="bg-violet-600 text-white px-6 py-2 rounded">
+              {editPorudzbinaId ? 'Sačuvaj izmene' : 'Dodaj'}
+            </button>
+          </form>
+
+          {/* Tabela porudžbina */}
           <table className="w-full border">
             <thead>
               <tr className="bg-gray-100">
@@ -328,8 +423,8 @@ export default function AdminHome() {
                   <td className="p-2">{p.status}</td>
                   <td className="p-2">{new Date(p.kreiran).toLocaleDateString()}</td>
                   <td className="p-2">
-                    <button className="text-blue-600 cursor-pointer mr-4" onClick={() => handleEdit(p)}>{t('edit')}</button>
-                    <button className="text-red-600 cursor-pointer" onClick={() => handleDelete(p.id)}>{t('delete')}</button>
+                    <button className="text-blue-600 cursor-pointer mr-4" onClick={() => handlePorudzbinaEdit(p)}>{t('edit')}</button>
+                    <button className="text-red-600 cursor-pointer" onClick={() => handlePorudzbinaDelete(p.id)}>{t('delete')}</button>
                   </td>
                 </tr>
               ))}
