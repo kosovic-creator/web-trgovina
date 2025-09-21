@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import '@/i18n/config';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import StripeButton from '@/components/Stripe Checkout';
 
 export default function KorpaPage() {
   const { t } = useTranslation('korpa');
@@ -162,6 +163,7 @@ export default function KorpaPage() {
           {/* <button className="w-full bg-gray-200 text-gray-700 py-2 rounded" onClick={handlePotvrdi}>Potvrdi</button> */}
           <button className="w-full bg-green-600 text-white py-2 rounded font-bold" onClick={handleZavrsiKupovinu}>Završi kupovinu</button>
         </div>
+        <StripeButton />
       </div>
     </div>
   );
