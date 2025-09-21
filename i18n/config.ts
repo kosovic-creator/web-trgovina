@@ -24,6 +24,8 @@ import home_en from './home_en.json';
 import home_sr from './home_sr.json';
 import sidebar_en from './sidebar_en.json';
 import sidebar_sr from './sidebar_sr.json';
+import notFound_en from './notFound_en.json';
+import notFound_sr from './notFound_sr.json';
 
 i18n
   .use(initReactI18next)
@@ -42,6 +44,7 @@ i18n
         profil: profil_en,
         home: home_en,
         sidebar: sidebar_en,
+        notFound: notFound_en,
 
       },
       sr: {
@@ -57,6 +60,7 @@ i18n
         profil: profil_sr,
         home: home_sr,
         sidebar: sidebar_sr,
+        notFound: notFound_sr,
       },
     },
     lng: 'sr',
