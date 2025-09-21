@@ -44,7 +44,7 @@ export default function ProizvodiPage() {
     window.dispatchEvent(new Event('korpaChanged'));
   };
 
-  
+
 
   return (
     <div className="p-4">
