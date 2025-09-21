@@ -1,14 +1,14 @@
 'use client';
 import { useSession } from 'next-auth/react';
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { StavkaKorpe } from '../../types';
-import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '@/i18n/config';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import StripeButton from '@/components/Stripe Checkout';
 import { useKorpa } from "@/components/KorpaContext";
+import { FaShoppingCart, FaTrashAlt, FaPlus, FaMinus } from "react-icons/fa";
 
 export default function KorpaPage() {
   const { t } = useTranslation('korpa');
@@ -16,7 +16,7 @@ export default function KorpaPage() {
   const [stavke, setStavke] = useState<StavkaKorpe[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { resetKorpa } = useKorpa(); // Dodaj ovo
+  const { resetKorpa } = useKorpa();
 
   useEffect(() => {
     async function fetchKorpa() {
@@ -68,7 +68,7 @@ export default function KorpaPage() {
     setStavke([]);
     localStorage.setItem('brojUKorpi', '0');
     window.dispatchEvent(new Event('korpaChanged'));
-    resetKorpa(); // Dodaj ovo!
+    resetKorpa();
   };
 
   const potvrdiPorudzbinu = async () => {
@@ -102,47 +102,84 @@ export default function KorpaPage() {
     router.push('/porudzbine');
   };
 
-    if (loading) return <div className="p-4">{t('loading')}</div>;
-
-    if (!stavke.length) return <div className="p-4">{t('empty')}</div>;
+  if (loading) return <div className="p-4">{t('loading') || "Učitavanje..."}</div>;
+  if (!stavke.length) return (
+    <div className="p-4 flex flex-col items-center text-gray-500">
+      <FaShoppingCart className="text-4xl mb-2 text-violet-600" />
+      {t('empty')}
+    </div>
+  );
 
   return (
     <div className="p-4 flex flex-col md:flex-row gap-8">
       <div className="flex-1">
-        <h1 className="text-2xl font-bold mb-4">{t('title')}</h1>
+        <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          <FaShoppingCart className="text-violet-600" />
+          {t('title')}
+        </h1>
         <div className="bg-white rounded shadow p-4 mb-4">
-          <h2 className="font-semibold mb-2">Stavke u korpi</h2>
-          {stavke.length === 0 ? (
-            <div className="text-gray-500">{t('empty')}</div>
-          ) : (
-            stavke.map((s) => (
-              <div key={s.id} className="flex items-center justify-between border-b py-4">
-                <div className="flex items-center gap-4">
-                  {s.proizvod?.slika && (
-                    <Image src={s.proizvod.slika} alt={s.proizvod.naziv || ''} width={64} height={64} className="object-contain" />
-                  )}
-                  <div>
-                    <div className="font-semibold">{s.proizvod?.naziv}</div>
-                    <div className="text-green-600 font-bold">{s.proizvod?.cena} EUR</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button className="px-2 py-1 border rounded" onClick={() => handleKolicina(s.id, s.kolicina - 1)} disabled={s.kolicina <= 1}>-</button>
-                  <span className="px-2">{s.kolicina}</span>
-                  <button className="px-2 py-1 border rounded" onClick={() => handleKolicina(s.id, s.kolicina + 1)}>+</button>
-                </div>
-                <div className="font-bold">{s.proizvod ? (s.proizvod.cena * s.kolicina).toFixed(2) : '0.00'} EUR</div>
-                <button className="text-red-600 ml-4" onClick={() => handleDelete(s.id)}>Ukloni</button>
-              </div>
-            ))
-          )}
+          <table className="w-full mb-2">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="p-2">{t('product')}</th>
+                <th className="p-2">{t('quantity')}</th>
+                <th className="p-2">{t('price')}</th>
+                <th className="p-2">{t('actions')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {stavke.map((s) => (
+                <tr key={s.id} className="border-b">
+                  <td className="p-2 flex items-center gap-2">
+                    {s.proizvod?.slika && (
+                      <Image src={s.proizvod.slika} alt={s.proizvod.naziv || ''} width={48} height={48} className="object-contain rounded" />
+                    )}
+                    <span className="font-semibold">{s.proizvod?.naziv}</span>
+                  </td>
+                  <td className="p-2">
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="px-2 py-1 border rounded hover:bg-gray-100"
+                        onClick={() => handleKolicina(s.id, s.kolicina - 1)}
+                        disabled={s.kolicina <= 1}
+                        aria-label="Smanji količinu"
+                      >
+                        <FaMinus />
+                      </button>
+                      <span className="px-2">{s.kolicina}</span>
+                      <button
+                        className="px-2 py-1 border rounded hover:bg-gray-100"
+                        onClick={() => handleKolicina(s.id, s.kolicina + 1)}
+                        aria-label="Povećaj količinu"
+                      >
+                        <FaPlus />
+                      </button>
+                    </div>
+                  </td>
+                  <td className="p-2 font-bold">{s.proizvod ? (s.proizvod.cena * s.kolicina).toFixed(2) : '0.00'} EUR</td>
+                  <td className="p-2">
+                    <button
+                      className="text-red-600 hover:text-red-800"
+                      onClick={() => handleDelete(s.id)}
+                      aria-label="Ukloni iz korpe"
+                    >
+                      <FaTrashAlt />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
       <div className="w-full md:w-96">
         <div className="bg-white rounded shadow p-4">
-          <h2 className="font-semibold mb-2">Rezime narudžbe</h2>
+          <h2 className="font-semibold mb-2 flex items-center gap-2">
+            <FaShoppingCart className="text-violet-600" />
+            {t('title')}
+          </h2>
           <div className="flex justify-between mb-1">
-            <span>Ukupno stavki:</span>
+            <span>{t('quantity')}:</span>
             <span>{stavke.reduce((acc, s) => acc + s.kolicina, 0)}</span>
           </div>
           <div className="flex justify-between mb-1">
@@ -157,7 +194,6 @@ export default function KorpaPage() {
             <span>Ukupno</span>
             <span>{stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0).toFixed(2)} EUR</span>
           </div>
-
           <button className="w-full flex items-center justify-center gap-2 bg-yellow-400 text-gray-900 py-2 rounded font-bold mb-2" onClick={() => window.location.href = '/placanje/paypal'}>
             {/* PayPal dugme */}
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -168,7 +204,6 @@ export default function KorpaPage() {
             </svg>
             PayPal
           </button>
-          {/* Stripe dugme */}
           <button className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white py-2 rounded font-bold mb-2" onClick={() => window.location.href = '/placanje/stripe'}>
             {/* Stripe logo SVG */}
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -177,8 +212,9 @@ export default function KorpaPage() {
             </svg>
             Stripe
           </button>
-          {/* <button className="w-full bg-gray-200 text-gray-700 py-2 rounded" onClick={handlePotvrdi}>Potvrdi</button> */}
-          <button className="w-full bg-green-600 text-white py-2 rounded font-bold" onClick={handleZavrsiKupovinu}>Završi kupovinu</button>
+          <button className="w-full bg-green-600 text-white py-2 rounded font-bold" onClick={handleZavrsiKupovinu}>
+            Završi kupovinu
+          </button>
         </div>
         <StripeButton />
       </div>

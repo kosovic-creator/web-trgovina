@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaHome, FaUser, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaUserShield } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n/config';
 import { useKorpa } from "@/components/KorpaContext";
@@ -27,17 +27,13 @@ export default function Navbar({ setSidebarOpen }: { setSidebarOpen?: (open: boo
     return () => window.removeEventListener('korpaChanged', handler);
   }, []);
 
-  const korisnikId = session?.user?.id;
-
-
-
   return (
-    <nav className="flex items-center gap-4 p-4 border-b border-gray-200">
+    <nav className="flex items-center gap-4 p-4 border-b border-gray-200 bg-white shadow-sm">
       {!isAdmin && (
         <>
-          {/* Hamburger, Home, Korpa */}
+          {/* Hamburger */}
           <button
-            className="p-2 focus:outline-none"
+            className="p-2 focus:outline-none rounded hover:bg-gray-100"
             onClick={() => setSidebarOpen?.(true)}
             aria-label="Open sidebar"
           >
@@ -51,41 +47,66 @@ export default function Navbar({ setSidebarOpen }: { setSidebarOpen?: (open: boo
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <Link href="/">{t('home')}</Link>
-          <Link href="/korpa" className="relative flex items-center ml-4">
-            <FaShoppingCart size={24} />
+          {/* Home */}
+          <Link href="/" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-violet-50 transition">
+            <FaHome className="text-violet-600" />
+            <span>{t('home')}</span>
+          </Link>
+          {/* Korpa */}
+          <Link href="/korpa" className="relative flex items-center gap-2 px-3 py-2 rounded hover:bg-violet-50 transition">
+            <FaShoppingCart className="text-violet-600" size={20} />
+            <span>{t('cart') || ''}</span>
             {brojStavki > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full px-2 text-xs">
                 {brojStavki}
               </span>
             )}
           </Link>
-          {/* Prikaz dugmadi ovisno o prijavi */}
+          {/* Prijava/Registracija ili Odjava */}
           {!session?.user ? (
             <>
-              <Link href="/auth/prijava">{t('login')}</Link>
-              <Link href="/auth/registracija">{t('register')}</Link>
+              <Link href="/auth/prijava" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-violet-50 transition">
+                <FaSignInAlt className="text-violet-600" />
+                <span>{t('login')}</span>
+              </Link>
+              <Link href="/auth/registracija" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-violet-50 transition">
+                <FaUserPlus className="text-violet-600" />
+                <span>{t('register')}</span>
+              </Link>
             </>
           ) : (
-              <button onClick={() => signOut({ callbackUrl: "/auth/prijava" })}>{t('logout')}</button>
+              <button
+                onClick={() => signOut({ callbackUrl: "/auth/prijava" })}
+                className="flex items-center gap-2 px-3 py-2 rounded hover:bg-violet-50 transition"
+              >
+                <FaSignOutAlt className="text-violet-600" />
+                <span>{t('logout')}</span>
+              </button>
           )}
         </>
       )}
 
       {isAdmin && (
         <>
-          {/* Admin link po potrebi */}
-          {/* <Link href="/admin" className="ml-4 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">
-            Admin
-          </Link> */}
-          <button onClick={() => signOut({ callbackUrl: "/auth/prijava" })}>{t('logout')}</button>
+          <Link href="/admin" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-violet-50 transition">
+            <FaUserShield className="text-violet-600" />
+            <span>{t('admin')}</span>
+          </Link>
+          <button
+            onClick={() => signOut({ callbackUrl: "/auth/prijava" })}
+            className="flex items-center gap-2 px-3 py-2 rounded hover:bg-violet-50 transition"
+          >
+            <FaSignOutAlt className="text-violet-600" />
+            <span>{t('logout')}</span>
+          </button>
         </>
       )}
+      {/* Jezik */}
       <div className="flex gap-2 ml-auto">
-        <button onClick={() => i18n.changeLanguage('en')} aria-label="English" className="p-1">
+        <button onClick={() => i18n.changeLanguage('en')} aria-label="English" className="p-1 rounded hover:bg-gray-100">
           <span role="img" aria-label="English">🇬🇧</span>
         </button>
-        <button onClick={() => i18n.changeLanguage('sr')} aria-label="Srpski" className="p-1">
+        <button onClick={() => i18n.changeLanguage('sr')} aria-label="Srpski" className="p-1 rounded hover:bg-gray-100">
           <span role="img" aria-label="Srpski">🇷🇸</span>
         </button>
       </div>

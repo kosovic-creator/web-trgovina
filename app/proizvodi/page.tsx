@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { Proizvod } from '@/types';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import { FaBoxOpen, FaCartPlus } from "react-icons/fa";
 import '@/i18n/config';
 
 
@@ -45,33 +46,48 @@ export default function ProizvodiPage() {
   };
 
 
-
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">{t('title')}</h1>
+      <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
+        <FaBoxOpen className="text-violet-600" />
+        {t('title')}
+      </h1>
       <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
         {proizvodi.length === 0 ? (
           <div className="col-span-3 text-center text-gray-500">{t('empty')}</div>
         ) : (
           proizvodi.map((p: Proizvod) => (
-            <div key={p.id} className="border rounded p-4 flex flex-col items-center">
-              {p.slika && <Image src={p.slika} alt={p.naziv} width={80} height={80} className="object-cover mb-2" />}
-              <div className="font-semibold">{p.naziv}</div>
-              <div className="text-gray-600">{p.opis}</div>
-              <div className="mt-2 font-bold">{p.cena} €</div>
+            <div key={p.id} className="border rounded-lg p-4 flex flex-col items-center shadow hover:shadow-lg transition">
+              {p.slika && <Image src={p.slika} alt={p.naziv} width={80} height={80} className="object-cover mb-2 rounded" />}
+              <div className="font-semibold text-lg mb-1">{p.naziv}</div>
+              <div className="text-gray-600 mb-1">{p.opis}</div>
+              <div className="mt-2 font-bold text-violet-700">{p.cena} €</div>
               <div className="text-xs text-gray-400 mt-1">{t('kolicina')}: {p.kolicina}</div>
-              <button className="btn mt-2" onClick={() => handleDodajUKorpu(p)}>{t('add_to_cart')}</button>
-              {/* <button onClick={() => handleAdd(p.id)}>
-               {t('add_to_cart')}
-              </button> */}
+              <button
+                className="flex items-center gap-2 bg-violet-600 text-white px-4 py-2 rounded shadow hover:bg-violet-700 transition mt-2"
+                onClick={() => handleDodajUKorpu(p)}
+              >
+                <FaCartPlus />
+                {t('add_to_cart')}
+              </button>
             </div>
           ))
         )}
       </div>
       <div className="flex justify-center items-center gap-2">
-        <button className="btn" disabled={page === 1} onClick={() => setPage(p => p - 1)}>{t('prethodna')}</button>
+        <button className="bg-violet-600 text-white px-3 py-1 rounded shadow hover:bg-violet-700 transition"
+          disabled={page === 1}
+          onClick={() => setPage(p => p - 1)}
+        >
+          {t('prethodna')}
+        </button>
         <span>Stranica {page}</span>
-        <button className="btn" disabled={page * pageSize >= total} onClick={() => setPage(p => p + 1)}>{t('sljedeca')}</button>
+        <button className="bg-violet-600 text-white px-3 py-1 rounded shadow hover:bg-violet-700 transition"
+          disabled={page * pageSize >= total}
+          onClick={() => setPage(p => p + 1)}
+        >
+          {t('sljedeca')}
+        </button>
       </div>
     </div>
   );

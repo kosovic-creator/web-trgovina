@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { FaHome, FaBoxOpen, FaClipboardList, FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaBoxOpen, FaClipboardList, FaUser } from 'react-icons/fa';
 
 import '@/i18n/config';
 
@@ -12,7 +12,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
-  const { t } = useTranslation('sidebar');
+  const { t, i18n } = useTranslation('sidebar');
   const pathname = usePathname();
 
   useEffect(() => {
@@ -27,54 +27,58 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
   return (
     <div className="fixed top-0 left-0 h-screen w-56 bg-white shadow-lg z-50 flex flex-col">
       <div className="flex items-center justify-between p-4 border-b font-bold text-lg">
-        <span>{t('sidebar')}</span>
-        <button onClick={onClose} className="text-xl">&times;</button>
+        {/* <span>{t('sidebar')}</span> */}
+        <button onClick={onClose} className="text-xl cursor-pointer" aria-label="Close sidebar">&times;</button>
       </div>
       <nav className="p-4 flex-1 overflow-y-auto">
         <ul className="space-y-2">
           <li>
             <Link
               href="/"
-              className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-gray-100 ${pathname === '/' ? 'bg-blue-100 font-bold' : ''
-                }`}
+              className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition ${pathname === '/' ? 'bg-violet-100 font-bold' : ''}`}
             >
-              <FaHome /> {t('home')}
+              <FaHome className="text-violet-600" /> {t('home')}
             </Link>
           </li>
           <li>
             <Link
               href="/proizvodi"
-              className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-gray-100 ${pathname === '/proizvodi' ? 'bg-blue-100 font-bold' : ''
-                }`}
+              className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition ${pathname === '/proizvodi' ? 'bg-violet-100 font-bold' : ''}`}
             >
-              <FaBoxOpen /> {t('products')}
+              <FaBoxOpen className="text-violet-600" /> {t('products')}
             </Link>
           </li>
           <li>
             <Link
               href="/porudzbine"
-              className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-gray-100 ${pathname === '/porudzbine' ? 'bg-blue-100 font-bold' : ''
-                }`}
+              className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition ${pathname === '/porudzbine' ? 'bg-violet-100 font-bold' : ''}`}
             >
-              <FaClipboardList /> {t('orders')}
+              <FaClipboardList className="text-violet-600" /> {t('orders')}
             </Link>
           </li>
           <li>
             <Link
               href="/profil"
-              className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-gray-100 ${pathname === '/profil' ? 'bg-blue-100 font-bold' : ''
-                }`}
+              className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition ${pathname === '/profil' ? 'bg-violet-100 font-bold' : ''}`}
             >
-              <FaUser /> {t('profile')}
+              <FaUser className="text-violet-600" /> {t('profile')}
             </Link>
           </li>
-          <li>
-            <button className="flex items-center gap-2 py-2 px-4 rounded text-red-600 hover:bg-gray-100 w-full">
+          {/* <li>
+            <button className="flex items-center gap-2 py-2 px-4 rounded text-red-600 hover:bg-violet-50 transition w-full cursor-pointer">
               <FaSignOutAlt /> {t('logout')}
             </button>
-          </li>
+          </li> */}
         </ul>
       </nav>
+      <div className="flex gap-2 p-4 border-t mt-auto">
+        <button onClick={() => i18n.changeLanguage('en')} className="p-1 rounded hover:bg-gray-100" aria-label="English">
+          <span role="img" aria-label="English">🇬🇧</span>
+        </button>
+        <button onClick={() => i18n.changeLanguage('sr')} className="p-1 rounded hover:bg-gray-100" aria-label="Srpski">
+          <span role="img" aria-label="Srpski">🇷🇸</span>
+        </button>
+      </div>
     </div>
   );
 };
