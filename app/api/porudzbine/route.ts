@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import nodemailer from 'nodemailer';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -32,6 +33,25 @@ export async function POST(req: Request) {
       idPlacanja,
     },
   });
+
+  // Slanje emaila korisniku
+  if (email) {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER, // postavite u .env
+        pass: process.env.EMAIL_PASS, // postavite u .env
+      },
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Porudžbina prihvaćena',
+      text: 'Vaša porudžbina je uspešno prihvaćena. Hvala na kupovini!',
+    });
+  }
+
   return NextResponse.json(porudzbina);
 }
 
