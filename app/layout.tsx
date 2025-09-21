@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <SessionLayout>
           <div>
-            <Navbar setSidebarOpen={setSidebarOpen} />
+            <Navbar setSidebarOpen={setSidebarOpen} korisnikId="" />
             <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
             <div style={{ marginLeft: sidebarOpen ? '14rem' : 0, transition: 'margin-left 0.3s' }}>
               {children}
