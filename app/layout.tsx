@@ -7,7 +7,7 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import { useState } from 'react';
 import { SessionProvider } from "next-auth/react";
-import { KorpaProvider } from "@/components/CartContext";
+import { KorpaProvider } from "@/components/KorpaContext";
 
 
 
@@ -27,12 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SessionProvider>
           <KorpaProvider>
-
             <div>
               <Navbar setSidebarOpen={setSidebarOpen} />
 

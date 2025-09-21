@@ -6,15 +6,15 @@ import React, { useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n/config';
-import { useKorpa } from "@/components/CartContext";
+import { useKorpa } from "@/components/KorpaContext";
+
 
 export default function Navbar({ setSidebarOpen }: { setSidebarOpen?: (open: boolean) => void }) {
   const { t } = useTranslation('navbar');
   const { data: session } = useSession();
   const [brojUKorpi, setBrojUKorpi] = useState(0);
-  const [brojStavki, setBrojStavki] = useState<number>(0);
+  const { brojStavki } = useKorpa();
   const isAdmin = session?.user?.uloga === 'admin';
-  const { korpa } = useKorpa();
 
   useEffect(() => {
     const broj = Number(localStorage.getItem('brojUKorpi') || 0);
@@ -29,7 +29,7 @@ export default function Navbar({ setSidebarOpen }: { setSidebarOpen?: (open: boo
 
   const korisnikId = session?.user?.id;
 
-  
+
 
   return (
     <nav className="flex items-center gap-4 p-4 border-b border-gray-200">
@@ -54,9 +54,9 @@ export default function Navbar({ setSidebarOpen }: { setSidebarOpen?: (open: boo
           <Link href="/">{t('home')}</Link>
           <Link href="/korpa" className="relative flex items-center ml-4">
             <FaShoppingCart size={24} />
-            {korpa.itemCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
-                {korpa.itemCount}
+            {brojStavki > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full px-2 text-xs">
+                {brojStavki}
               </span>
             )}
           </Link>

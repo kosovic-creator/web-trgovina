@@ -5,7 +5,7 @@ import { Proizvod } from '@/types';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import '@/i18n/config';
-import { useKorpa } from "@/components/CartContext";
+
 
 export default function ProizvodiPage() {
   const { t } = useTranslation('proizvodi');
@@ -14,7 +14,7 @@ export default function ProizvodiPage() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
-  const { addTokorpa, refreshkorpa } = useKorpa();
+
 
   useEffect(() => {
     fetch(`/api/proizvodi?page=${page}&pageSize=${pageSize}`)
@@ -44,10 +44,7 @@ export default function ProizvodiPage() {
     window.dispatchEvent(new Event('korpaChanged'));
   };
 
-  const handleAdd = async (productId: string) => {
-    await addTokorpa(productId);
-    await refreshkorpa(); // Ovo osvežava podatke u Context-u
-  };
+  
 
   return (
     <div className="p-4">
