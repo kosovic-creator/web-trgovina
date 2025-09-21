@@ -13,6 +13,7 @@ const StripeButton: React.FC = () => {
     } else {
       alert('Greška pri kreiranju Stripe sesije.');
     }
+   
   };
 
   return (

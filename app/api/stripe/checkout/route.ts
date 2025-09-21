@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import {  NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-08-27.basil',
 });
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -20,8 +20,8 @@ export async function POST(req: NextRequest) {
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: 'https://web-trgovina.vercel.app/success',
-      cancel_url: 'https://web-trgovina.vercel.app/cancel',
+      success_url: process.env.success_url || 'https://web-trgovina.vercel.app/success',
+      cancel_url: process.env.cancel_url || 'https://web-trgovina.vercel.app/cancel',
     });
 
     return NextResponse.json({ url: session.url });

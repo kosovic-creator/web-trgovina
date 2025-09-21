@@ -8,6 +8,7 @@ import '@/i18n/config';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import StripeButton from '@/components/Stripe Checkout';
+import { useKorpa } from "@/components/KorpaContext";
 
 export default function KorpaPage() {
   const { t } = useTranslation('korpa');
@@ -15,6 +16,7 @@ export default function KorpaPage() {
   const [stavke, setStavke] = useState<StavkaKorpe[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { resetKorpa } = useKorpa(); // Dodaj ovo
 
   useEffect(() => {
     async function fetchKorpa() {
@@ -55,6 +57,20 @@ export default function KorpaPage() {
     setStavke(data.stavke);
   };
 
+  const isprazniKorpu = async () => {
+    const korisnikId = session?.user?.id;
+    if (!korisnikId) return;
+    await fetch('/api/korpa/delete-all', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ korisnikId }),
+    });
+    setStavke([]);
+    localStorage.setItem('brojUKorpi', '0');
+    window.dispatchEvent(new Event('korpaChanged'));
+    resetKorpa(); // Dodaj ovo!
+  };
+
   const potvrdiPorudzbinu = async () => {
     try {
       const response = await fetch('/api/porudzbine', {
@@ -65,12 +81,13 @@ export default function KorpaPage() {
         body: JSON.stringify({
           korisnikId: session?.user?.id,
           ukupno: stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0),
-          status: 'Na čekanju', // ili drugi status
-          email: session?.user?.email, // ako treba
-          idPlacanja: crypto.randomUUID(), // generiši jedinstven ID
+          status: 'Na čekanju',
+          email: session?.user?.email,
+          idPlacanja: crypto.randomUUID(),
         }),
       });
       if (response.ok) {
+        await isprazniKorpu();
         alert('Porudžbina uspešno poslata!');
       } else {
         alert('Greška pri slanju porudžbine.');
@@ -80,9 +97,9 @@ export default function KorpaPage() {
     }
   };
 
-  const handleZavrsiKupovinu = () => {
-    potvrdiPorudzbinu(); // prvo unesi stavke u Porudžbine
-    router.push('/placanje'); // zatim preusmjeri na Placanje
+  const handleZavrsiKupovinu = async () => {
+    await potvrdiPorudzbinu();
+    router.push('/porudzbine');
   };
 
     if (loading) return <div className="p-4">{t('loading')}</div>;
