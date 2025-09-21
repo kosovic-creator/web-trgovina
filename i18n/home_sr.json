@@ -5,5 +5,25 @@
   "admin_panel": "Admin Panel",
   "users": "Korisnici",
   "products": "Proizvodi",
-  "orders": "Porudžbine"
+  "orders": "Porudžbine",
+  "add_new_user": "Dodaj novog korisnika",
+  "add_new_product": "Dodaj novi proizvod",
+  "view_all_users": "Pogledaj sve korisnike",
+  "view_all_products": "Pogledaj sve proizvode",
+  "view_all_orders": "Pogledaj sve porudžbine",
+  "recent_orders": "Nedavne porudžbine",
+  "no_recent_orders": "Nema nedavnih porudžbina",
+  "order_id": "ID porudžbine",
+  "customer_name": "Ime kupca",
+  "total_amount": "Ukupan iznos",
+  "status": "Status",
+  "date": "Datum",
+  "view_details": "Pogledaj detalje",
+  "logout": "Izloguj se",
+  "user_list": "Lista korisnika",
+  "product_list": "Lista proizvoda",
+  "order_list": "Lista porudžbina",
+  "edit": "Izmeni",
+  "delete": "Obriši"
+
 }
