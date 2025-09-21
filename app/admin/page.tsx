@@ -68,7 +68,7 @@ export default function AdminHome() {
       });
   }, []);
 
- 
+
 
   const handleProizvodSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -251,185 +251,292 @@ export default function AdminHome() {
   };
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">{t('admin_panel')}</h1>
+    <div className="p-8 bg-gray-50 min-h-screen">
+      <h1 className="text-3xl font-bold mb-8 text-violet-700">{t('admin_panel')}</h1>
       <div className="flex gap-4 mb-8">
-        <button onClick={() => setTab('korisnici')} className={`px-4 py-2 rounded ${tab === 'korisnici' ? 'bg-violet-600 text-white' : 'bg-gray-200 text-gray-700'}`}>{t('users')}</button>
-        <button onClick={() => setTab('proizvodi')} className={`px-4 py-2 rounded ${tab === 'proizvodi' ? 'bg-violet-600 text-white' : 'bg-gray-200 text-gray-700'}`}>{t('products')}</button>
-        <button onClick={() => setTab('porudzbine')} className={`px-4 py-2 rounded ${tab === 'porudzbine' ? 'bg-violet-600 text-white' : 'bg-gray-200 text-gray-700'}`}>{t('orders')}</button>
+        <button
+          onClick={() => setTab('korisnici')}
+          className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 shadow-sm ${tab === 'korisnici'
+            ? 'bg-violet-600 text-white'
+            : 'bg-white text-violet-700 border border-violet-200 hover:bg-violet-50'
+            }`}
+        >
+          {t('users')}
+        </button>
+        <button
+          onClick={() => setTab('proizvodi')}
+          className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 shadow-sm ${tab === 'proizvodi'
+            ? 'bg-violet-600 text-white'
+            : 'bg-white text-violet-700 border border-violet-200 hover:bg-violet-50'
+            }`}
+        >
+          {t('products')}
+        </button>
+        <button
+          onClick={() => setTab('porudzbine')}
+          className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 shadow-sm ${tab === 'porudzbine'
+            ? 'bg-violet-600 text-white'
+            : 'bg-white text-violet-700 border border-violet-200 hover:bg-violet-50'
+            }`}
+        >
+          {t('orders')}
+        </button>
       </div>
       {tab === 'korisnici' && (
         <div>
-          <div className="bg-white rounded shadow p-6 mb-8">
-            <h2 className="font-semibold mb-4">{t('add_new_user')}</h2>
-            <form onSubmit={editKorisnikId ? handleKorisnikUpdate : handleKorisnikSubmit}>
-              <input type="text" placeholder={t('name')} className="border p-2 rounded flex-1 min-w-[180px]" required value={korisnikForm.ime} onChange={e => setKorisnikForm(f => ({ ...f, ime: e.target.value }))} />
-              <input type="email" placeholder={t('email')} className="border p-2 rounded flex-1 min-w-[180px]" required value={korisnikForm.email} onChange={e => setKorisnikForm(f => ({ ...f, email: e.target.value }))} />
-              <input type="lozinka" placeholder={t('lozinka')} className="border p-2 rounded flex-1 min-w-[180px]" required value={korisnikForm.lozinka} onChange={e => setKorisnikForm(f => ({ ...f, lozinka: e.target.value }))} />
-              <select className="border p-2 rounded flex-1 min-w-[180px]" value={korisnikForm.uloga} onChange={e => setKorisnikForm(f => ({ ...f, uloga: e.target.value }))}>
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('add_new_user')}</h2>
+            <form
+              onSubmit={editKorisnikId ? handleKorisnikUpdate : handleKorisnikSubmit}
+              className="flex flex-wrap gap-4 items-center"
+            >
+              <input
+                type="text"
+                placeholder={t('name')}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                required
+                value={korisnikForm.ime}
+                onChange={e => setKorisnikForm(f => ({ ...f, ime: e.target.value }))}
+              />
+              <input
+                type="email"
+                placeholder={t('email')}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                required
+                value={korisnikForm.email}
+                onChange={e => setKorisnikForm(f => ({ ...f, email: e.target.value }))}
+              />
+              <input
+                type="lozinka"
+                placeholder={t('lozinka')}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                required
+                value={korisnikForm.lozinka}
+                onChange={e => setKorisnikForm(f => ({ ...f, lozinka: e.target.value }))}
+              />
+              <select
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                value={korisnikForm.uloga}
+                onChange={e => setKorisnikForm(f => ({ ...f, uloga: e.target.value }))}
+              >
                 <option value="korisnik">{t('user')}</option>
                 <option value="admin">{t('admin')}</option>
               </select>
-              <button type="submit">
-                {editKorisnikId ? 'Sačuvaj izmene' : 'Dodaj'}
+              <button
+                type="submit"
+                className="bg-violet-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-violet-700 transition"
+              >
+                {editKorisnikId ? t('save_changes') : t('add')}
               </button>
             </form>
           </div>
-          <div className="bg-white rounded shadow p-6">
-            <h2 className="font-semibold mb-4">{t('user_list')}</h2>
-            <table className="w-full border">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="p-2">{t('image')}</th>
-                  <th className="p-2">{t('name')}</th>
-                  <th className="p-2">{t('email')}</th>
-                  <th className="p-2">{t('role')}</th>
-                  <th className="p-2">{t('created')}</th>
-                  <th className="p-2">{t('actions')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {korisnici.map((k) => (
-                  <tr key={k.id}>
-                    <td className="p-2"><span className="inline-block w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-400"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M6 20c0-2.2 3.6-4 6-4s6 1.8 6 4" /></svg></span></td>
-                    <td className="p-2">{k.ime}</td>
-                    <td className="p-2">{k.email}</td>
-                    <td className="p-2"><span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs">{k.uloga}</span></td>
-                    <td className="p-2">{new Date(k.kreiran).toLocaleDateString()}</td>
-                    <td className="p-2">
-                      <button className="text-blue-600 cursor-pointer mr-4" onClick={() => handleKorisnikEdit(k)}>{t('edit')}</button>
-                      <button className="text-red-600 cursor-pointer" onClick={() => handleKorisnikDelete(k.id)}>{t('delete')}</button>
-                    </td>
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('user_list')}</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full border border-violet-100 rounded-lg">
+                <thead>
+                  <tr className="bg-violet-50">
+                    <th className="p-3">{t('image')}</th>
+                    <th className="p-3">{t('name')}</th>
+                    <th className="p-3">{t('email')}</th>
+                    <th className="p-3">{t('role')}</th>
+                    <th className="p-3">{t('created')}</th>
+                    <th className="p-3">{t('actions')}</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {korisnici.map((k) => (
+                    <tr key={k.id} className="hover:bg-violet-50 transition">
+                      <td className="p-3">
+                        <span className="inline-block w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
+                          <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M6 20c0-2.2 3.6-4 6-4s6 1.8 6 4" />
+                          </svg>
+                        </span>
+                      </td>
+                      <td className="p-3">{k.ime}</td>
+                      <td className="p-3">{k.email}</td>
+                      <td className="p-3">
+                        <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs">{k.uloga}</span>
+                      </td>
+                      <td className="p-3">{new Date(k.kreiran).toLocaleDateString()}</td>
+                      <td className="p-3 flex gap-2">
+                        <button className="text-blue-600 hover:underline" onClick={() => handleKorisnikEdit(k)}>{t('edit')}</button>
+                        <button className="text-red-600 hover:underline" onClick={() => handleKorisnikDelete(k.id)}>{t('delete')}</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
       {tab === 'proizvodi' && (
         <div>
-          <div className="bg-white rounded shadow p-6 mb-8">
-            <h2 className="font-semibold mb-4">Dodaj novi proizvod</h2>
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('add_new_product')}</h2>
             <form className="flex flex-wrap gap-4 items-center" onSubmit={editPorudzbinaId ? handleProizvodUpdate : handleProizvodSubmit}>
-              <input type="text" placeholder="Naziv proizvoda" className="border p-2 rounded flex-1 min-w-[180px]" required value={proizvodForm.naziv} onChange={e => setProizvodForm(f => ({ ...f, naziv: e.target.value }))} />
-              <input type="number" placeholder="Cena" className="border p-2 rounded flex-1 min-w-[180px]" required value={proizvodForm.cena} onChange={e => setProizvodForm(f => ({ ...f, cena: Number(e.target.value) }))} />
+              <input
+                type="text"
+                placeholder={t('product_name')}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                required
+                value={proizvodForm.naziv}
+                onChange={e => setProizvodForm(f => ({ ...f, naziv: e.target.value }))}
+              />
+              <input
+                type="number"
+                placeholder={t('price')}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                required
+                value={proizvodForm.cena}
+                onChange={e => setProizvodForm(f => ({ ...f, cena: Number(e.target.value) }))}
+              />
               <div className="flex flex-col gap-2 flex-1 min-w-[180px]">
-                <label className="text-sm">Slika proizvoda</label>
-                <input type="text" placeholder="URL slike" className="border p-2 rounded" value={proizvodForm.slika} onChange={e => setProizvodForm(f => ({ ...f, slika: e.target.value }))} />
+                <label className="text-sm text-violet-700">{t('product_image')}</label>
+                <input
+                  type="text"
+                  placeholder={t('image_url')}
+                  className="border border-violet-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400"
+                  value={proizvodForm.slika}
+                  onChange={e => setProizvodForm(f => ({ ...f, slika: e.target.value }))}
+                />
               </div>
-              <input type="text" placeholder="Opis" className="border p-2 rounded flex-1 min-w-[180px]" value={proizvodForm.opis} onChange={e => setProizvodForm(f => ({ ...f, opis: e.target.value }))} />
-              <input type="number" placeholder="Količina" className="border p-2 rounded flex-1 min-w-[180px]" required value={proizvodForm.kolicina} onChange={e => setProizvodForm(f => ({ ...f, kolicina: Number(e.target.value) }))} />
-              <button type="submit" className="bg-violet-600 text-white px-6 py-2 rounded">
-                {editPorudzbinaId ? 'Sačuvaj izmene' : 'Dodaj'}
+              <input
+                type="text"
+                placeholder={t('description')}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                value={proizvodForm.opis}
+                onChange={e => setProizvodForm(f => ({ ...f, opis: e.target.value }))}
+              />
+              <input
+                type="number"
+                placeholder={t('quantity')}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                required
+                value={proizvodForm.kolicina}
+                onChange={e => setProizvodForm(f => ({ ...f, kolicina: Number(e.target.value) }))}
+              />
+              <button
+                type="submit"
+                className="bg-violet-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-violet-700 transition"
+              >
+                {editPorudzbinaId ? t('save_changes') : t('add')}
               </button>
             </form>
           </div>
-          <div className="bg-white rounded shadow p-6">
-            <h2 className="font-semibold mb-4">Lista proizvoda</h2>
-            <table className="w-full border">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="p-2">SLIKA</th>
-                  <th className="p-2">NAZIV PROIZVODA</th>
-                  <th className="p-2">CENA</th>
-                  <th className="p-2">KREIRAN</th>
-                  <th className="p-2">AKCIJE</th>
-                </tr>
-              </thead>
-              <tbody>
-                {proizvodi.map((p) => (
-                  <tr key={p.id}>
-                    <td className="p-2">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover" /> : '-'}</td>
-                    <td className="p-2">{p.naziv}</td>
-                    <td className="p-2">{p.cena} EUR</td>
-                    <td className="p-2">{p.kreiran ? new Date(p.kreiran).toLocaleDateString() : '-'}</td>
-                    <td className="p-2">
-                      <button className="text-blue-600 cursor-pointer mr-4" onClick={() => handleProizvodEdit(p.id)}>Uredi</button>
-                      <button className="text-red-600 cursor-pointer" onClick={() => handleProizvodDelete(p.id)}>Obriši</button>
-                    </td>
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('product_list')}</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full border border-violet-100 rounded-lg">
+                <thead>
+                  <tr className="bg-violet-50">
+                    <th className="p-3">{t('image')}</th>
+                    <th className="p-3">{t('product_name')}</th>
+                    <th className="p-3">{t('price')}</th>
+                    <th className="p-3">{t('created')}</th>
+                    <th className="p-3">{t('actions')}</th>
                   </tr>
-                ))}
-
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {proizvodi.map((p) => (
+                    <tr key={p.id} className="hover:bg-violet-50 transition">
+                      <td className="p-3">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover rounded-lg" /> : '-'}</td>
+                      <td className="p-3">{p.naziv}</td>
+                      <td className="p-3">{p.cena} EUR</td>
+                      <td className="p-3">{p.kreiran ? new Date(p.kreiran).toLocaleDateString() : '-'}</td>
+                      <td className="p-3 flex gap-2">
+                        <button className="text-blue-600 hover:underline" onClick={() => handleProizvodEdit(p.id)}>{t('edit')}</button>
+                        <button className="text-red-600 hover:underline" onClick={() => handleProizvodDelete(p.id)}>{t('delete')}</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
       {tab === 'porudzbine' && (
-        <div className="bg-white rounded shadow p-6">
-          <h2 className="font-semibold mb-4">Lista porudžbina</h2>
-
-          {/* Forma za edit/unos porudžbine */}
-          <form onSubmit={editPorudzbinaId ? handlePorudzbinaUpdate : handlePorudzbinaSubmit} className="mb-6 flex gap-4 flex-wrap">
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('order_list')}</h2>
+          <form
+            onSubmit={editPorudzbinaId ? handlePorudzbinaUpdate : handlePorudzbinaSubmit}
+            className="mb-8 flex flex-wrap gap-4 items-center"
+          >
             <input
               type="text"
-              placeholder="Korisnik ID"
+              placeholder={t('user_id')}
               value={porudzbinaForm.korisnikId}
               onChange={e => setPorudzbinaForm(f => ({ ...f, korisnikId: e.target.value }))}
-              className="border p-2 rounded"
+              className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
             />
             <input
               type="number"
-              placeholder="Ukupno"
+              placeholder={t('total')}
               value={porudzbinaForm.ukupno}
               onChange={e => setPorudzbinaForm(f => ({ ...f, ukupno: Number(e.target.value) }))}
-              className="border p-2 rounded"
+              className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
             />
             <input
               type="text"
-              placeholder="Status"
+              placeholder={t('status')}
               value={porudzbinaForm.status}
               onChange={e => setPorudzbinaForm(f => ({ ...f, status: e.target.value }))}
-              className="border p-2 rounded"
+              className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
             />
             <input
               type="email"
-              placeholder="Email"
+              placeholder={t('email')}
               value={porudzbinaForm.email}
               onChange={e => setPorudzbinaForm(f => ({ ...f, email: e.target.value }))}
-              className="border p-2 rounded"
+              className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
             />
             <input
               type="text"
-              placeholder="ID plaćanja"
+              placeholder={t('payment_id')}
               value={porudzbinaForm.idPlacanja}
               onChange={e => setPorudzbinaForm(f => ({ ...f, idPlacanja: e.target.value }))}
-              className="border p-2 rounded"
+              className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
             />
-            <button type="submit" className="bg-violet-600 text-white px-6 py-2 rounded">
-              {editPorudzbinaId ? 'Sačuvaj izmene' : 'Dodaj'}
+            <button
+              type="submit"
+              className="bg-violet-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-violet-700 transition"
+            >
+              {editPorudzbinaId ? t('save_changes') : t('add')}
             </button>
           </form>
-
-          {/* Tabela porudžbina */}
-          <table className="w-full border">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="p-2">ID</th>
-                <th className="p-2">KORISNIK</th>
-                <th className="p-2">UKUPNO</th>
-                <th className="p-2">STATUS</th>
-                <th className="p-2">KREIRAN</th>
-                <th className="p-2">AKCIJE</th>
-              </tr>
-            </thead>
-            <tbody>
-              {porudzbine.map((p) => (
-                <tr key={p.id}>
-                  <td className="p-2">{p.id}</td>
-                  <td className="p-2">{p.korisnik}</td>
-                  <td className="p-2">{p.ukupno} EUR</td>
-                  <td className="p-2">{p.status}</td>
-                  <td className="p-2">{new Date(p.kreiran).toLocaleDateString()}</td>
-                  <td className="p-2">
-                    <button className="text-blue-600 cursor-pointer mr-4" onClick={() => handlePorudzbinaEdit(p)}>{t('edit')}</button>
-                    <button className="text-red-600 cursor-pointer" onClick={() => handlePorudzbinaDelete(p.id)}>{t('delete')}</button>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full border border-violet-100 rounded-lg">
+              <thead>
+                <tr className="bg-violet-50">
+                  <th className="p-3">{t('id')}</th>
+                  <th className="p-3">{t('user')}</th>
+                  <th className="p-3">{t('total')}</th>
+                  <th className="p-3">{t('status')}</th>
+                  <th className="p-3">{t('created')}</th>
+                  <th className="p-3">{t('actions')}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {porudzbine.map((p) => (
+                  <tr key={p.id} className="hover:bg-violet-50 transition">
+                    <td className="p-3">{p.id}</td>
+                    <td className="p-3">{p.korisnik}</td>
+                    <td className="p-3">{p.ukupno} EUR</td>
+                    <td className="p-3">{p.status}</td>
+                    <td className="p-3">{new Date(p.kreiran).toLocaleDateString()}</td>
+                    <td className="p-3 flex gap-2">
+                      <button className="text-blue-600 hover:underline" onClick={() => handlePorudzbinaEdit(p)}>{t('edit')}</button>
+                      <button className="text-red-600 hover:underline" onClick={() => handlePorudzbinaDelete(p.id)}>{t('delete')}</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

@@ -26,6 +26,8 @@ import sidebar_en from './sidebar_en.json';
 import sidebar_sr from './sidebar_sr.json';
 import notFound_en from './notFound_en.json';
 import notFound_sr from './notFound_sr.json';
+import placanje_en from './placanje_en.json';
+import placanje_sr from './placanje_sr.json';
 
 i18n
   .use(initReactI18next)
@@ -45,7 +47,7 @@ i18n
         home: home_en,
         sidebar: sidebar_en,
         notFound: notFound_en,
-
+        placanje: placanje_en,
       },
       sr: {
         translation: sr,
@@ -61,6 +63,7 @@ i18n
         home: home_sr,
         sidebar: sidebar_sr,
         notFound: notFound_sr,
+        placanje: placanje_sr,
       },
     },
     lng: 'sr',
