@@ -33,9 +33,9 @@ export default function Navbar({ setSidebarOpen }: { setSidebarOpen?: (open: boo
 
   return (
     <nav className="flex items-center gap-4 p-4 border-b border-gray-200">
-      {/* Hamburger Icon - uvijek vidljiva */}
-      {!!session && session.user.uloga !== 'admin' && (
+      {!isAdmin && (
         <>
+          {/* Hamburger, Home, Korpa */}
           <button
             className="p-2 focus:outline-none"
             onClick={() => setSidebarOpen?.(true)}
@@ -60,29 +60,25 @@ export default function Navbar({ setSidebarOpen }: { setSidebarOpen?: (open: boo
               </span>
             )}
           </Link>
-          {session?.user ? (
+          {/* Prikaz dugmadi ovisno o prijavi */}
+          {!session?.user ? (
             <>
-              <Link href="/profil">{t('profile')}</Link>
               <Link href="/auth/prijava">{t('login')}</Link>
-               <button onClick={() => signOut({ callbackUrl: "/auth/prijava" })}>{t('logout')}</button>
               <Link href="/auth/registracija">{t('register')}</Link>
             </>
           ) : (
-            <>
-
-            </>
+              <button onClick={() => signOut({ callbackUrl: "/auth/prijava" })}>{t('logout')}</button>
           )}
         </>
       )}
 
       {isAdmin && (
         <>
-          <Link href="/admin" className="ml-4 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">
+          {/* Admin link po potrebi */}
+          {/* <Link href="/admin" className="ml-4 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">
             Admin
-          </Link>
+          </Link> */}
           <button onClick={() => signOut({ callbackUrl: "/auth/prijava" })}>{t('logout')}</button>
-          <Link href="/auth/prijava">{t('login')}</Link>
-          <Link href="/auth/registracija">{t('register')}</Link>
         </>
       )}
       <div className="flex gap-2 ml-auto">
