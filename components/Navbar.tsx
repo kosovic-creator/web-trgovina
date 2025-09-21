@@ -6,17 +6,15 @@ import React, { useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n/config';
+import { useKorpa } from "@/components/CartContext";
 
-type Props = {
-  korisnikId: string; // UUID korisnika
-};
-
-export default function Navbar({ setSidebarOpen = () => { }, korisnikId }: { setSidebarOpen?: (open: boolean) => void, korisnikId: string }) {
+export default function Navbar({ setSidebarOpen }: { setSidebarOpen?: (open: boolean) => void }) {
   const { t } = useTranslation('navbar');
   const { data: session } = useSession();
   const [brojUKorpi, setBrojUKorpi] = useState(0);
   const [brojStavki, setBrojStavki] = useState<number>(0);
   const isAdmin = session?.user?.uloga === 'admin';
+  const { korpa } = useKorpa();
 
   useEffect(() => {
     const broj = Number(localStorage.getItem('brojUKorpi') || 0);
@@ -29,14 +27,9 @@ export default function Navbar({ setSidebarOpen = () => { }, korisnikId }: { set
     return () => window.removeEventListener('korpaChanged', handler);
   }, []);
 
-  useEffect(() => {
-    async function fetchBrojStavki() {
-      const res = await fetch(`/api/korpa/broj-stavki?korisnikId=${korisnikId}`);
-      const data = await res.json();
-      setBrojStavki(data.broj);
-    }
-    if (korisnikId) fetchBrojStavki();
-  }, [korisnikId]);
+  const korisnikId = session?.user?.id;
+
+  
 
   return (
     <nav className="flex items-center gap-4 p-4 border-b border-gray-200">
@@ -45,7 +38,7 @@ export default function Navbar({ setSidebarOpen = () => { }, korisnikId }: { set
         <>
           <button
             className="p-2 focus:outline-none"
-            onClick={() => setSidebarOpen(true)}
+            onClick={() => setSidebarOpen?.(true)}
             aria-label="Open sidebar"
           >
             <svg
@@ -61,9 +54,9 @@ export default function Navbar({ setSidebarOpen = () => { }, korisnikId }: { set
           <Link href="/">{t('home')}</Link>
           <Link href="/korpa" className="relative flex items-center ml-4">
             <FaShoppingCart size={24} />
-            {brojStavki > 0 && (
+            {korpa.itemCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
-                {brojStavki}
+                {korpa.itemCount}
               </span>
             )}
           </Link>
@@ -117,7 +110,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider session={session}>
       <div>
-        <Navbar setSidebarOpen={setSidebarOpen} korisnikId={korisnikId} />
+        <Navbar setSidebarOpen={setSidebarOpen} />
         {/* ...ostali kod... */}
         {children}
       </div>

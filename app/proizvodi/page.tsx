@@ -5,6 +5,7 @@ import { Proizvod } from '@/types';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import '@/i18n/config';
+import { useKorpa } from "@/components/CartContext";
 
 export default function ProizvodiPage() {
   const { t } = useTranslation('proizvodi');
@@ -13,6 +14,7 @@ export default function ProizvodiPage() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
+  const { addTokorpa, refreshkorpa } = useKorpa();
 
   useEffect(() => {
     fetch(`/api/proizvodi?page=${page}&pageSize=${pageSize}`)
@@ -42,6 +44,11 @@ export default function ProizvodiPage() {
     window.dispatchEvent(new Event('korpaChanged'));
   };
 
+  const handleAdd = async (productId: string) => {
+    await addTokorpa(productId);
+    await refreshkorpa(); // Ovo osvežava podatke u Context-u
+  };
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">{t('title')}</h1>
@@ -57,6 +64,9 @@ export default function ProizvodiPage() {
               <div className="mt-2 font-bold">{p.cena} €</div>
               <div className="text-xs text-gray-400 mt-1">{t('kolicina')}: {p.kolicina}</div>
               <button className="btn mt-2" onClick={() => handleDodajUKorpu(p)}>{t('add_to_cart')}</button>
+              {/* <button onClick={() => handleAdd(p.id)}>
+               {t('add_to_cart')}
+              </button> */}
             </div>
           ))
         )}
