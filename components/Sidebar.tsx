@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { FaHome, FaBoxOpen, FaClipboardList, FaUser } from 'react-icons/fa';
+import { useSession } from 'next-auth/react';
 
 import '@/i18n/config';
 
@@ -14,6 +15,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
   const { t, i18n } = useTranslation('sidebar');
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   useEffect(() => {
     if (open) {
@@ -32,14 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
       </div>
       <nav className="p-4 flex-1 overflow-y-auto">
         <ul className="space-y-2">
-          <li>
-            <Link
-              href="/"
-              className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition ${pathname === '/' ? 'bg-violet-100 font-bold' : ''}`}
-            >
-              <FaHome className="text-violet-600" /> {t('home')}
-            </Link>
-          </li>
+         
           <li>
             <Link
               href="/proizvodi"
@@ -48,22 +43,28 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
               <FaBoxOpen className="text-violet-600" /> {t('products')}
             </Link>
           </li>
-          <li>
-            <Link
-              href="/porudzbine"
-              className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition ${pathname === '/porudzbine' ? 'bg-violet-100 font-bold' : ''}`}
-            >
-              <FaClipboardList className="text-violet-600" /> {t('orders')}
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/profil"
-              className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition ${pathname === '/profil' ? 'bg-violet-100 font-bold' : ''}`}
-            >
-              <FaUser className="text-violet-600" /> {t('profile')}
-            </Link>
-          </li>
+          {/* Porudzbine */}
+          {session?.user && (
+            <li>
+              <Link
+                href="/porudzbine"
+                className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition ${pathname === '/porudzbine' ? 'bg-violet-100 font-bold' : ''}`}
+              >
+                <FaClipboardList className="text-violet-600" /> {t('orders')}
+              </Link>
+            </li>
+          )}
+          {/* Profil */}
+          {session?.user && (
+            <li>
+              <Link
+                href="/profil"
+                className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition ${pathname === '/profil' ? 'bg-violet-100 font-bold' : ''}`}
+              >
+                <FaUser className="text-violet-600" /> {t('profile')}
+              </Link>
+            </li>
+          )}
           {/* <li>
             <button className="flex items-center gap-2 py-2 px-4 rounded text-red-600 hover:bg-violet-50 transition w-full cursor-pointer">
               <FaSignOutAlt /> {t('logout')}

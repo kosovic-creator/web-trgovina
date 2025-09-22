@@ -53,15 +53,17 @@ export default function Navbar({ setSidebarOpen }: { setSidebarOpen?: (open: boo
             <span>{t('home')}</span>
           </Link>
           {/* Korpa */}
-          <Link href="/korpa" className="relative flex items-center gap-2 px-3 py-2 rounded hover:bg-violet-50 transition">
-            <FaShoppingCart className="text-violet-600" size={20} />
-            <span>{t('cart') || ''}</span>
-            {brojStavki > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full px-2 text-xs">
-                {brojStavki}
-              </span>
-            )}
-          </Link>
+          {session?.user && (
+            <Link href="/korpa" className="relative flex items-center gap-2 px-3 py-2 rounded hover:bg-violet-50 transition">
+              <FaShoppingCart className="text-violet-600" size={20} />
+              <span>{t('cart') || ''}</span>
+              {brojStavki > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full px-2 text-xs">
+                  {brojStavki}
+                </span>
+              )}
+            </Link>
+          )}
           {/* Prijava/Registracija ili Odjava */}
           {!session?.user ? (
             <>
