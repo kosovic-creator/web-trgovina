@@ -205,10 +205,10 @@ export default function KorpaPage() {
             PayPal
           </button>
           <div className="mt-4">
-            <StripeButton />
-             <button className="w-full bg-green-600 text-white py-2 rounded font-bold" onClick={handleZavrsiKupovinu}>
-            Završi kupovinu
-          </button>
+            <StripeButton amount={stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0)} />
+            <button className="w-full bg-green-600 text-white py-2 rounded font-bold" onClick={handleZavrsiKupovinu}>
+              Završi kupovinu
+            </button>
           </div>
         </div>
 
