@@ -13,6 +13,7 @@ export default function AdminProizvodiPage() {
   const [pageSize] = useState(10);
   const [form, setForm] = useState({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
   const [editId, setEditId] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
     fetch(`/api/proizvodi?page=${page}&pageSize=${pageSize}`)
@@ -38,10 +39,16 @@ export default function AdminProizvodiPage() {
       }
       setEditId(null);
     } else {
+      const formData = new FormData();
+      formData.append('naziv', form.naziv);
+      formData.append('cena', String(form.cena));
+      formData.append('opis', form.opis);
+      formData.append('kolicina', String(form.kolicina));
+      if (file) formData.append('slika', file);
+
       res = await fetch('/api/proizvodi', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        body: formData,
       });
       if (!res.ok) {
         const err = await res.json();
@@ -49,6 +56,7 @@ export default function AdminProizvodiPage() {
       }
     }
     setForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
+    setFile(null);
     fetch(`/api/proizvodi?page=${page}&pageSize=${pageSize}`)
       .then(res => res.json())
       .then(data => {
@@ -87,10 +95,11 @@ export default function AdminProizvodiPage() {
         <input type="text" placeholder={t('naziv')} value={form.naziv} onChange={e => setForm(f => ({ ...f, naziv: e.target.value }))} required className="border p-2 rounded" />
         <input type="number" placeholder={t('cena')} value={form.cena} onChange={e => setForm(f => ({ ...f, cena: Number(e.target.value) }))} required className="border p-2 rounded" />
         <input type="text" placeholder={t('slika')} value={form.slika} onChange={e => setForm(f => ({ ...f, slika: e.target.value }))} className="border p-2 rounded" />
+        <input type="file" accept="image/*" onChange={e => setFile(e.target.files?.[0] || null)} className="border p-2 rounded" />
         <input type="text" placeholder={t('opis')} value={form.opis} onChange={e => setForm(f => ({ ...f, opis: e.target.value }))} className="border p-2 rounded" />
         <input type="number" placeholder={t('kolicina')} value={form.kolicina} onChange={e => setForm(f => ({ ...f, kolicina: Number(e.target.value) }))} required className="border p-2 rounded" />
         <button type="submit" className="btn">{editId ? t('spremi') : t('dodaj')}</button>
-        {editId && <button type="button" onClick={() => { setEditId(null); setForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 }); }} className="btn">{t('odustani')}</button>}
+        {editId && <button type="button" onClick={() => { setEditId(null); setForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 }); setFile(null); }} className="btn">{t('odustani')}</button>}
       </form>
       <table className="w-full border mb-4">
         <thead>

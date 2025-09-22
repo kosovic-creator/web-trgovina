@@ -45,6 +45,7 @@ export default function AdminHome() {
   const [korisnici, setKorisnici] = useState<Korisnik[]>([]);
   const [korisnikForm, setKorisnikForm] = useState({ ime: '', email: '', uloga: 'korisnik', lozinka: '' });
   const [editKorisnikId, setEditKorisnikId] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
     fetch('/api/korisnici?page=1&pageSize=10')
@@ -72,13 +73,38 @@ export default function AdminHome() {
 
   const handleProizvodSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    let slikaUrl = '';
+    if (file) {
+      const formDataSlika = new FormData();
+      formDataSlika.append('slika', file);
+      formDataSlika.append('id', proizvodForm.naziv); // ili drugi jedinstveni id
+
+      const resSlika = await fetch('/api/proizvodi/slika', {
+        method: 'POST',
+        body: formDataSlika,
+      });
+      const dataSlika = await resSlika.json();
+      slikaUrl = dataSlika.slika || '';
+    }
+
+    const formData = {
+      naziv: proizvodForm.naziv,
+      cena: proizvodForm.cena,
+      opis: proizvodForm.opis,
+      kolicina: proizvodForm.kolicina,
+      slika: slikaUrl,
+    };
+
     await fetch('/api/proizvodi', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(proizvodForm)
+      body: JSON.stringify(formData),
     });
+
     setProizvodForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
-    // Ponovno učitavanje proizvoda
+    setFile(null);
+
     fetch('/api/proizvodi?page=1&pageSize=10')
       .then(res => res.json())
       .then(data => {
@@ -106,14 +132,40 @@ export default function AdminHome() {
   const handleProizvodUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!editPorudzbinaId) return;
+
+    let slikaUrl = proizvodForm.slika || '';
+    if (file) {
+      const formDataSlika = new FormData();
+      formDataSlika.append('slika', file);
+      formDataSlika.append('id', proizvodForm.naziv); // ili drugi jedinstveni id
+
+      const resSlika = await fetch('/api/proizvodi/slika', {
+        method: 'PUT',
+        body: formDataSlika,
+      });
+      const dataSlika = await resSlika.json();
+      slikaUrl = dataSlika.slika || '';
+    }
+
+    const formData = {
+      id: editPorudzbinaId,
+      naziv: proizvodForm.naziv,
+      cena: proizvodForm.cena,
+      opis: proizvodForm.opis,
+      kolicina: proizvodForm.kolicina,
+      slika: slikaUrl,
+    };
+
     await fetch('/api/proizvodi', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: editPorudzbinaId, ...proizvodForm }),
+      body: JSON.stringify(formData),
     });
+
     setProizvodForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
+    setFile(null);
     setEditPorudzbinaId(null);
-    // Ponovo učitaj proizvode
+
     fetch('/api/proizvodi?page=1&pageSize=10')
       .then(res => res.json())
       .then(data => setProizvodi(data.proizvodi || []));
@@ -333,21 +385,21 @@ export default function AdminHome() {
           <div className="bg-white rounded-xl shadow-lg p-8">
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('user_list')}</h2>
             <div className="overflow-x-auto">
-              <table className="w-full border border-violet-100 rounded-lg">
+              <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">
                 <thead>
-                  <tr className="bg-violet-50">
-                    <th className="p-3">{t('image')}</th>
-                    <th className="p-3">{t('name')}</th>
-                    <th className="p-3">{t('email')}</th>
-                    <th className="p-3">{t('role')}</th>
-                    <th className="p-3">{t('created')}</th>
-                    <th className="p-3">{t('actions')}</th>
+                  <tr className="bg-violet-100 text-violet-700">
+                    <th className="px-8 py-3 text-left align-middle">{t('image')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('name')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('email')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('role')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('created')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('actions')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {korisnici.map((k) => (
                     <tr key={k.id} className="hover:bg-violet-50 transition">
-                      <td className="p-3">
+                      <td className="px-8 py-3 text-left align-middle">
                         <span className="inline-block w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
                           <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="12" cy="8" r="4" />
@@ -355,13 +407,13 @@ export default function AdminHome() {
                           </svg>
                         </span>
                       </td>
-                      <td className="p-3">{k.ime}</td>
-                      <td className="p-3">{k.email}</td>
-                      <td className="p-3">
+                      <td className="px-8 py-3 text-left align-middle">{k.ime}</td>
+                      <td className="px-8 py-3 text-left align-middle">{k.email}</td>
+                      <td className="px-8 py-3 text-left align-middle">
                         <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs">{k.uloga}</span>
                       </td>
-                      <td className="p-3">{new Date(k.kreiran).toLocaleDateString()}</td>
-                      <td className="p-3 flex gap-2">
+                      <td className="px-8 py-3 text-left align-middle">{new Date(k.kreiran).toLocaleDateString()}</td>
+                      <td className="px-8 py-3 text-left align-middle flex gap-2">
                         <button className="text-blue-600 hover:underline" onClick={() => handleKorisnikEdit(k)}>{t('edit')}</button>
                         <button className="text-red-600 hover:underline" onClick={() => handleKorisnikDelete(k.id)}>{t('delete')}</button>
                       </td>
@@ -377,11 +429,11 @@ export default function AdminHome() {
         <div>
           <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('add_new_product')}</h2>
-            <form className="flex flex-wrap gap-4 items-center" onSubmit={editPorudzbinaId ? handleProizvodUpdate : handleProizvodSubmit}>
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start" onSubmit={editPorudzbinaId ? handleProizvodUpdate : handleProizvodSubmit}>
               <input
                 type="text"
                 placeholder={t('product_name')}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 required
                 value={proizvodForm.naziv}
                 onChange={e => setProizvodForm(f => ({ ...f, naziv: e.target.value }))}
@@ -389,65 +441,66 @@ export default function AdminHome() {
               <input
                 type="number"
                 placeholder={t('price')}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 required
                 value={proizvodForm.cena}
                 onChange={e => setProizvodForm(f => ({ ...f, cena: Number(e.target.value) }))}
               />
-              <div className="flex flex-col gap-2 flex-1 min-w-[180px]">
+              <div className="flex flex-col gap-2 w-full">
                 <label className="text-sm text-violet-700">{t('product_image')}</label>
                 <input
-                  type="text"
-                  placeholder={t('image_url')}
-                  className="border border-violet-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400"
-                  value={proizvodForm.slika}
-                  onChange={e => setProizvodForm(f => ({ ...f, slika: e.target.value }))}
+                  type="file"
+                  accept="image/*"
+                  onChange={e => setFile(e.target.files?.[0] || null)}
+                  className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 />
               </div>
               <input
                 type="text"
                 placeholder={t('description')}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 value={proizvodForm.opis}
                 onChange={e => setProizvodForm(f => ({ ...f, opis: e.target.value }))}
               />
               <input
                 type="number"
                 placeholder={t('quantity')}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 required
                 value={proizvodForm.kolicina}
                 onChange={e => setProizvodForm(f => ({ ...f, kolicina: Number(e.target.value) }))}
               />
-              <button
-                type="submit"
-                className="bg-violet-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-violet-700 transition"
-              >
-                {editPorudzbinaId ? t('save_changes') : t('add')}
-              </button>
+              <div className="col-span-1 md:col-span-2 flex gap-2">
+                <button
+                  type="submit"
+                  className="bg-violet-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-violet-700 transition w-full md:w-auto"
+                >
+                  {editPorudzbinaId ? t('save_changes') : t('add')}
+                </button>
+              </div>
             </form>
           </div>
           <div className="bg-white rounded-xl shadow-lg p-8">
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('product_list')}</h2>
             <div className="overflow-x-auto">
-              <table className="w-full border border-violet-100 rounded-lg">
+              <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">
                 <thead>
-                  <tr className="bg-violet-50">
-                    <th className="p-3">{t('image')}</th>
-                    <th className="p-3">{t('product_name')}</th>
-                    <th className="p-3">{t('price')}</th>
-                    <th className="p-3">{t('created')}</th>
-                    <th className="p-3">{t('actions')}</th>
+                  <tr className="bg-violet-100 text-violet-700">
+                    <th className="px-8 py-3 text-left align-middle">{t('image')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('product_name')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('price')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('created')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('actions')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {proizvodi.map((p) => (
                     <tr key={p.id} className="hover:bg-violet-50 transition">
-                      <td className="p-3">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover rounded-lg" /> : '-'}</td>
-                      <td className="p-3">{p.naziv}</td>
-                      <td className="p-3">{p.cena} EUR</td>
-                      <td className="p-3">{p.kreiran ? new Date(p.kreiran).toLocaleDateString() : '-'}</td>
-                      <td className="p-3 flex gap-2">
+                      <td className="px-8 py-3 text-left align-middle">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover rounded-lg" /> : '-'}</td>
+                      <td className="px-8 py-3 text-left align-middle">{p.naziv}</td>
+                      <td className="px-8 py-3 text-left align-middle">{p.cena} EUR</td>
+                      <td className="px-8 py-3 text-left align-middle">{p.kreiran ? new Date(p.kreiran).toLocaleDateString() : '-'}</td>
+                      <td className="px-8 py-3 text-left align-middle flex gap-2">
                         <button className="text-blue-600 hover:underline" onClick={() => handleProizvodEdit(p.id)}>{t('edit')}</button>
                         <button className="text-red-600 hover:underline" onClick={() => handleProizvodDelete(p.id)}>{t('delete')}</button>
                       </td>
@@ -509,26 +562,26 @@ export default function AdminHome() {
             </button>
           </form>
           <div className="overflow-x-auto">
-            <table className="w-full border border-violet-100 rounded-lg">
+            <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">
               <thead>
-                <tr className="bg-violet-50">
-                  <th className="p-3">{t('id')}</th>
-                  <th className="p-3">{t('user')}</th>
-                  <th className="p-3">{t('total')}</th>
-                  <th className="p-3">{t('status')}</th>
-                  <th className="p-3">{t('created')}</th>
-                  <th className="p-3">{t('actions')}</th>
+                <tr className="bg-violet-100 text-violet-700">
+                  <th className="px-8 py-3 text-left align-middle">{t('id')}</th>
+                  <th className="px-8 py-3 text-left align-middle">{t('user')}</th>
+                  <th className="px-8 py-3 text-left align-middle">{t('total')}</th>
+                  <th className="px-8 py-3 text-left align-middle">{t('status')}</th>
+                  <th className="px-8 py-3 text-left align-middle">{t('created')}</th>
+                  <th className="px-8 py-3 text-left align-middle">{t('actions')}</th>
                 </tr>
               </thead>
               <tbody>
                 {porudzbine.map((p) => (
                   <tr key={p.id} className="hover:bg-violet-50 transition">
-                    <td className="p-3">{p.id}</td>
-                    <td className="p-3">{p.korisnik}</td>
-                    <td className="p-3">{p.ukupno} EUR</td>
-                    <td className="p-3">{p.status}</td>
-                    <td className="p-3">{new Date(p.kreiran).toLocaleDateString()}</td>
-                    <td className="p-3 flex gap-2">
+                    <td className="px-8 py-3 text-left align-middle">{p.id}</td>
+                    <td className="px-8 py-3 text-left align-middle">{p.korisnik}</td>
+                    <td className="px-8 py-3 text-left align-middle">{p.ukupno} EUR</td>
+                    <td className="px-8 py-3 text-left align-middle">{p.status}</td>
+                    <td className="px-8 py-3 text-left align-middle">{new Date(p.kreiran).toLocaleDateString()}</td>
+                    <td className="px-8 py-3 text-left align-middle flex gap-2">
                       <button className="text-blue-600 hover:underline" onClick={() => handlePorudzbinaEdit(p)}>{t('edit')}</button>
                       <button className="text-red-600 hover:underline" onClick={() => handlePorudzbinaDelete(p.id)}>{t('delete')}</button>
                     </td>
