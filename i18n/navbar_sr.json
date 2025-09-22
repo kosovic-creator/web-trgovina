@@ -4,5 +4,6 @@
   "login": "Prijava",
   "logout": "Odjava",
   "register": "Registracija",
-  "admin": "Admin"
+  "admin": "Admin",
+  "cart": "Korpa"
 }

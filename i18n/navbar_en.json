@@ -4,5 +4,6 @@
   "login": "Login",
   "logout": "Logout",
   "register": "Register",
-  "admin": "Admin"
+  "admin": "Admin",
+  "cart": "Cart"
 }
