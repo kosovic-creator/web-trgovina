@@ -10,9 +10,12 @@ export default function ProfilPage() {
   const { data: session } = useSession();
   if (!session?.user) {
     return (
-      <div className="flex items-center gap-2 text-red-600 mt-8">
-        <FaUser />
-        <span>{t('must_login') }</span>
+      <div className="flex flex-col items-center gap-2 text-red-600 mt-8">
+        <div className="flex items-center gap-2">
+          <FaUser />
+          <span>{t('must_login')}</span>
+        </div>
+        <a href="/auth/prijava" className="text-blue-600 underline mt-2">Prijavi se</a>
       </div>
     );
   }
