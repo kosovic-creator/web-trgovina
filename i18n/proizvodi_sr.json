@@ -8,5 +8,9 @@
   "sljedeca": "Sljedeća",
   "empty": "Nema pronađenih proizvoda.",
   "naziv": "Naziv",
-  "search_placeholder": "Pretraži proizvode..."
+  "search_placeholder": "Pretraži proizvode...",
+  "details": "Detalji",
+  "price": "Cijena",
+  "close": "Zatvori",
+  "new_product": "Novi Proizvod"
 }

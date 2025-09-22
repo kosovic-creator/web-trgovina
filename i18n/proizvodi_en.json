@@ -8,5 +8,9 @@
   "sljedeca": "Next",
   "empty": "No products found.",
   "naziv": "Name",
-  "search_placeholder": "Search products..."
+  "search_placeholder": "Search products...",
+  "details": "Details",
+  "price": "Price",
+  "close": "Close",
+  "new_product": "New Product"
 }

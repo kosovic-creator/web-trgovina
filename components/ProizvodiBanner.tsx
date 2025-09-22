@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
+import '@/i18n/config';
 
 interface Proizvod {
   id: string;
@@ -9,6 +11,7 @@ interface Proizvod {
 }
 
 export default function ProizvodiBanner() {
+    const { t } = useTranslation('proizvodi');
   const [proizvodi, setProizvodi] = useState<Proizvod[]>([]);
   const [current, setCurrent] = useState(0);
 
@@ -40,8 +43,8 @@ export default function ProizvodiBanner() {
                   <Image src={p.slika} alt={p.naziv} width={100} height={100} className="rounded-xl object-cover shadow-lg border-2 border-white/30 z-10" />
         )}
               <div className="flex-1 z-10">
-                  <h2 className="text-2xl font-extrabold mb-1 drop-shadow-lg tracking-wide">{p.naziv}</h2>
-                  <div className="text-xl font-bold mb-1 drop-shadow-lg">{p.cena} €</div>
+                  <h2 className="text-2xl font-extrabold mb-1 drop-shadow-lg tracking-wide">{t('new_product')}: {p.naziv}</h2>
+                  <div className="text-xl font-bold mb-1 drop-shadow-lg">{t('price', { price: p.cena })}</div>
         </div>
               {/* Dekorativni krug desno */}
               <div className="absolute -right-10 -bottom-10 w-24 h-24 bg-violet-600 opacity-20 rounded-full blur-2xl z-0"></div>
