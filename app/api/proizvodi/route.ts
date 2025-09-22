@@ -4,7 +4,8 @@ import prisma from '@/lib/prisma';
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const page = Number(searchParams.get('page')) || 1;
-  const pageSize = Number(searchParams.get('pageSize')) || 10;
+  let pageSize = Number(searchParams.get('pageSize')) || 10;
+  pageSize = Math.max(pageSize, 10);
   const skip = (page - 1) * pageSize;
   const [proizvodi, total] = await Promise.all([
     prisma.proizvod.findMany({

@@ -7,5 +7,6 @@
   "prethodna": "Prethodna",
   "sljedeca": "Sljedeća",
   "empty": "Nema pronađenih proizvoda.",
-  "naziv": "Naziv"
+  "naziv": "Naziv",
+  "search_placeholder": "Pretraži proizvode..."
 }

@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useSession } from "next-auth/react";
 import AdminHome from './admin/page';
 import { FaHome, FaUserShield } from "react-icons/fa";
+import ProizvodiList from '@/components/ProizvodiList';
+import ProizvodiBanner from '@/components/ProizvodiBanner';
 
 export default function Home() {
   const { t } = useTranslation('home');
@@ -26,6 +28,10 @@ export default function Home() {
                 ? t('welcome_user', { ime: session.user.ime })
                 : t('welcome')}
             </h1>
+            {/* Banner koji se pomjera sa novim proizvodima */}
+            {!session?.user && <ProizvodiBanner />}
+            {/* Prikaz svih proizvoda za goste */}
+            {!session?.user && <ProizvodiList />}
           {/* Dodaj svoj sadržaj ovdje */}
         </div>
       )}

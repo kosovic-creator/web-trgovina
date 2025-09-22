@@ -161,11 +161,13 @@ export default function AdminProizvodiPage() {
           ))}
         </tbody>
       </table>
-      <div className="flex justify-center items-center gap-2">
-        <button className="btn" disabled={page === 1} onClick={() => setPage(p => p - 1)}>{t('prethodna')}</button>
-        <span>{t('stranica')} {page}</span>
-        <button className="btn" disabled={page * pageSize >= total} onClick={() => setPage(p => p + 1)}>{t('sljedeca')}</button>
-      </div>
+      {/* Paginacija prikaz samo ako ima više od 10 stavki */}
+      {total > 10 && (
+        <div className="flex justify-center items-center gap-2">
+          <button className="btn" disabled={page === 1} onClick={() => setPage(p => p - 1)}>{t('prethodna')}</button>
+          <span>{t('stranica')} {page}</span>
+        </div>
+      )}
     </div>
   );
 }

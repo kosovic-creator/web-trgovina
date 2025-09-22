@@ -7,5 +7,6 @@
   "prethodna": "Previous",
   "sljedeca": "Next",
   "empty": "No products found.",
-  "naziv": "Name"
+  "naziv": "Name",
+  "search_placeholder": "Search products..."
 }

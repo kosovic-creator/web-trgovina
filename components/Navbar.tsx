@@ -112,10 +112,10 @@ export default function Navbar({ setSidebarOpen }: { setSidebarOpen?: (open: boo
         </button>
         <button
           onClick={() => i18n.changeLanguage('sr')}
-          aria-label="Srpski"
+          aria-label="Crnogorski"
           className="p-0 rounded focus:outline-none hover:scale-110 transition-transform"
         >
-          <span role="img" aria-label="Srpski" className="text-3xl md:text-4xl">🇷🇸</span>
+          <span role="img" aria-label="Crnogorski" className="text-3xl md:text-4xl">🇲🇪</span>
         </button>
       </div>
     </nav>

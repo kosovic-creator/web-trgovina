@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '@/i18n/config';
 import Image from 'next/image';
-import { FaBoxOpen, FaSearch, FaTimes } from "react-icons/fa";
+import { FaSearch, FaTimes } from "react-icons/fa";
 
 type Porudzbina = {
   id: string;
