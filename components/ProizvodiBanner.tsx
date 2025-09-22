@@ -33,14 +33,18 @@ export default function ProizvodiBanner() {
 
   return (
     <div className="w-full max-w-xl mx-auto mb-8">
-      <div className="flex items-center bg-gradient-to-r from-violet-600 to-pink-500 text-white rounded-xl shadow-lg p-4 gap-4 animate-slide-in">
+          <div className="flex items-center bg-gradient-to-r from-violet-700 via-violet-500 to-pink-400 text-white rounded-2xl shadow-2xl p-6 gap-6 animate-slide-in border-4 border-white/20 relative overflow-hidden">
+              {/* Dekorativni krug */}
+              <div className="absolute -left-10 -top-10 w-32 h-32 bg-pink-400 opacity-30 rounded-full blur-2xl z-0"></div>
         {p.slika && (
-          <Image src={p.slika} alt={p.naziv} width={80} height={80} className="rounded-lg object-cover" />
+                  <Image src={p.slika} alt={p.naziv} width={100} height={100} className="rounded-xl object-cover shadow-lg border-2 border-white/30 z-10" />
         )}
-        <div className="flex-1">
-          <h2 className="text-xl font-bold mb-1">{p.naziv}</h2>
-          <div className="text-lg font-semibold">{p.cena} €</div>
+              <div className="flex-1 z-10">
+                  <h2 className="text-2xl font-extrabold mb-1 drop-shadow-lg tracking-wide">{p.naziv}</h2>
+                  <div className="text-xl font-bold mb-1 drop-shadow-lg">{p.cena} €</div>
         </div>
+              {/* Dekorativni krug desno */}
+              <div className="absolute -right-10 -bottom-10 w-24 h-24 bg-violet-600 opacity-20 rounded-full blur-2xl z-0"></div>
       </div>
     </div>
   );
