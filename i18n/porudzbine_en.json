@@ -5,5 +5,6 @@
   "date": "Date",
   "prethodna": "Previous",
   "sljedeca": "Next",
-  "empty": "No orders found."
+  "empty": "No orders found.",
+  "must_login": "You must be logged in to view your orders."
 }

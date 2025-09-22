@@ -4,5 +4,6 @@
   "quantity": "Quantity",
   "price": "Price",
   "actions": "Actions",
-  "empty": "Your cart is empty."
+  "empty": "Your cart is empty.",
+  "must_login": "You must be logged in to access the cart."
 }

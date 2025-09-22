@@ -3,5 +3,8 @@
   "edit": "Edit profile",
   "save": "Save",
   "name": "Name",
-  "email": "Email"
+  "email": "Email",
+  "must_login": "You must be logged in to view this page Profile.",
+  "address": "Address",
+  "phone": "Phone number"
 }

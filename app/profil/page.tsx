@@ -12,7 +12,7 @@ export default function ProfilPage() {
     return (
       <div className="flex items-center gap-2 text-red-600 mt-8">
         <FaUser />
-        <span>{t('must_login') || "Morate se prijaviti"}</span>
+        <span>{t('must_login') }</span>
       </div>
     );
   }

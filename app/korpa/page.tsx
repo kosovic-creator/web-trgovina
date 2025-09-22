@@ -1,5 +1,6 @@
 'use client';
 import { useSession } from 'next-auth/react';
+import { FaUser } from "react-icons/fa";
 import React, { useState, useEffect } from 'react';
 import { StavkaKorpe } from '../../types';
 import { useTranslation } from 'react-i18next';
@@ -103,6 +104,14 @@ export default function KorpaPage() {
   };
 
   if (loading) return <div className="p-4">{t('loading') || "Učitavanje..."}</div>;
+  if (!session?.user) {
+    return (
+      <div className="flex items-center gap-2 text-red-600 mt-8">
+        <FaUser />
+        <span>{t('must_login')}</span>
+      </div>
+    );
+  }
   if (!stavke.length) return (
     <div className="p-4 flex flex-col items-center text-gray-500">
       <FaShoppingCart className="text-4xl mb-2 text-violet-600" />

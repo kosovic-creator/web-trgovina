@@ -4,5 +4,6 @@
   "quantity": "Količina",
   "price": "Cena",
   "actions": "Akcije",
-  "empty": "Vaša korpa je prazna."
+  "empty": "Vaša korpa je prazna.",
+  "must_login": "Morate biti prijavljeni da biste pristupili korpi."
 }

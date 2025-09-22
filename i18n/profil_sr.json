@@ -3,5 +3,8 @@
   "edit": "Uredi profil",
   "save": "Sačuvaj",
   "name": "Ime",
-  "email": "Email"
+  "email": "Email",
+  "must_login": "Morate biti prijavljeni da biste videli stranicu Profila.",
+  "address": "Adresa",
+  "phone": "Broj telefona"
 }

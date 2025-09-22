@@ -2,11 +2,13 @@
 import { useState, useEffect } from 'react';
 import { Porudzbina } from '@/types';
 import { useTranslation } from 'react-i18next';
-import { FaClipboardList } from "react-icons/fa";
+import { FaClipboardList, FaUser } from "react-icons/fa";
+import { useSession } from 'next-auth/react';
 import '@/i18n/config';
 
 export default function PorudzbinePage() {
   const { t } = useTranslation('porudzbine');
+  const { data: session } = useSession();
   const [porudzbine, setPorudzbine] = useState<Porudzbina[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -20,6 +22,15 @@ export default function PorudzbinePage() {
         setTotal(data.total);
       });
   }, [page, pageSize]);
+
+  if (!session?.user) {
+    return (
+      <div className="flex items-center gap-2 text-red-600 mt-8">
+        <FaUser />
+        <span>{t('must_login')}</span>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4">
