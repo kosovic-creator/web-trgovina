@@ -118,25 +118,25 @@ export default function KorpaPage() {
           {t('title')}
         </h1>
         <div className="bg-white rounded shadow p-4 mb-4">
-          <table className="w-full mb-2">
+          <table className="w-full mb-2 border border-violet-200 rounded-lg shadow-md text-sm">
             <thead>
               <tr className="bg-gray-100">
-                <th className="p-2">{t('product')}</th>
-                <th className="p-2">{t('quantity')}</th>
-                <th className="p-2">{t('price')}</th>
-                <th className="p-2">{t('actions')}</th>
+                <th className="px-8 py-3 text-left align-middle">{t('product')}</th>
+                <th className="px-8 py-3 text-left align-middle">{t('quantity')}</th>
+                <th className="px-8 py-3 text-left align-middle">{t('price')}</th>
+                <th className="px-8 py-3 text-left align-middle">{t('actions')}</th>
               </tr>
             </thead>
             <tbody>
               {stavke.map((s) => (
                 <tr key={s.id} className="border-b">
-                  <td className="p-2 flex items-center gap-2">
+                  <td className="px-8 py-3 text-left align-middle flex items-center gap-2">
                     {s.proizvod?.slika && (
                       <Image src={s.proizvod.slika} alt={s.proizvod.naziv || ''} width={48} height={48} className="object-contain rounded" />
                     )}
                     <span className="font-semibold">{s.proizvod?.naziv}</span>
                   </td>
-                  <td className="p-2">
+                  <td className="px-8 py-3 text-left align-middle">
                     <div className="flex items-center gap-2">
                       <button
                         className="px-2 py-1 border rounded hover:bg-gray-100"
@@ -156,8 +156,8 @@ export default function KorpaPage() {
                       </button>
                     </div>
                   </td>
-                  <td className="p-2 font-bold">{s.proizvod ? (s.proizvod.cena * s.kolicina).toFixed(2) : '0.00'} EUR</td>
-                  <td className="p-2">
+                  <td className="px-8 py-3 text-left align-middle font-bold">{s.proizvod ? (s.proizvod.cena * s.kolicina).toFixed(2) : '0.00'} EUR</td>
+                  <td className="px-8 py-3 text-left align-middle">
                     <button
                       className="text-red-600 hover:text-red-800"
                       onClick={() => handleDelete(s.id)}
@@ -204,19 +204,14 @@ export default function KorpaPage() {
             </svg>
             PayPal
           </button>
-          <button className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white py-2 rounded font-bold mb-2" onClick={() => window.location.href = '/placanje/stripe'}>
-            {/* Stripe logo SVG */}
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="32" height="32" rx="6" fill="#fff" />
-              <text x="16" y="21" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#635BFF">Stripe</text>
-            </svg>
-            Stripe
-          </button>
-          <button className="w-full bg-green-600 text-white py-2 rounded font-bold" onClick={handleZavrsiKupovinu}>
+          <div className="mt-4">
+            <StripeButton />
+             <button className="w-full bg-green-600 text-white py-2 rounded font-bold" onClick={handleZavrsiKupovinu}>
             Završi kupovinu
           </button>
+          </div>
         </div>
-        <StripeButton />
+
       </div>
     </div>
   );

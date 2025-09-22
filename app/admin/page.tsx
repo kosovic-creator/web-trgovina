@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '@/i18n/config';
 import Image from 'next/image';
+import { FaBoxOpen, FaSearch, FaTimes } from "react-icons/fa";
 
 type Porudzbina = {
   id: string;
@@ -46,6 +47,7 @@ export default function AdminHome() {
   const [korisnikForm, setKorisnikForm] = useState({ ime: '', email: '', uloga: 'korisnik', lozinka: '' });
   const [editKorisnikId, setEditKorisnikId] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     fetch('/api/korisnici?page=1&pageSize=10')
@@ -429,6 +431,29 @@ export default function AdminHome() {
         <div>
           <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('add_new_product')}</h2>
+            {/* Polje za pretragu proizvoda */}
+            <div className="mb-6 flex items-center gap-2 max-w-md">
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  placeholder={t('search_placeholder') || 'Pretraži proizvode...'}
+                  className="w-full border border-violet-300 rounded-lg p-3 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-violet-400"
+                />
+                <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-violet-400 text-lg" />
+                {search && (
+                  <button
+                    type="button"
+                    onClick={() => setSearch("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-violet-600 focus:outline-none"
+                    aria-label="Clear search"
+                  >
+                    <FaTimes className="text-lg" />
+                  </button>
+                )}
+              </div>
+            </div>
             <form className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start" onSubmit={editPorudzbinaId ? handleProizvodUpdate : handleProizvodSubmit}>
               <input
                 type="text"
@@ -480,6 +505,7 @@ export default function AdminHome() {
               </div>
             </form>
           </div>
+          {/* Filterirani prikaz proizvoda u tabeli */}
           <div className="bg-white rounded-xl shadow-lg p-8">
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('product_list')}</h2>
             <div className="overflow-x-auto">
@@ -494,18 +520,19 @@ export default function AdminHome() {
                   </tr>
                 </thead>
                 <tbody>
-                  {proizvodi.map((p) => (
-                    <tr key={p.id} className="hover:bg-violet-50 transition">
-                      <td className="px-8 py-3 text-left align-middle">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover rounded-lg" /> : '-'}</td>
-                      <td className="px-8 py-3 text-left align-middle">{p.naziv}</td>
-                      <td className="px-8 py-3 text-left align-middle">{p.cena} EUR</td>
-                      <td className="px-8 py-3 text-left align-middle">{p.kreiran ? new Date(p.kreiran).toLocaleDateString() : '-'}</td>
-                      <td className="px-8 py-3 text-left align-middle flex gap-2">
-                        <button className="text-blue-600 hover:underline" onClick={() => handleProizvodEdit(p.id)}>{t('edit')}</button>
-                        <button className="text-red-600 hover:underline" onClick={() => handleProizvodDelete(p.id)}>{t('delete')}</button>
-                      </td>
-                    </tr>
-                  ))}
+                  {proizvodi.filter(p => p.naziv.toLowerCase().includes(search?.toLowerCase() || ""))
+                    .map((p) => (
+                      <tr key={p.id} className="hover:bg-violet-50 transition">
+                        <td className="px-8 py-3 text-left align-middle">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover rounded-lg" /> : '-'}</td>
+                        <td className="px-8 py-3 text-left align-middle">{p.naziv}</td>
+                        <td className="px-8 py-3 text-left align-middle">{p.cena} EUR</td>
+                        <td className="px-8 py-3 text-left align-middle">{p.kreiran ? new Date(p.kreiran).toLocaleDateString() : '-'}</td>
+                        <td className="px-8 py-3 text-left align-middle flex gap-2">
+                          <button className="text-blue-600 hover:underline" onClick={() => handleProizvodEdit(p.id)}>{t('edit')}</button>
+                          <button className="text-red-600 hover:underline" onClick={() => handleProizvodDelete(p.id)}>{t('delete')}</button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

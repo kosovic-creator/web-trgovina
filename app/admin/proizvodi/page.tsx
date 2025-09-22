@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Proizvod } from '@/types';
 import { useTranslation } from 'react-i18next';
 import '@/i18n/config';
+import { FaCartPlus } from "react-icons/fa";
 
 export default function AdminProizvodiPage() {
   const { t } = useTranslation('proizvodi');
@@ -88,6 +89,22 @@ export default function AdminProizvodiPage() {
       });
   };
 
+  const handleDodajUKorpu = async (proizvod: Proizvod) => {
+    // Ovdje dodaj logiku za dodavanje u korpu
+    // npr. korisnikId možeš uzeti iz localStorage/session
+    const korisnikId = localStorage.getItem('korisnikId') || '';
+    if (!korisnikId) {
+      alert('Morate biti prijavljeni za dodavanje u korpu!');
+      return;
+    }
+    await fetch('/api/korpa', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ korisnikId, proizvodId: proizvod.id, kolicina: 1 })
+    });
+    // Po želji: update broja stavki u korpi
+  };
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">{t('title')}</h1>
@@ -135,6 +152,10 @@ export default function AdminProizvodiPage() {
               <td className="p-2">
                 <button className="btn mr-2" onClick={() => handleEdit(p)}>{t('uredi')}</button>
                 <button className="btn" onClick={() => handleDelete(p.id)}>{t('obrisi')}</button>
+                <button className="btn flex items-center gap-1" onClick={() => handleDodajUKorpu(p)}>
+                  <FaCartPlus />
+                  {t('dodaj_u_korpu')}
+                </button>
               </td>
             </tr>
           ))}
