@@ -102,12 +102,20 @@ export default function Navbar({ setSidebarOpen }: { setSidebarOpen?: (open: boo
         </>
       )}
       {/* Jezik */}
-      <div className="flex gap-2 ml-auto">
-        <button onClick={() => i18n.changeLanguage('en')} aria-label="English" className="p-1 rounded hover:bg-gray-100">
-          <span role="img" aria-label="English">🇬🇧</span>
+      <div className="flex gap-4 ml-auto items-center">
+        <button
+          onClick={() => i18n.changeLanguage('en')}
+          aria-label="English"
+          className="p-0 rounded focus:outline-none hover:scale-110 transition-transform"
+        >
+          <span role="img" aria-label="English" className="text-3xl md:text-4xl">🇬🇧</span>
         </button>
-        <button onClick={() => i18n.changeLanguage('sr')} aria-label="Srpski" className="p-1 rounded hover:bg-gray-100">
-          <span role="img" aria-label="Srpski">🇷🇸</span>
+        <button
+          onClick={() => i18n.changeLanguage('sr')}
+          aria-label="Srpski"
+          className="p-0 rounded focus:outline-none hover:scale-110 transition-transform"
+        >
+          <span role="img" aria-label="Srpski" className="text-3xl md:text-4xl">🇷🇸</span>
         </button>
       </div>
     </nav>
