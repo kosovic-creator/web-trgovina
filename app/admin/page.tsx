@@ -306,7 +306,7 @@ export default function AdminHome() {
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-8 text-violet-700">{t('admin_panel')}</h1>
+      {/* <h1 className="text-3xl font-bold mb-8 text-violet-700">{t('admin_panel')}</h1> */}
       <div className="flex gap-4 mb-8">
         <button
           onClick={() => setTab('korisnici')}

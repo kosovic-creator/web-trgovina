@@ -88,10 +88,10 @@ export default function Navbar({ setSidebarOpen }: { setSidebarOpen?: (open: boo
 
       {isAdmin && (
         <>
-          <Link href="/admin" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-violet-50 transition">
+          {/* <Link href="/admin" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-violet-50 transition">
             <FaUserShield className="text-violet-600" />
             <span>{t('admin')}</span>
-          </Link>
+          </Link> */}
           <button
             onClick={() => signOut({ callbackUrl: "/auth/prijava" })}
             className="flex items-center gap-2 px-3 py-2 rounded hover:bg-violet-50 transition"
