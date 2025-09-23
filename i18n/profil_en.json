@@ -6,5 +6,9 @@
   "email": "Email",
   "must_login": "You must be logged in to view this page Profile.",
   "address": "Address",
-  "phone": "Phone number"
+  "phone": "Phone number",
+  "profile_picture": "Profile picture",
+  "role": "Role",
+  "user": "User",
+  "admin": "Admin"
 }

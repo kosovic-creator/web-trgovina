@@ -6,5 +6,10 @@
   "email": "Email",
   "must_login": "Morate biti prijavljeni da biste videli stranicu Profila.",
   "address": "Adresa",
-  "phone": "Broj telefona"
-}
+  "phone": "Broj telefona",
+  "profile_picture": "Profilna slika",
+  "role": "Uloga",
+  "user": "Korisnik",
+  "admin": "Admin"
+  }
+
