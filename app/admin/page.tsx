@@ -5,37 +5,40 @@ import { useTranslation } from 'react-i18next';
 import '@/i18n/config';
 import Image from 'next/image';
 import { FaSearch, FaTimes } from "react-icons/fa";
+import { Korisnik } from '@/types';
+import { Porudzbina } from '@/types';
+import { Proizvod } from '@/types';
 
-type Porudzbina = {
-  id: string;
-  korisnik: string;
-  ukupno: number;
-  status: string;
-  kreiran: string;
-  email?: string;
-  idPlacanja?: string;
-  korisnikId?: string;
-};
+// type Porudzbina = {
+//   id: string;
+//   korisnik: string;
+//   ukupno: number;
+//   status: string;
+//   kreiran: string;
+//   email?: string;
+//   idPlacanja?: string;
+//   korisnikId?: string;
+// };
 
-interface Proizvod {
-  id: string;
-  naziv: string;
-  kolicina: number;
-  slika?: string;
-  cena?: number;
-  opis?: string;
-  karakteristike?: string;
-  kategorija?: string;
-  kreiran?: string;
-}
+// interface Proizvod {
+//   id: string;
+//   naziv: string;
+//   kolicina: number;
+//   slika?: string;
+//   cena?: number;
+//   opis?: string;
+//   karakteristike?: string;
+//   kategorija?: string;
+//   kreiran?: string;
+// }
 
-type Korisnik = {
-  id: string;
-  ime: string;
-  email: string;
-  uloga: string;
-  kreiran: string;
-};
+// type Korisnik = {
+//   id: string;
+//   ime: string;
+//   email: string;
+//   uloga: string;
+//   kreiran: string;
+// };
 
 export default function AdminHome() {
   const { t } = useTranslation('home');
@@ -214,7 +217,7 @@ export default function AdminHome() {
 
   // Edit korisnika
   const handleKorisnikEdit = (k: Korisnik) => {
-    setKorisnikForm({ ime: k.ime, email: k.email, uloga: k.uloga, lozinka: '' });
+    setKorisnikForm({ ime: k.ime ?? '', email: k.email ?? '', uloga: k.uloga ?? '', lozinka: '' });
     setEditKorisnikId(k.id);
   };
 
@@ -266,10 +269,10 @@ export default function AdminHome() {
   const handlePorudzbinaEdit = (p: Porudzbina) => {
     setPorudzbinaForm({
       korisnikId: p.korisnikId ?? '',
-      korisnik: p.korisnik,
+      korisnik: p.korisnikId ?? '',
       ukupno: p.ukupno,
       status: p.status,
-      kreiran: p.kreiran,
+      kreiran: p.kreiran as unknown as string,
       email: p.email ?? '',
       idPlacanja: p.idPlacanja ?? ''
     });
@@ -488,7 +491,7 @@ export default function AdminHome() {
               />
               <input
                 type="text"
-                placeholder={t('kategorija') || 'Kategorija'}
+                placeholder={t('kategorija')}
                 className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 value={proizvodForm.kategorija}
                 onChange={e => setProizvodForm(f => ({ ...f, kategorija: e.target.value }))}
@@ -511,7 +514,7 @@ export default function AdminHome() {
               />
               <input
                 type="number"
-                placeholder={t('quantity')}
+                placeholder={t('količina') }
                 className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 required
                 value={proizvodForm.kolicina}
@@ -632,7 +635,7 @@ export default function AdminHome() {
                 {porudzbine.map((p) => (
                   <tr key={p.id} className="hover:bg-violet-50 transition">
                     <td className="px-8 py-3 text-left align-middle">{p.id}</td>
-                    <td className="px-8 py-3 text-left align-middle">{p.korisnik}</td>
+                    <td className="px-8 py-3 text-left align-middle">{p.korisnikId}</td>
                     <td className="px-8 py-3 text-left align-middle">{p.ukupno} EUR</td>
                     <td className="px-8 py-3 text-left align-middle">{p.status}</td>
                     <td className="px-8 py-3 text-left align-middle">{new Date(p.kreiran).toLocaleDateString()}</td>

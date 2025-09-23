@@ -15,6 +15,6 @@
   "new_product": "Novi Proizvod",
   "out_of_stock": "Nema na skladištu",
   "in_stock": "Na skladištu",
-  "category": "Kategorija",
-  "characteristics": "Karakteristike"
+  "kategorija": "Kategorija",
+  "karakteristike": "Karakteristike"
 }

@@ -129,8 +129,8 @@ export default function AdminProizvodiPage() {
             <th className="p-2">{t('cena')}</th>
             <th className="p-2">{t('slika')}</th>
             <th className="p-2">{t('opis')}</th>
-            <th className="p-2">{t('karakteristike') || 'Karakteristike'}</th>
-            <th className="p-2">{t('kategorija') || 'Kategorija'}</th>
+            <th className="p-2">{t('karakteristike') }</th>
+            <th className="p-2">{t('kategorija')}</th>
             <th className="p-2">{t('kolicina')}</th>
             <th className="p-2">{t('akcije')}</th>
           </tr>
