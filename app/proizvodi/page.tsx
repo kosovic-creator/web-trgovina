@@ -86,6 +86,8 @@ export default function ProizvodiPage() {
           {selectedProizvod.slika && <Image src={selectedProizvod.slika} alt={selectedProizvod.naziv} width={120} height={120} className="object-cover mb-4 rounded" />}
           <div className="font-bold text-xl mb-2">{selectedProizvod.naziv}</div>
           <div className="text-gray-600 mb-2">{selectedProizvod.opis}</div>
+          <div className="text-gray-600 mb-2">{selectedProizvod.karakteristike}</div>
+          <div className="text-gray-600 mb-2">Kategorija: {selectedProizvod.kategorija}</div>
           <div className="font-bold text-violet-700 mb-2">{selectedProizvod.cena} €</div>
           <div className={`text-xs font-semibold mb-2 ${selectedProizvod.kolicina === 0 ? 'text-red-600' : 'text-gray-400'}`}>{t('kolicina')}: {selectedProizvod.kolicina}</div>
           {selectedProizvod.kolicina === 0 && (
@@ -115,6 +117,8 @@ export default function ProizvodiPage() {
                     {p.slika && <Image src={p.slika} alt={p.naziv} width={80} height={80} className="object-cover mb-2 rounded" />}
                     <div className="font-semibold text-lg mb-1">{p.naziv}</div>
                     <div className="text-gray-600 mb-1">{p.opis}</div>
+                    <div className="text-gray-600 mb-1">{p.karakteristike}</div>
+                    <div className="text-gray-600 mb-1">Kategorija: {p.kategorija}</div>
                     <div className="mt-2 font-bold text-violet-700">{p.cena} €</div>
                     <div className={`text-xs font-semibold mt-1 ${p.kolicina === 0 ? 'text-red-600' : 'text-gray-400'}`}>{t('kolicina')}: {p.kolicina}</div>
                     {p.kolicina === 0 && (

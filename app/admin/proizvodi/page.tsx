@@ -12,7 +12,7 @@ export default function AdminProizvodiPage() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
-  const [form, setForm] = useState({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
+  const [form, setForm] = useState({ naziv: '', cena: 0, slika: '', opis: '', karakteristike: '', kategorija: '', kolicina: 1 });
   const [editId, setEditId] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
 
@@ -44,6 +44,8 @@ export default function AdminProizvodiPage() {
       formData.append('naziv', form.naziv);
       formData.append('cena', String(form.cena));
       formData.append('opis', form.opis);
+      formData.append('karakteristike', form.karakteristike);
+      formData.append('kategorija', form.kategorija);
       formData.append('kolicina', String(form.kolicina));
       if (file) formData.append('slika', file);
 
@@ -56,7 +58,7 @@ export default function AdminProizvodiPage() {
         alert('Greška: ' + (err.error || 'Neuspješan unos'));
       }
     }
-    setForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
+    setForm({ naziv: '', cena: 0, slika: '', opis: '', karakteristike: '', kategorija: '', kolicina: 1 });
     setFile(null);
     fetch(`/api/proizvodi?page=${page}&pageSize=${pageSize}`)
       .then(res => res.json())
@@ -67,7 +69,7 @@ export default function AdminProizvodiPage() {
   };
 
   const handleEdit = (p: Proizvod) => {
-    setForm({ naziv: p.naziv, cena: p.cena, slika: p.slika || '', opis: p.opis || '', kolicina: p.kolicina });
+    setForm({ naziv: p.naziv, cena: p.cena, slika: p.slika || '', opis: p.opis || '', karakteristike: p.karakteristike || '', kategorija: p.kategorija || '', kolicina: p.kolicina });
     setEditId(p.id);
   };
 
@@ -114,9 +116,11 @@ export default function AdminProizvodiPage() {
         <input type="text" placeholder={t('slika')} value={form.slika} onChange={e => setForm(f => ({ ...f, slika: e.target.value }))} className="border p-2 rounded" />
         <input type="file" accept="image/*" onChange={e => setFile(e.target.files?.[0] || null)} className="border p-2 rounded" />
         <input type="text" placeholder={t('opis')} value={form.opis} onChange={e => setForm(f => ({ ...f, opis: e.target.value }))} className="border p-2 rounded" />
+        <input type="text" placeholder={t('karakteristike') || 'Karakteristike'} value={form.karakteristike} onChange={e => setForm(f => ({ ...f, karakteristike: e.target.value }))} className="border p-2 rounded" />
+        <input type="text" placeholder={t('kategorija') || 'Kategorija'} value={form.kategorija} onChange={e => setForm(f => ({ ...f, kategorija: e.target.value }))} required className="border p-2 rounded" />
         <input type="number" placeholder={t('kolicina')} value={form.kolicina} onChange={e => setForm(f => ({ ...f, kolicina: Number(e.target.value) }))} required className="border p-2 rounded" />
         <button type="submit" className="btn">{editId ? t('spremi') : t('dodaj')}</button>
-        {editId && <button type="button" onClick={() => { setEditId(null); setForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 }); setFile(null); }} className="btn">{t('odustani')}</button>}
+        {editId && <button type="button" onClick={() => { setEditId(null); setForm({ naziv: '', cena: 0, slika: '', opis: '', karakteristike: '', kategorija: '', kolicina: 1 }); setFile(null); }} className="btn">{t('odustani')}</button>}
       </form>
       <table className="w-full border mb-4">
         <thead>
@@ -125,6 +129,8 @@ export default function AdminProizvodiPage() {
             <th className="p-2">{t('cena')}</th>
             <th className="p-2">{t('slika')}</th>
             <th className="p-2">{t('opis')}</th>
+            <th className="p-2">{t('karakteristike') || 'Karakteristike'}</th>
+            <th className="p-2">{t('kategorija') || 'Kategorija'}</th>
             <th className="p-2">{t('kolicina')}</th>
             <th className="p-2">{t('akcije')}</th>
           </tr>
@@ -133,21 +139,11 @@ export default function AdminProizvodiPage() {
           {proizvodi.map((p: Proizvod) => (
             <tr key={p.id}>
               <td className="p-2">{p.naziv}</td>
-              <td className="p-2">
-                {p.slika ? (
-                  <Image
-                    src={p.slika}
-                    alt={p.naziv}
-                    width={48}
-                    height={48}
-                    className="w-12 h-12 object-cover"
-                  />
-                ) : (
-                  '-'
-                )}
-              </td>
+              <td className="p-2">{p.cena}</td>
               <td className="p-2">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover" /> : '-'}</td>
               <td className="p-2">{p.opis}</td>
+              <td className="p-2">{p.karakteristike}</td>
+              <td className="p-2">{p.kategorija}</td>
               <td className="p-2">{p.kolicina}</td>
               <td className="p-2">
                 <button className="btn mr-2" onClick={() => handleEdit(p)}>{t('uredi')}</button>

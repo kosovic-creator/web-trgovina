@@ -21,7 +21,15 @@ model Korisnik {
   lozinka                   String
   uloga                     String      @default("korisnik")
   ime                       String?
+  prezime                   String
+  telefon                   String
+  drzava                    String?
+  grad                      String
+  postanskiBroj             Int
+  adresa                    String
   slika                     String?
+
+
   emailVerifikovan          Boolean     @default(false)
   emailVerifikacijaToken    String?     @unique
   emailVerifikacijaIstice   DateTime?
@@ -37,6 +45,8 @@ model Proizvod {
   cena                Float
   slika               String?
   opis                String?
+  karakteristike      String?
+  kategorija          String
   kolicina            Int         @default(1)
   kreiran             DateTime    @default(now())
   azuriran            DateTime    @updatedAt

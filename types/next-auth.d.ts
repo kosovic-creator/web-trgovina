@@ -7,6 +7,12 @@ declare module "next-auth" {
       email: string;
       uloga: string;
       ime?: string;
+      prezime?: string;
+      telefon?: string;
+      drzava?: string;
+      grad?: string;
+      postanskiBroj?: number;
+      adresa?: string;
       slika?: string;
     };
   }
@@ -18,6 +24,12 @@ declare module "next-auth/jwt" {
     email: string;
     uloga: string;
     ime?: string;
+    prezime?: string;
+    telefon?: string;
+    drzava?: string;
+    grad?: string;
+    postanskiBroj?: number;
+    adresa?: string;
     slika?: string;
   }
 }

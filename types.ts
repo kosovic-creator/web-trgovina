@@ -4,6 +4,8 @@ export type Proizvod = {
   cena: number;
   slika?: string | null;
   opis?: string | null;
+  karakteristike?: string | null;
+  kategorija: string;
   kolicina: number;
   kreiran: Date;
   azuriran: Date;
@@ -15,6 +17,12 @@ export type Korisnik = {
   lozinka: string;
   uloga: string;
   ime?: string | null;
+  prezime: string;
+  telefon: string;
+  drzava?: string | null;
+  grad: string;
+  postanskiBroj: number;
+  adresa: string;
   slika?: string | null;
   emailVerifikovan: boolean;
   emailVerifikacijaToken?: string | null;

@@ -28,6 +28,12 @@ export default function ProfilPage() {
       <div className="flex flex-col gap-2">
         <p><span className="font-semibold">{t('email')}:</span> {session.user.email}</p>
         <p><span className="font-semibold">{t('name')}:</span> {session.user.ime}</p>
+        <p><span className="font-semibold">{t('surname')}:</span> {session.user.prezime}</p>
+        <p><span className="font-semibold">{t('phone')}:</span> {session.user.telefon}</p>
+        <p><span className="font-semibold">{t('country')}:</span> {session.user.drzava}</p>
+        <p><span className="font-semibold">{t('city')}:</span> {session.user.grad}</p>
+        <p><span className="font-semibold">{t('postal_code')}:</span> {session.user.postanskiBroj}</p>
+        <p><span className="font-semibold">{t('address')}:</span> {session.user.adresa}</p>
         <p><span className="font-semibold">{t('role')}:</span> {session.user.uloga}</p>
         {session.user.slika && (
           <Image src={session.user.slika} alt={t('profile_image') || "Profil"} width={100} height={100} className="rounded-full mt-2" />

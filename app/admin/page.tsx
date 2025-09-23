@@ -24,6 +24,8 @@ interface Proizvod {
   slika?: string;
   cena?: number;
   opis?: string;
+  karakteristike?: string;
+  kategorija?: string;
   kreiran?: string;
 }
 
@@ -41,7 +43,7 @@ export default function AdminHome() {
   const [porudzbine, setPorudzbine] = useState<Porudzbina[]>([]);
   const [porudzbinaForm, setPorudzbinaForm] = useState({ korisnikId: '', korisnik: '', ukupno: 0, status: '', kreiran: '', email: '', idPlacanja: '' });
   const [editPorudzbinaId, setEditPorudzbinaId] = useState<string | null>(null);
-  const [proizvodForm, setProizvodForm] = useState({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
+  const [proizvodForm, setProizvodForm] = useState({ naziv: '', cena: 0, slika: '', opis: '', karakteristike: '', kategorija: '', kolicina: 1 });
   const [proizvodi, setProizvodi] = React.useState<Proizvod[]>([]);
   const [korisnici, setKorisnici] = useState<Korisnik[]>([]);
   const [korisnikForm, setKorisnikForm] = useState({ ime: '', email: '', uloga: 'korisnik', lozinka: '' });
@@ -94,6 +96,8 @@ export default function AdminHome() {
       naziv: proizvodForm.naziv,
       cena: proizvodForm.cena,
       opis: proizvodForm.opis,
+      karakteristike: proizvodForm.karakteristike,
+      kategorija: proizvodForm.kategorija,
       kolicina: proizvodForm.kolicina,
       slika: slikaUrl,
     };
@@ -104,7 +108,7 @@ export default function AdminHome() {
       body: JSON.stringify(formData),
     });
 
-    setProizvodForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
+    setProizvodForm({ naziv: '', cena: 0, slika: '', opis: '', karakteristike: '', kategorija: '', kolicina: 1 });
     setFile(null);
 
     fetch('/api/proizvodi?page=1&pageSize=10')
@@ -125,6 +129,8 @@ export default function AdminHome() {
         cena: proizvod.cena || 0,
         slika: proizvod.slika || '',
         opis: proizvod.opis || '',
+        karakteristike: proizvod.karakteristike || '',
+        kategorija: proizvod.kategorija || '',
         kolicina: proizvod.kolicina,
       });
       setEditPorudzbinaId(id);
@@ -154,6 +160,8 @@ export default function AdminHome() {
       naziv: proizvodForm.naziv,
       cena: proizvodForm.cena,
       opis: proizvodForm.opis,
+      karakteristike: proizvodForm.karakteristike,
+      kategorija: proizvodForm.kategorija,
       kolicina: proizvodForm.kolicina,
       slika: slikaUrl,
     };
@@ -164,7 +172,7 @@ export default function AdminHome() {
       body: JSON.stringify(formData),
     });
 
-    setProizvodForm({ naziv: '', cena: 0, slika: '', opis: '', kolicina: 1 });
+    setProizvodForm({ naziv: '', cena: 0, slika: '', opis: '', karakteristike: '', kategorija: '', kolicina: 1 });
     setFile(null);
     setEditPorudzbinaId(null);
 
@@ -471,6 +479,20 @@ export default function AdminHome() {
                 value={proizvodForm.cena}
                 onChange={e => setProizvodForm(f => ({ ...f, cena: Number(e.target.value) }))}
               />
+              <input
+                type="text"
+                placeholder={t('karakteristike') || 'Karakteristike'}
+                className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
+                value={proizvodForm.karakteristike}
+                onChange={e => setProizvodForm(f => ({ ...f, karakteristike: e.target.value }))}
+              />
+              <input
+                type="text"
+                placeholder={t('kategorija') || 'Kategorija'}
+                className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
+                value={proizvodForm.kategorija}
+                onChange={e => setProizvodForm(f => ({ ...f, kategorija: e.target.value }))}
+              />
               <div className="flex flex-col gap-2 w-full">
                 <label className="text-sm text-violet-700">{t('product_image')}</label>
                 <input
@@ -515,6 +537,9 @@ export default function AdminHome() {
                     <th className="px-8 py-3 text-left align-middle">{t('image')}</th>
                     <th className="px-8 py-3 text-left align-middle">{t('product_name')}</th>
                     <th className="px-8 py-3 text-left align-middle">{t('price')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('karakteristike') || 'Karakteristike'}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('kategorija') || 'Kategorija'}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('quantity')}</th>
                     <th className="px-8 py-3 text-left align-middle">{t('created')}</th>
                     <th className="px-8 py-3 text-left align-middle">{t('actions')}</th>
                   </tr>
@@ -526,6 +551,9 @@ export default function AdminHome() {
                         <td className="px-8 py-3 text-left align-middle">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover rounded-lg" /> : '-'}</td>
                         <td className="px-8 py-3 text-left align-middle">{p.naziv}</td>
                         <td className="px-8 py-3 text-left align-middle">{p.cena} EUR</td>
+                        <td className="px-8 py-3 text-left align-middle">{p.karakteristike}</td>
+                        <td className="px-8 py-3 text-left align-middle">{p.kategorija}</td>
+                        <td className="px-8 py-3 text-left align-middle">{p.kolicina}</td>
                         <td className="px-8 py-3 text-left align-middle">{p.kreiran ? new Date(p.kreiran).toLocaleDateString() : '-'}</td>
                         <td className="px-8 py-3 text-left align-middle flex gap-2">
                           <button className="text-blue-600 hover:underline" onClick={() => handleProizvodEdit(p.id)}>{t('edit')}</button>

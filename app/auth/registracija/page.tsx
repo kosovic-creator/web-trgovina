@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from 'react-i18next';
-import { FaUserPlus, FaEnvelope, FaLock, FaUser } from "react-icons/fa";
+import { FaUserPlus, FaEnvelope, FaLock, FaUser, FaPhone, FaGlobe, FaCity, FaMapMarkerAlt, FaHashtag } from "react-icons/fa";
 import '@/i18n/config';
 
 export default function RegistracijaPage() {
@@ -10,6 +10,12 @@ export default function RegistracijaPage() {
   const [email, setEmail] = useState("");
   const [lozinka, setLozinka] = useState("");
   const [ime, setIme] = useState("");
+  const [prezime, setPrezime] = useState("");
+  const [telefon, setTelefon] = useState("");
+  const [drzava, setDrzava] = useState("");
+  const [grad, setGrad] = useState("");
+  const [postanskiBroj, setPostanskiBroj] = useState("");
+  const [adresa, setAdresa] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -19,10 +25,13 @@ export default function RegistracijaPage() {
       const res = await fetch("/api/auth/registracija", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, lozinka, ime }),
+        body: JSON.stringify({ email, lozinka, ime, prezime, telefon, drzava, grad, postanskiBroj: Number(postanskiBroj), adresa }),
       });
       if (res.ok) router.push("/auth/prijava");
-      else setError("Greška pri registraciji");
+      else {
+        const data = await res.json();
+        setError(data.error || "Greška pri registraciji");
+      }
     } catch {
       setError("Greška pri registraciji");
     }
@@ -54,6 +63,66 @@ export default function RegistracijaPage() {
             className="flex-1 outline-none bg-transparent"
             value={ime}
             onChange={e => setIme(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center gap-2 border p-2 rounded">
+          <FaUser className="text-violet-600" />
+          <input
+            type="text"
+            placeholder={t('surname') || "Prezime"}
+            className="flex-1 outline-none bg-transparent"
+            value={prezime}
+            onChange={e => setPrezime(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center gap-2 border p-2 rounded">
+          <FaPhone className="text-violet-600" />
+          <input
+            type="text"
+            placeholder={t('phone') || "Telefon"}
+            className="flex-1 outline-none bg-transparent"
+            value={telefon}
+            onChange={e => setTelefon(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center gap-2 border p-2 rounded">
+          <FaGlobe className="text-violet-600" />
+          <input
+            type="text"
+            placeholder={t('country') || "Država"}
+            className="flex-1 outline-none bg-transparent"
+            value={drzava}
+            onChange={e => setDrzava(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center gap-2 border p-2 rounded">
+          <FaCity className="text-violet-600" />
+          <input
+            type="text"
+            placeholder={t('city') || "Grad"}
+            className="flex-1 outline-none bg-transparent"
+            value={grad}
+            onChange={e => setGrad(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center gap-2 border p-2 rounded">
+          <FaHashtag className="text-violet-600" />
+          <input
+            type="number"
+            placeholder={t('postal_code') || "Poštanski broj"}
+            className="flex-1 outline-none bg-transparent"
+            value={postanskiBroj}
+            onChange={e => setPostanskiBroj(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center gap-2 border p-2 rounded">
+          <FaMapMarkerAlt className="text-violet-600" />
+          <input
+            type="text"
+            placeholder={t('address') || "Adresa"}
+            className="flex-1 outline-none bg-transparent"
+            value={adresa}
+            onChange={e => setAdresa(e.target.value)}
           />
         </div>
         <div className="flex items-center gap-2 border p-2 rounded">

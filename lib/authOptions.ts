@@ -3,6 +3,12 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { z } from "zod";
+
+const loginSchema = z.object({
+  email: z.string().email(),
+  lozinka: z.string().min(6),
+});
 
 interface CustomUser {
   id: string;
@@ -39,12 +45,14 @@ export const authOptions: NextAuthOptions = {
         lozinka: { label: "Lozinka", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.lozinka) return null;
+        const result = loginSchema.safeParse(credentials);
+        if (!result.success) return null;
+        const { email, lozinka } = result.data;
         const korisnik = await prisma.korisnik.findUnique({
-          where: { email: credentials.email },
+          where: { email },
         });
         if (!korisnik || !korisnik.lozinka) return null;
-        const valid = await bcrypt.compare(credentials.lozinka, korisnik.lozinka);
+        const valid = await bcrypt.compare(lozinka, korisnik.lozinka);
         if (!valid) return null;
         return {
           id: korisnik.id,

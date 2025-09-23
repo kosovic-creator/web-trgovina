@@ -31,6 +31,8 @@ export default function ProizvodPage() {
       <h1 className="text-2xl font-bold mb-2">{proizvod.naziv}</h1>
       <div className="text-lg font-semibold mb-2">Cena: {proizvod.cena} EUR</div>
       <div className="mb-2">Opis: {proizvod.opis}</div>
+      <div className="mb-2">Karakteristike: {proizvod.karakteristike}</div>
+      <div className="mb-2">Kategorija: {proizvod.kategorija}</div>
       <div className="mb-2">Količina: {proizvod.kolicina}</div>
     </div>
   );
