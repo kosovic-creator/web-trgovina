@@ -12,5 +12,6 @@
   "details": "Detalji",
   "price": "Cijena",
   "close": "Zatvori",
-  "new_product": "Novi Proizvod"
+  "new_product": "Novi Proizvod",
+  "out_of_stock": "Nema na skladištu"
 }

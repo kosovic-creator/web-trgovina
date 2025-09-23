@@ -12,5 +12,6 @@
   "details": "Details",
   "price": "Price",
   "close": "Close",
-  "new_product": "New Product"
+  "new_product": "New Product",
+  "out_of_stock": "Out of stock"
 }
