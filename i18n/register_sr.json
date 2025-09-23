@@ -2,5 +2,13 @@
   "title": "Registracija",
   "email": "Email",
   "password": "Lozinka",
-  "register": "Registracija"
+  "register": "Registracija",
+  "name": "Ime",
+  "surname": "Prezime",
+  "phone": "Telefon",
+  "country": "Država",
+  "city": "Grad",
+  "postal_code": "Poštanski Broj",
+  "address": "Adresa",
+  "have_account": "Već imate nalog? Prijavite se"
 }

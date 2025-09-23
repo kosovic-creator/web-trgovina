@@ -13,5 +13,8 @@
   "price": "Price",
   "close": "Close",
   "new_product": "New Product",
-  "out_of_stock": "Out of stock"
+  "out_of_stock": "Out of stock",
+  "in_stock": "In stock",
+  "category": "Category",
+  "characteristics": "Characteristics"
 }

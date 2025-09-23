@@ -2,5 +2,13 @@
   "title": "Register",
   "email": "Email",
   "password": "Password",
-  "register": "Register"
+  "register": "Register",
+  "name": "Name",
+  "surname": "Surname",
+  "phone": "Phone",
+  "country": "Country",
+  "city": "City",
+  "postal_code": "Postal Code",
+  "address": "Address",
+  "have_account": "Already have an account? Log in"
 }
