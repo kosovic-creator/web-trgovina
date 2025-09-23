@@ -2,6 +2,12 @@
   "title": "Users",
   "email": "Email",
   "ime": "Name",
+  "prezime": "Last Name",
+  "telefon": "Phone",
+  "drzava": "Country",
+  "grad": "City",
+  "postanskiBroj": "Postal Code",
+  "adresa": "Address",
   "uloga": "Role",
   "akcije": "Actions",
   "lozinka": "Password",
@@ -10,5 +16,12 @@
   "admin": "Admin",
   "spremi": "Save",
   "dodaj": "Add",
-  "odustani": "Cancel"
+  "odustani": "Cancel",
+  "prezime_min": "Last name must be at least 3 characters long.",
+  "greska_registracija": "Registration error.",
+  "registracija_uspesna": "Registration successful.",
+  "proverite_email": "Please check your email for verification.",
+  "email_invalid": "Invalid email address.",
+  "lozinka_min": "Password must be at least 6 characters long.",
+  "ime_min": "Name must be at least 3 characters long."
 }

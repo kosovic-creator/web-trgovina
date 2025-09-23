@@ -2,6 +2,12 @@
   "title": "Korisnici",
   "email": "Email",
   "ime": "Ime",
+  "prezime": "Prezime",
+  "telefon": "Telefon",
+  "drzava": "Država",
+  "grad": "Grad",
+  "postanskiBroj": "Poštanski broj",
+  "adresa": "Adresa",
   "uloga": "Uloga",
   "akcije": "Akcije",
   "lozinka": "Lozinka",
@@ -10,5 +16,13 @@
   "admin": "Admin",
   "spremi": "Spremi",
   "dodaj": "Dodaj",
-  "odustani": "Odustani"
+  "odustani": "Odustani",
+  "prezime_min": "Prezime mora imati najmanje 3 znaka.",
+  "greska_registracija": "Greška pri registraciji.",
+  "registracija_uspesna": "Uspešna registracija.",
+  "proverite_email": "Molimo proverite svoj email za verifikaciju.",
+  "email_invalid": "Nevažeća email adresa.",
+  "lozinka_min": "Lozinka mora imati najmanje 6 znakova.",
+  "ime_min": "Ime mora imati najmanje 3 znaka."
+
 }

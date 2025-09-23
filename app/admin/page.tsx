@@ -9,39 +9,9 @@ import { Korisnik } from '@/types';
 import { Porudzbina } from '@/types';
 import { Proizvod } from '@/types';
 
-// type Porudzbina = {
-//   id: string;
-//   korisnik: string;
-//   ukupno: number;
-//   status: string;
-//   kreiran: string;
-//   email?: string;
-//   idPlacanja?: string;
-//   korisnikId?: string;
-// };
-
-// interface Proizvod {
-//   id: string;
-//   naziv: string;
-//   kolicina: number;
-//   slika?: string;
-//   cena?: number;
-//   opis?: string;
-//   karakteristike?: string;
-//   kategorija?: string;
-//   kreiran?: string;
-// }
-
-// type Korisnik = {
-//   id: string;
-//   ime: string;
-//   email: string;
-//   uloga: string;
-//   kreiran: string;
-// };
 
 export default function AdminHome() {
-  const { t } = useTranslation('home');
+  const { t } = useTranslation(['home', 'korisnici']);
   const [tab, setTab] = useState<'korisnici' | 'proizvodi' | 'porudzbine'>('korisnici');
   const [porudzbine, setPorudzbine] = useState<Porudzbina[]>([]);
   const [porudzbinaForm, setPorudzbinaForm] = useState({ korisnikId: '', korisnik: '', ukupno: 0, status: '', kreiran: '', email: '', idPlacanja: '' });
@@ -49,7 +19,18 @@ export default function AdminHome() {
   const [proizvodForm, setProizvodForm] = useState({ naziv: '', cena: 0, slika: '', opis: '', karakteristike: '', kategorija: '', kolicina: 1 });
   const [proizvodi, setProizvodi] = React.useState<Proizvod[]>([]);
   const [korisnici, setKorisnici] = useState<Korisnik[]>([]);
-  const [korisnikForm, setKorisnikForm] = useState({ ime: '', email: '', uloga: 'korisnik', lozinka: '' });
+  const [korisnikForm, setKorisnikForm] = useState({
+    ime: '',
+    prezime: '',
+    email: '',
+    telefon: '',
+    drzava: '',
+    grad: '',
+    postanskiBroj: '',
+    adresa: '',
+    uloga: 'korisnik',
+    lozinka: ''
+  });
   const [editKorisnikId, setEditKorisnikId] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [search, setSearch] = useState('');
@@ -208,7 +189,7 @@ export default function AdminHome() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(korisnikForm),
     });
-    setKorisnikForm({ ime: '', email: '', uloga: 'korisnik', lozinka: '' });
+    setKorisnikForm({ ime: '', prezime: '', email: '', telefon: '', drzava: '', grad: '', postanskiBroj: '', adresa: '', uloga: 'korisnik', lozinka: '' });
     // Ponovo učitaj korisnike
     fetch('/api/korisnici?page=1&pageSize=10')
       .then(res => res.json())
@@ -217,7 +198,7 @@ export default function AdminHome() {
 
   // Edit korisnika
   const handleKorisnikEdit = (k: Korisnik) => {
-    setKorisnikForm({ ime: k.ime ?? '', email: k.email ?? '', uloga: k.uloga ?? '', lozinka: '' });
+    setKorisnikForm({ ime: k.ime ?? '', prezime: k.prezime ?? '', email: k.email ?? '', telefon: k.telefon ?? '', drzava: k.drzava ?? '', grad: k.grad ?? '', postanskiBroj: k.postanskiBroj !== undefined && k.postanskiBroj !== null ? String(k.postanskiBroj) : '', adresa: k.adresa ?? '', uloga: k.uloga ?? '', lozinka: '' });
     setEditKorisnikId(k.id);
   };
 
@@ -235,7 +216,7 @@ export default function AdminHome() {
       alert(result.error || 'Greška!');
       return;
     }
-    setKorisnikForm({ ime: '', email: '', uloga: 'korisnik', lozinka: '' });
+    setKorisnikForm({ ime: '', prezime: '', email: '', telefon: '', drzava: '', grad: '', postanskiBroj: '', adresa: '', uloga: 'korisnik', lozinka: '' });
     setEditKorisnikId(null);
     fetch('/api/korisnici?page=1&pageSize=10')
       .then(res => res.json())
@@ -357,30 +338,73 @@ export default function AdminHome() {
             >
               <input
                 type="text"
-                placeholder={t('name')}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                placeholder={t('ime', { ns: 'korisnici' })}
                 required
                 value={korisnikForm.ime}
                 onChange={e => setKorisnikForm(f => ({ ...f, ime: e.target.value }))}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+              />
+              <input
+                type="text"
+                placeholder={t('prezime', { ns: 'korisnici' })}
+                required
+                value={korisnikForm.prezime}
+                onChange={e => setKorisnikForm(f => ({ ...f, prezime: e.target.value }))}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
               />
               <input
                 type="email"
-                placeholder={t('email')}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                placeholder={t('email', { ns: 'korisnici' })}
                 required
                 value={korisnikForm.email}
                 onChange={e => setKorisnikForm(f => ({ ...f, email: e.target.value }))}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
               />
               <input
-                type="lozinka"
-                placeholder={t('lozinka')}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                type="text"
+                placeholder={t('telefon', { ns: 'korisnici' })}
+                value={korisnikForm.telefon}
+                onChange={e => setKorisnikForm(f => ({ ...f, telefon: e.target.value }))}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+              />
+              <input
+                type="text"
+                placeholder={t('drzava', { ns: 'korisnici' })}
+                value={korisnikForm.drzava}
+                onChange={e => setKorisnikForm(f => ({ ...f, drzava: e.target.value }))}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+              />
+              <input
+                type="text"
+                placeholder={t('grad', { ns: 'korisnici' })}
+                value={korisnikForm.grad}
+                onChange={e => setKorisnikForm(f => ({ ...f, grad: e.target.value }))}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+              />
+              <input
+                type="text"
+                placeholder={t('postanskiBroj', { ns: 'korisnici' })}
+                value={korisnikForm.postanskiBroj}
+                onChange={e => setKorisnikForm(f => ({ ...f, postanskiBroj: e.target.value }))}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+              />
+              <input
+                type="text"
+                placeholder={t('adresa', { ns: 'korisnici' })}
+                value={korisnikForm.adresa}
+                onChange={e => setKorisnikForm(f => ({ ...f, adresa: e.target.value }))}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+              />
+              <input
+                type="password"
+                placeholder={t('lozinka', { ns: 'korisnici' })}
                 required
                 value={korisnikForm.lozinka}
                 onChange={e => setKorisnikForm(f => ({ ...f, lozinka: e.target.value }))}
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
               />
               <select
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
+                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
                 value={korisnikForm.uloga}
                 onChange={e => setKorisnikForm(f => ({ ...f, uloga: e.target.value }))}
               >

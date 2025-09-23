@@ -1,6 +1,8 @@
 'use client'
+
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { z } from "zod";
+import '@/i18n/config';
 import { useTranslation } from 'react-i18next';
 import { FaUserPlus, FaEnvelope, FaLock, FaUser, FaPhone, FaGlobe, FaCity, FaMapMarkerAlt, FaHashtag } from "react-icons/fa";
 import '@/i18n/config';
@@ -18,34 +20,50 @@ export default function RegistracijaPage() {
   const [adresa, setAdresa] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const router = useRouter();
+
+  // Zod šema sa lokalizovanim porukama
+  const schema = z.object({
+    email: z.string().email({ message: t('email_invalid') }),
+    lozinka: z.string().min(6, { message: t('lozinka_min') }),
+    ime: z.string().min(3, { message: t('ime_min') }),
+    prezime: z.string().min(3, { message: t('prezime_min') }),
+    telefon: z.string().min(6, { message: t('telefon_min') }),
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    // Validacija na frontendu
+    const result = schema.safeParse({ email, lozinka, ime, prezime, telefon });
+    if (!result.success) {
+      // Prikaz prve greške
+      setError(result.error.issues[0].message);
+      return;
+    }
+    // ...dalje slanje na backend
     try {
+      // Backend poziv
       const res = await fetch("/api/auth/registracija", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, lozinka, ime, prezime, telefon, drzava, grad, postanskiBroj: Number(postanskiBroj), adresa }),
       });
-      if (res.ok) {
-        setSuccess(true);
-        setError("");
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || t('greska_registracija'));
       } else {
-        const data = await res.json();
-        setError(data.error || "Greška pri registraciji");
+        setSuccess(true);
       }
     } catch {
-      setError("Greška pri registraciji");
+      setError(t('greska_registracija'));
     }
   };
 
   if (success) {
     return (
       <div className="p-4 max-w-md mx-auto text-center">
-        <h2 className="text-xl font-bold mb-4 text-green-600">Registracija uspešna!</h2>
-        <p className="mb-4">Proverite email i kliknite na link za verifikaciju naloga.</p>
-        <button className="bg-violet-600 text-white px-4 py-2 rounded" onClick={() => router.push("/auth/prijava")}>Prijava</button>
+        <h2 className="text-xl font-bold mb-4 text-green-600">{t('registracija_uspesna')}</h2>
+        <p className="mb-4">{t('proverite_email')}</p>
       </div>
     );
   }
