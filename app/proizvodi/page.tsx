@@ -87,7 +87,10 @@ export default function ProizvodiPage() {
           <div className="font-bold text-xl mb-2">{selectedProizvod.naziv}</div>
           <div className="text-gray-600 mb-2">{selectedProizvod.opis}</div>
           <div className="font-bold text-violet-700 mb-2">{selectedProizvod.cena} €</div>
-          <div className="text-xs text-gray-400 mb-2">{t('kolicina')}: {selectedProizvod.kolicina}</div>
+          <div className={`text-xs font-semibold mb-2 ${selectedProizvod.kolicina === 0 ? 'text-red-600' : 'text-gray-400'}`}>{t('kolicina')}: {selectedProizvod.kolicina}</div>
+          {selectedProizvod.kolicina === 0 && (
+            <div className="text-red-600 text-sm font-bold mb-2">Nema na zalihama</div>
+          )}
           <button
             className="flex items-center gap-2 bg-violet-600 text-white px-4 py-2 rounded shadow hover:bg-violet-700 transition mb-2"
             onClick={() => handleDodajUKorpu(selectedProizvod)}
@@ -113,7 +116,10 @@ export default function ProizvodiPage() {
                     <div className="font-semibold text-lg mb-1">{p.naziv}</div>
                     <div className="text-gray-600 mb-1">{p.opis}</div>
                     <div className="mt-2 font-bold text-violet-700">{p.cena} €</div>
-                    <div className="text-xs text-gray-400 mt-1">{t('kolicina')}: {p.kolicina}</div>
+                    <div className={`text-xs font-semibold mt-1 ${p.kolicina === 0 ? 'text-red-600' : 'text-gray-400'}`}>{t('kolicina')}: {p.kolicina}</div>
+                    {p.kolicina === 0 && (
+                      <div className="text-red-600 text-sm font-bold mb-2">Nema na zalihama</div>
+                    )}
                     <button
                       className="flex items-center gap-2 bg-violet-600 text-white px-4 py-2 rounded shadow hover:bg-violet-700 transition mt-2"
                   onClick={e => { e.stopPropagation(); handleDodajUKorpu(p); }}

@@ -9,6 +9,7 @@ interface Proizvod {
   cena: number;
   slika?: string;
   opis?: string;
+  kolicina: number;
 }
 
 export default function ProizvodiList() {
@@ -42,9 +43,13 @@ export default function ProizvodiList() {
               <Image src={p.slika} alt={p.naziv} width={140} height={140} className="mb-2 rounded-lg object-cover" />
             )}
             <h2 className="font-bold text-lg mb-1 text-center">{p.naziv}</h2>
-                <div className="text-violet-700 font-semibold mb-2 text-lg">{t('price', { price: p.cena })}</div>
+            <div className="text-violet-700 font-semibold mb-2 text-lg">{t('price', { price: p.cena })}</div>
             {p.opis && <div className="text-gray-500 text-sm mb-2 text-center line-clamp-2">{p.opis}</div>}
-                <button className="mt-auto px-4 py-2 bg-violet-600 text-white rounded-lg shadow hover:bg-violet-700 transition">{t('details')}</button>
+            <div className={`mb-2 font-semibold ${p.kolicina === 0 ? 'text-red-600' : 'text-gray-700'}`}>Količina: {p.kolicina}</div>
+            {p.kolicina === 0 && (
+              <div className="text-red-600 text-sm font-bold mb-2">Nema na zalihama</div>
+            )}
+            <button className="mt-auto px-4 py-2 bg-violet-600 text-white rounded-lg shadow hover:bg-violet-700 transition">{t('details')}</button>
           </div>
         ))}
       </div>
@@ -63,8 +68,12 @@ export default function ProizvodiList() {
               <Image src={selected.slika} alt={selected.naziv} width={180} height={180} className="mb-4 rounded-lg object-cover mx-auto" />
             )}
             <h2 className="font-bold text-2xl mb-2 text-center">{selected.naziv}</h2>
-                      <div className="text-violet-700 font-semibold mb-2 text-xl text-center">{t('price', { price: selected.cena })}</div>
+            <div className="text-violet-700 font-semibold mb-2 text-xl text-center">{t('price', { price: selected.cena })}</div>
             {selected.opis && <div className="text-gray-700 text-base mb-4 text-center">{selected.opis}</div>}
+            <div className={`mb-2 font-semibold text-center ${selected.kolicina === 0 ? 'text-red-600' : 'text-gray-700'}`}>Količina: {selected.kolicina}</div>
+            {selected.kolicina === 0 && (
+              <div className="text-red-600 text-sm font-bold mb-2 text-center">Nema na zalihama</div>
+            )}
           </div>
         </div>
       )}

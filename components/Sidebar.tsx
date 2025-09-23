@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { FaHome, FaBoxOpen, FaClipboardList, FaUser } from 'react-icons/fa';
+import { FaBoxOpen, FaClipboardList, FaUser } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
 
 import '@/i18n/config';
@@ -34,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
       </div>
       <nav className="p-4 flex-1 overflow-y-auto">
         <ul className="space-y-2">
-         
+
           <li>
             <Link
               href="/proizvodi"

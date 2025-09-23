@@ -21,7 +21,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { korisnikId, ukupno, status, email, idPlacanja } = body;
+  const { korisnikId, ukupno, status, email, idPlacanja, stavke } = body;
   if (!korisnikId || !ukupno || !status) {
     return NextResponse.json({ error: 'Nedostaju obavezna polja.' }, { status: 400 });
   }
@@ -34,6 +34,16 @@ export async function POST(req: Request) {
       idPlacanja,
     },
   });
+
+  // Smanji količinu proizvoda za svaku stavku
+  if (stavke && Array.isArray(stavke)) {
+    for (const s of stavke) {
+      await prisma.proizvod.update({
+        where: { id: s.proizvodId },
+        data: { kolicina: { decrement: s.kolicina } },
+      });
+    }
+  }
 
   // Slanje emaila korisniku
   if (email) {

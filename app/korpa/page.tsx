@@ -85,6 +85,7 @@ export default function KorpaPage() {
           status: 'Na čekanju',
           email: session?.user?.email,
           idPlacanja: crypto.randomUUID(),
+          stavke: stavke.map(s => ({ proizvodId: s.proizvod?.id, kolicina: s.kolicina })),
         }),
       });
       if (response.ok) {
