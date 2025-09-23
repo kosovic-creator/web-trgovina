@@ -44,6 +44,8 @@
   "user_id": "ID korisnika",
   "total": "Ukupno",
   "payment_id": "ID plaćanja",
-  "status": "Status"
+  "status": "Status",
+  "category": "Kategorija",
+  "characteristics": "Karakteristike"
 
 }

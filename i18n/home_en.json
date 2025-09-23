@@ -35,6 +35,8 @@
   "user_id": "User ID",
   "total": "Total",
   "payment_id": "Payment ID",
-  "status": "Status"
+  "status": "Status",
+  "category": "Category",
+  "characteristics": "Characteristics"
 
 }

@@ -484,14 +484,14 @@ export default function AdminHome() {
               />
               <input
                 type="text"
-                placeholder={t('karakteristike') || 'Karakteristike'}
+                placeholder={t('characteristics')}
                 className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 value={proizvodForm.karakteristike}
                 onChange={e => setProizvodForm(f => ({ ...f, karakteristike: e.target.value }))}
               />
               <input
                 type="text"
-                placeholder={t('kategorija')}
+                placeholder={t('category')}
                 className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 value={proizvodForm.kategorija}
                 onChange={e => setProizvodForm(f => ({ ...f, kategorija: e.target.value }))}
