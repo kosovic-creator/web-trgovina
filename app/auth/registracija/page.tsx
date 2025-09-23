@@ -17,6 +17,7 @@ export default function RegistracijaPage() {
   const [postanskiBroj, setPostanskiBroj] = useState("");
   const [adresa, setAdresa] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,8 +28,10 @@ export default function RegistracijaPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, lozinka, ime, prezime, telefon, drzava, grad, postanskiBroj: Number(postanskiBroj), adresa }),
       });
-      if (res.ok) router.push("/auth/prijava");
-      else {
+      if (res.ok) {
+        setSuccess(true);
+        setError("");
+      } else {
         const data = await res.json();
         setError(data.error || "Greška pri registraciji");
       }
@@ -36,6 +39,16 @@ export default function RegistracijaPage() {
       setError("Greška pri registraciji");
     }
   };
+
+  if (success) {
+    return (
+      <div className="p-4 max-w-md mx-auto text-center">
+        <h2 className="text-xl font-bold mb-4 text-green-600">Registracija uspešna!</h2>
+        <p className="mb-4">Proverite email i kliknite na link za verifikaciju naloga.</p>
+        <button className="bg-violet-600 text-white px-4 py-2 rounded" onClick={() => router.push("/auth/prijava")}>Prijava</button>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 max-w-md mx-auto">
