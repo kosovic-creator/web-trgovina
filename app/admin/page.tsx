@@ -422,37 +422,46 @@ export default function AdminHome() {
           <div className="bg-white rounded-xl shadow-lg p-8">
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('user_list')}</h2>
             <div className="overflow-x-auto">
-              <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">
-                <thead>
-                  <tr className="bg-violet-100 text-violet-700">
-                    <th className="px-8 py-3 text-left align-middle">{t('image')}</th>
-                    <th className="px-8 py-3 text-left align-middle">{t('name')}</th>
-                    <th className="px-8 py-3 text-left align-middle">{t('email')}</th>
-                    <th className="px-8 py-3 text-left align-middle">{t('role')}</th>
-                    <th className="px-8 py-3 text-left align-middle">{t('created')}</th>
-                    <th className="px-8 py-3 text-left align-middle">{t('actions')}</th>
+              <table className="min-w-full border border-gray-200 rounded-lg">
+                <thead className="bg-violet-100">
+                  <tr>
+                    <th className="px-4 py-2 text-left">{t('ime', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left">{t('prezime', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left">{t('email', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left">{t('telefon', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left">{t('drzava', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left">{t('grad', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left">{t('postanskiBroj', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left">{t('adresa', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left">{t('uloga', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left">{t('akcije', { ns: 'korisnici' })}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {korisnici.map((k) => (
-                    <tr key={k.id} className="hover:bg-violet-50 transition">
-                      <td className="px-8 py-3 text-left align-middle">
-                        <span className="inline-block w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
-                          <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="12" cy="8" r="4" />
-                            <path d="M6 20c0-2.2 3.6-4 6-4s6 1.8 6 4" />
-                          </svg>
-                        </span>
-                      </td>
-                      <td className="px-8 py-3 text-left align-middle">{k.ime}</td>
-                      <td className="px-8 py-3 text-left align-middle">{k.email}</td>
-                      <td className="px-8 py-3 text-left align-middle">
-                        <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs">{k.uloga}</span>
-                      </td>
-                      <td className="px-8 py-3 text-left align-middle">{new Date(k.kreiran).toLocaleDateString()}</td>
-                      <td className="px-8 py-3 text-left align-middle flex gap-2">
-                        <button className="text-blue-600 hover:underline" onClick={() => handleKorisnikEdit(k)}>{t('edit')}</button>
-                        <button className="text-red-600 hover:underline" onClick={() => handleKorisnikDelete(k.id)}>{t('delete')}</button>
+                  {korisnici.map((k, idx) => (
+                    <tr key={k.id} className={idx % 2 === 0 ? "bg-white" : "bg-violet-50"}>
+                      <td className="px-4 py-2">{k.ime}</td>
+                      <td className="px-4 py-2">{k.prezime}</td>
+                      <td className="px-4 py-2">{k.email}</td>
+                      <td className="px-4 py-2">{k.telefon}</td>
+                      <td className="px-4 py-2">{k.drzava}</td>
+                      <td className="px-4 py-2">{k.grad}</td>
+                      <td className="px-4 py-2">{k.postanskiBroj}</td>
+                      <td className="px-4 py-2">{k.adresa}</td>
+                      <td className="px-4 py-2">{t(k.uloga, { ns: 'korisnici' })}</td>
+                      <td className="px-4 py-2 flex gap-2">
+                        <button
+                          onClick={() => handleKorisnikEdit(k)}
+                          className="bg-violet-500 text-white px-3 py-1 rounded hover:bg-violet-600 transition"
+                        >
+                          {t('spremi', { ns: 'korisnici' })}
+                        </button>
+                        <button
+                          onClick={() => handleKorisnikDelete(k.id)}
+                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                        >
+                          {t('odustani', { ns: 'korisnici' })}
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -538,7 +547,7 @@ export default function AdminHome() {
               />
               <input
                 type="number"
-                placeholder={t('količina') }
+                placeholder={t('količina')}
                 className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 required
                 value={proizvodForm.kolicina}
