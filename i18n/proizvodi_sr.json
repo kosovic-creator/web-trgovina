@@ -16,5 +16,8 @@
   "out_of_stock": "Nema na skladištu",
   "in_stock": "Na skladištu",
   "kategorija": "Kategorija",
-  "karakteristike": "Karakteristike"
+  "karakteristike": "Karakteristike",
+  "naziv_error": "Naziv mora imati najmanje 2 karaktera",
+  "cena_error": "Cena mora biti veća ili jednaka 0",
+  "kolicina_error": "Količina mora biti najmanje 1"
 }

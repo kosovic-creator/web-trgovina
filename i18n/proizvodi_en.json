@@ -16,5 +16,8 @@
   "out_of_stock": "Out of stock",
   "in_stock": "In stock",
   "kategorija": "Category",
-  "karakteristike": "Characteristics"
+  "karakteristike": "Characteristics",
+  "naziv_error": "Name must be at least 2 characters long",
+  "cena_error": "Price must be greater than or equal to 0",
+  "kolicina_error": "Quantity must be at least 1"
 }

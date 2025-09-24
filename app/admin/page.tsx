@@ -97,11 +97,16 @@ export default function AdminHome() {
 
   const handleProizvodSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const parse = proizvodSchema(t).safeParse(proizvodForm);
+    const parse = proizvodSchema((key) => t(key, { ns: 'proizvodi' })).safeParse(proizvodForm);
     if (!parse.success) {
-      alert('Greška u validaciji: ' + parse.error.issues.map(e => e.message).join(', '));
+      const fieldErrors: { [key: string]: string } = {};
+      parse.error.issues.forEach(issue => {
+        if (issue.path[0]) fieldErrors[String(issue.path[0])] = issue.message;
+      });
+      setErrors(fieldErrors);
       return;
     }
+    setErrors({});
 
     let slikaUrl = '';
     if (file) {
@@ -585,69 +590,68 @@ export default function AdminHome() {
                 )}
               </div>
             </div>
+
             <form className="flex flex-col gap-4" onSubmit={editPorudzbinaId ? handleProizvodUpdate : handleProizvodSubmit}>
               <input
                 type="text"
                 placeholder={t('product_name')}
-                className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
-                required
                 value={proizvodForm.naziv}
                 onChange={e => setProizvodForm(f => ({ ...f, naziv: e.target.value }))}
+                 className="border border-violet-200 p-3 rounded-lg"
               />
+              {errors.naziv && <span className="text-red-600 text-sm">{errors.naziv}</span>}
+
               <input
                 type="number"
                 placeholder={t('price')}
-                className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
-                required
                 value={proizvodForm.cena}
                 onChange={e => setProizvodForm(f => ({ ...f, cena: Number(e.target.value) }))}
+                 className="border border-violet-200 p-3 rounded-lg"
               />
+              {errors.cena && <span className="text-red-600 text-sm">{errors.cena}</span>}
+
               <input
                 type="text"
                 placeholder={t('characteristics')}
-                className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 value={proizvodForm.karakteristike}
                 onChange={e => setProizvodForm(f => ({ ...f, karakteristike: e.target.value }))}
+                 className="border border-violet-200 p-3 rounded-lg"
               />
+              {errors.karakteristike && <span className="text-red-600 text-sm">{errors.karakteristike}</span>}
+
               <input
                 type="text"
                 placeholder={t('category')}
-                className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 value={proizvodForm.kategorija}
                 onChange={e => setProizvodForm(f => ({ ...f, kategorija: e.target.value }))}
+                 className="border border-violet-200 p-3 rounded-lg"
               />
-              <div className="flex flex-col gap-2 w-full">
-                <label className="text-sm text-violet-700">{t('product_image')}</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={e => setFile(e.target.files?.[0] || null)}
-                  className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
-                />
-              </div>
+              {errors.kategorija && <span className="text-red-600 text-sm">{errors.kategorija}</span>}
+
               <input
                 type="text"
                 placeholder={t('description')}
-                className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
                 value={proizvodForm.opis}
                 onChange={e => setProizvodForm(f => ({ ...f, opis: e.target.value }))}
+                 className="border border-violet-200 p-3 rounded-lg"
               />
+              {errors.opis && <span className="text-red-600 text-sm">{errors.opis}</span>}
+
               <input
                 type="number"
                 placeholder={t('količina')}
-                className="border border-violet-200 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-violet-400"
-                required
                 value={proizvodForm.kolicina}
                 onChange={e => setProizvodForm(f => ({ ...f, kolicina: Number(e.target.value) }))}
+                 className="border border-violet-200 p-3 rounded-lg"
               />
-              <div className="col-span-1 md:col-span-2 flex gap-2">
-                <button
-                  type="submit"
-                  className="bg-violet-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-violet-700 transition w-full md:w-auto"
-                >
-                  {editPorudzbinaId ? t('save_changes') : t('add')}
-                </button>
-              </div>
+              {errors.kolicina && <span className="text-red-600 text-sm">{errors.kolicina}</span>}
+
+              <button
+                type="submit"
+               className="bg-violet-600 text-white px-6 py-2 rounded-lg mt-4">
+              
+                {editPorudzbinaId ? t('save_changes', { ns: 'proizvodi' }) : t('dodaj', { ns: 'proizvodi' })}
+              </button>
             </form>
           </div>
           {/* Filterirani prikaz proizvoda u tabeli */}
