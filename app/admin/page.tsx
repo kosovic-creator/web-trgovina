@@ -8,6 +8,41 @@ import { FaSearch, FaTimes } from "react-icons/fa";
 import { Korisnik } from '@/types';
 import { Porudzbina } from '@/types';
 import { Proizvod } from '@/types';
+import { z } from 'zod';
+
+
+// Zod šeme
+const korisnikSchema = z.object({
+  ime: z.string().min(2, { message: 'Ime mora imati najmanje 2 karaktera' }),
+  prezime: z.string().min(2, { message: 'Prezime mora imati najmanje 2 karaktera' }),
+  email: z.string().email({ message: 'Email nije validan' }),
+  telefon: z.string().min(5).max(15).regex(/^\+?[0-9\s]*$/, { message: 'Telefon nije validan' }).optional(),
+  drzava: z.string().min(2, { message: 'Država mora imati najmanje 2 karaktera' }),
+  grad: z.string().min(2, { message: 'Grad mora imati najmanje 2 karaktera' }).optional(),
+  postanskiBroj: z.string().min(2, { message: 'Poštanski broj mora imati najmanje 2 karaktera' }).optional(),
+  adresa: z.string().min(2, { message: 'Adresa mora imati najmanje 2 karaktera' }).optional(),
+  uloga: z.enum(['korisnik', 'admin']),
+  lozinka: z.string().min(6, { message: 'Lozinka mora imati najmanje 6 karaktera' }),
+});
+
+const proizvodSchema = z.object({
+  naziv: z.string().min(2, { message: 'Naziv mora imati najmanje 2 karaktera' }),
+  cena: z.number().min(0, { message: 'Cena mora biti pozitivna' }),
+  slika: z.string().optional(),
+  opis: z.string().optional(),
+  karakteristike: z.string().optional(),
+  kategorija: z.string().optional(),
+  kolicina: z.number().min(1),
+});
+
+const porudzbinaSchema = z.object({
+  korisnikId: z.string().min(1),
+  ukupno: z.number().min(0, { message: 'Ukupno mora biti pozitivno' }),
+  status: z.string().min(2, { message: 'Status mora imati najmanje 2 karaktera' }),
+  kreiran: z.string().optional(),
+  email: z.string().email().optional(),
+  idPlacanja: z.string().optional(),
+});
 
 
 export default function AdminHome() {
@@ -34,6 +69,7 @@ export default function AdminHome() {
   const [editKorisnikId, setEditKorisnikId] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [search, setSearch] = useState('');
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     fetch('/api/korisnici?page=1&pageSize=10')
@@ -61,6 +97,11 @@ export default function AdminHome() {
 
   const handleProizvodSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const parse = proizvodSchema.safeParse(proizvodForm);
+    if (!parse.success) {
+      alert('Greška u validaciji: ' + parse.error.issues.map(e => e.message).join(', '));
+      return;
+    }
 
     let slikaUrl = '';
     if (file) {
@@ -184,6 +225,17 @@ export default function AdminHome() {
   // Dodavanje korisnika
   const handleKorisnikSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const parse = korisnikSchema.safeParse(korisnikForm);
+    if (!parse.success) {
+      // Mapiraj greške po polju
+      const fieldErrors: { [key: string]: string } = {};
+      parse.error.issues.forEach(issue => {
+        if (issue.path[0]) fieldErrors[String(issue.path[0])] = issue.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+    setErrors({});
     await fetch('/api/korisnici', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -263,6 +315,11 @@ export default function AdminHome() {
   // Dodaj funkciju za kreiranje nove porudžbine
   const handlePorudzbinaSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const parse = porudzbinaSchema.safeParse(porudzbinaForm);
+    if (!parse.success) {
+      alert('Greška u validaciji: ' + parse.error.issues.map(e => e.message).join(', '));
+      return;
+    }
     await fetch('/api/porudzbine', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -332,90 +389,120 @@ export default function AdminHome() {
         <div className="w-full">
           <div className="bg-white rounded-xl shadow-lg p-8 mb-8 w-full">
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('add_new_user')}</h2>
-            <form
-              onSubmit={editKorisnikId ? handleKorisnikUpdate : handleKorisnikSubmit}
-              className="flex flex-wrap gap-4 items-center"
-            >
+            <form onSubmit={editKorisnikId ? handleKorisnikUpdate : handleKorisnikSubmit} className="flex flex-col gap-4">
               <input
                 type="text"
-                placeholder={t('ime', { ns: 'korisnici' })}
-                required
+                placeholder="Ime"
                 value={korisnikForm.ime}
                 onChange={e => setKorisnikForm(f => ({ ...f, ime: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+                className="border border-violet-200 p-3 rounded-lg"
               />
+              {errors.ime && (
+                <span className="text-red-600 text-sm">{errors.ime}</span>
+              )}
+
               <input
                 type="text"
-                placeholder={t('prezime', { ns: 'korisnici' })}
-                required
+                placeholder="Prezime"
                 value={korisnikForm.prezime}
                 onChange={e => setKorisnikForm(f => ({ ...f, prezime: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+                className="border border-violet-200 p-3 rounded-lg"
               />
+              {errors.prezime && (
+                <span className="text-red-600 text-sm">{errors.prezime}</span>
+              )}
+
               <input
                 type="email"
-                placeholder={t('email', { ns: 'korisnici' })}
-                required
+                placeholder="Email"
                 value={korisnikForm.email}
                 onChange={e => setKorisnikForm(f => ({ ...f, email: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+                className="border border-violet-200 p-3 rounded-lg"
               />
+              {errors.email && (
+                <span className="text-red-600 text-sm">{errors.email}</span>
+              )}
+
               <input
                 type="text"
-                placeholder={t('telefon', { ns: 'korisnici' })}
+                placeholder="Telefon"
                 value={korisnikForm.telefon}
                 onChange={e => setKorisnikForm(f => ({ ...f, telefon: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+                className="border border-violet-200 p-3 rounded-lg"
               />
+              {errors.telefon && (
+                <span className="text-red-600 text-sm">{errors.telefon}</span>
+              )}
+
               <input
                 type="text"
-                placeholder={t('drzava', { ns: 'korisnici' })}
+                placeholder="Država"
                 value={korisnikForm.drzava}
                 onChange={e => setKorisnikForm(f => ({ ...f, drzava: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+                className="border border-violet-200 p-3 rounded-lg"
               />
+              {errors.drzava && (
+                <span className="text-red-600 text-sm">{errors.drzava}</span>
+              )}
+
               <input
                 type="text"
-                placeholder={t('grad', { ns: 'korisnici' })}
+                placeholder="Grad"
                 value={korisnikForm.grad}
                 onChange={e => setKorisnikForm(f => ({ ...f, grad: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+                className="border border-violet-200 p-3 rounded-lg"
               />
+              {errors.grad && (
+                <span className="text-red-600 text-sm">{errors.grad}</span>
+              )}
+
               <input
                 type="text"
-                placeholder={t('postanskiBroj', { ns: 'korisnici' })}
+                placeholder="Poštanski broj"
                 value={korisnikForm.postanskiBroj}
                 onChange={e => setKorisnikForm(f => ({ ...f, postanskiBroj: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+                className="border border-violet-200 p-3 rounded-lg"
               />
+              {errors.postanskiBroj && (
+                <span className="text-red-600 text-sm">{errors.postanskiBroj}</span>
+              )}
+
               <input
                 type="text"
-                placeholder={t('adresa', { ns: 'korisnici' })}
+                placeholder="Adresa"
                 value={korisnikForm.adresa}
                 onChange={e => setKorisnikForm(f => ({ ...f, adresa: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
+                className="border border-violet-200 p-3 rounded-lg"
               />
-              <input
-                type="password"
-                placeholder={t('lozinka', { ns: 'korisnici' })}
-                required
-                value={korisnikForm.lozinka}
-                onChange={e => setKorisnikForm(f => ({ ...f, lozinka: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
-              />
+              {errors.adresa && (
+                <span className="text-red-600 text-sm">{errors.adresa}</span>
+              )}
+
               <select
-                className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px]"
                 value={korisnikForm.uloga}
                 onChange={e => setKorisnikForm(f => ({ ...f, uloga: e.target.value }))}
+                className="border border-violet-200 p-3 rounded-lg"
               >
-                <option value="korisnik">{t('user')}</option>
-                <option value="admin">{t('admin')}</option>
+                <option value="korisnik">Korisnik</option>
+                <option value="admin">Admin</option>
               </select>
-              <button
-                type="submit"
-                className="bg-violet-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-violet-700 transition"
-              >
-                {editKorisnikId ? t('save_changes') : t('add')}
+              {errors.uloga && (
+                <span className="text-red-600 text-sm">{errors.uloga}</span>
+              )}
+
+              <input
+                type="password"
+                placeholder="Lozinka"
+                value={korisnikForm.lozinka}
+                onChange={e => setKorisnikForm(f => ({ ...f, lozinka: e.target.value }))}
+                className="border border-violet-200 p-3 rounded-lg"
+              />
+              {errors.lozinka && (
+                <span className="text-red-600 text-sm">{errors.lozinka}</span>
+              )}
+
+              <button type="submit" className="bg-violet-600 text-white px-6 py-2 rounded-lg mt-4">
+                {editKorisnikId ? 'Ažuriraj korisnika' : 'Dodaj korisnika'}
               </button>
             </form>
           </div>
@@ -482,7 +569,7 @@ export default function AdminHome() {
                   type="text"
                   value={search}
                   onChange={e => setSearch(e.target.value)}
-                  placeholder={t('search_placeholder') || 'Pretraži proizvode...'}
+                  placeholder={t('search_placeholder', { ns: 'proizvodi' })}
                   className="w-full border border-violet-300 rounded-lg p-3 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-violet-400"
                 />
                 <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-violet-400 text-lg" />
@@ -498,7 +585,7 @@ export default function AdminHome() {
                 )}
               </div>
             </div>
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start" onSubmit={editPorudzbinaId ? handleProizvodUpdate : handleProizvodSubmit}>
+            <form className="flex flex-col gap-4" onSubmit={editPorudzbinaId ? handleProizvodUpdate : handleProizvodSubmit}>
               <input
                 type="text"
                 placeholder={t('product_name')}
@@ -606,10 +693,7 @@ export default function AdminHome() {
       {tab === 'porudzbine' && (
         <div className="bg-white rounded-xl shadow-lg p-8">
           <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('order_list')}</h2>
-          <form
-            onSubmit={editPorudzbinaId ? handlePorudzbinaUpdate : handlePorudzbinaSubmit}
-            className="mb-8 flex flex-wrap gap-4 items-center"
-          >
+          <form className="flex flex-col gap-4" onSubmit={editPorudzbinaId ? handlePorudzbinaUpdate : handlePorudzbinaSubmit}>
             <input
               type="text"
               placeholder={t('user_id')}
