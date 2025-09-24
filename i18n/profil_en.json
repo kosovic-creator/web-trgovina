@@ -10,5 +10,10 @@
   "profile_picture": "Profile picture",
   "role": "Role",
   "user": "User",
-  "admin": "Admin"
+  "admin": "Admin",
+  "guest": "Guest",
+  "postal_code": "Postal code",
+  "city": "City",
+  "country": "Country",
+  "surname": "Surname"
 }

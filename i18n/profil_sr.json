@@ -10,6 +10,10 @@
   "profile_picture": "Profilna slika",
   "role": "Uloga",
   "user": "Korisnik",
-  "admin": "Admin"
-  }
-
+  "admin": "Admin",
+  "guest": "Gost",
+  "postal_code": "Poštanski broj",
+  "city": "Grad",
+  "country": "Država",
+  "surname": "Prezime"
+}
