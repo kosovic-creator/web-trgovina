@@ -6,5 +6,10 @@
   "prethodna": "Prethodna",
   "sljedeca": "Sljedeća",
   "empty": "Nema pronađenih porudžbina.",
-  "must_login": "Morate biti prijavljeni da biste videli svoje porudžbine."
+  "must_login": "Morate biti prijavljeni da biste videli svoje porudžbine.",
+  "required": "Polje je obavezno.",
+  "invalid_email": "Email nije validan.",
+  "success_create": "Porudžbina uspešno kreirana.",
+  "success_update": "Izmjeni porudžbinu.",
+  "success_delete": "Porudžbina uspešno obrisana."
 }
