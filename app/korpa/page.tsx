@@ -91,20 +91,26 @@ export default function KorpaPage() {
       });
       if (response.ok) {
         await isprazniKorpu();
+
         toast.success('Porudžbina uspešno poslata!');
+        return true;
       } else {
+
         toast.error('Greška pri slanju porudžbine.');
+        return false;
       }
     } catch {
+
       toast.error('Greška pri slanju porudžbine.');
+      return false;
     }
   };
 
   const handleZavrsiKupovinu = async () => {
-    await potvrdiPorudzbinu();
-    setTimeout(() => {
+    const success = await potvrdiPorudzbinu();
+    if (success) {
       router.push('/porudzbine');
-    }, 1500); // Sačekaj 1.5 sekundu
+    }
   };
 
   if (loading) return <div className="p-4">{t('loading') || "Učitavanje..."}</div>;
@@ -128,7 +134,7 @@ export default function KorpaPage() {
 
   return (
     <>
-      <Toaster position="top-center" />
+      <Toaster position="top-right" />
       <div className="p-4 flex flex-col md:flex-row gap-8">
         <div className="flex-1">
           <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
@@ -232,6 +238,7 @@ export default function KorpaPage() {
 
         </div>
       </div>
+
     </>
   );
 }

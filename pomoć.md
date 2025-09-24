@@ -1,13 +1,13 @@
-  const handleEdit = (p: Porudzbina) => {
-    setPorudzbinaForm({ korisnik: p.korisnik, ukupno: p.ukupno, status: p.status, kreiran: p.kreiran });
-    setEditPorudzbinaId(p.id);
-  };
 
-  const handleDelete = async (id: string) => {
-    await fetch('/api/porudzbine', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id })
-    });
-    // Dodaj ponovno učitavanje porudžbina
-  };
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     const flag = localStorage.getItem('porudzbinaSuccess');
+  //     if (flag === '1') {
+  //       toast.success('Porudžbina uspešno poslata!', { duration: 4000 });
+  //       localStorage.removeItem('porudzbinaSuccess');
+  //     }
+  //   }
+  // }, []);
+
+// localStorage.setItem('porudzbinaSuccess', '1');
+

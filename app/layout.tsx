@@ -7,6 +7,7 @@ import Sidebar from '../components/Sidebar';
 import { useState } from 'react';
 import { SessionProvider } from "next-auth/react";
 import { KorpaProvider } from "@/components/KorpaContext";
+import { Toaster } from 'react-hot-toast';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 {children}
               </div>
             </div>
+            <Toaster position="top-right" />
           </KorpaProvider>
         </SessionProvider>
       </body>

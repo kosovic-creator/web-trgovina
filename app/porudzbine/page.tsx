@@ -15,9 +15,7 @@ export default function PorudzbinePage() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
-  const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [success, setSuccess] = useState<string | null>(null);
   const [form, setForm] = useState({ korisnikId: '', ukupno: '', status: '', email: '' });
   const [editId, setEditId] = useState<string | null>(null);
 
@@ -65,8 +63,6 @@ export default function PorudzbinePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(null);
     if (!validateForm()) return;
     const method = editId ? 'PUT' : 'POST';
     const body = editId ? { id: editId, ...form, ukupno: Number(form.ukupno) } : { ...form, ukupno: Number(form.ukupno) };
@@ -95,13 +91,10 @@ export default function PorudzbinePage() {
       email: p.email || '',
     });
     setFieldErrors({});
-    setError(null);
-    setSuccess(null);
+
   };
 
   const handleDelete = async (id: string) => {
-    setError(null);
-    setSuccess(null);
     const res = await fetch('/api/porudzbine', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -116,15 +109,7 @@ export default function PorudzbinePage() {
     }
   };
 
-  useEffect(() => {
-    if (success || error) {
-      const timer = setTimeout(() => {
-        setSuccess(null);
-        setError(null);
-      }, 3000); // 3 sekunde
-      return () => clearTimeout(timer);
-    }
-  }, [success, error]);
+
 
   if (!session?.user) {
     return (
