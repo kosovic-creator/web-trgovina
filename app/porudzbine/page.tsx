@@ -1,18 +1,11 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Porudzbina } from '@/types';
 import { useTranslation } from 'react-i18next';
 import { FaClipboardList, FaUser, FaTrash, FaEdit } from "react-icons/fa";
 import { useSession } from 'next-auth/react';
 import { z } from 'zod';
 import '@/i18n/config';
-
-const schema = z.object({
-  korisnikId: z.string().min(1, { message: 'required' }),
-  ukupno: z.string().min(1, { message: 'required' }),
-  status: z.string().min(1, { message: 'required' }),
-  email: z.string().email({ message: 'invalid_email' }).optional().or(z.literal('')),
-});
 
 export default function PorudzbinePage() {
   const { t } = useTranslation('porudzbine');
@@ -27,23 +20,32 @@ export default function PorudzbinePage() {
   const [form, setForm] = useState({ korisnikId: '', ukupno: '', status: '', email: '' });
   const [editId, setEditId] = useState<string | null>(null);
 
-  const fetchPorudzbine = () => {
+  // Zod shema sa lokalizovanim porukama
+  const schema = z.object({
+    korisnikId: z.string().min(1, { message: t('required') }),
+    ukupno: z.string().min(1, { message: t('required') }),
+    status: z.string().min(1, { message: t('required') }),
+    email: z.string().email({ message: t('invalid_email') }).optional().or(z.literal('')),
+  });
+
+  const fetchPorudzbine = useCallback(() => {
     fetch(`/api/porudzbine?page=${page}&pageSize=${pageSize}`)
       .then(res => res.json())
       .then(data => {
         setPorudzbine(data.porudzbine);
         setTotal(data.total);
       });
-  };
+  }, [page, pageSize]);
 
   useEffect(() => {
     fetchPorudzbine();
-  }, [page, pageSize]);
+  }, [fetchPorudzbine]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Validacija forme sa lokalizovanim porukama
   const validateForm = () => {
     setFieldErrors({});
     const result = schema.safeParse(form);
@@ -51,7 +53,7 @@ export default function PorudzbinePage() {
       const errors: Record<string, string> = {};
       result.error.issues.forEach(err => {
         if (err.path[0]) {
-          errors[String(err.path[0])] = t(err.message);
+          errors[String(err.path[0])] = err.message;
         }
       });
       setFieldErrors(errors);
@@ -74,7 +76,7 @@ export default function PorudzbinePage() {
     });
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error ? t(data.error) : 'Greška');
+      setError(data.error ? t(data.error) : t('error'));
     } else {
       setSuccess(editId ? t('success_update') : t('success_create'));
       setForm({ korisnikId: '', ukupno: '', status: '', email: '' });
@@ -106,7 +108,7 @@ export default function PorudzbinePage() {
     });
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error ? t(data.error) : 'Greška');
+      setError(data.error ? t(data.error) : t('error'));
     } else {
       setSuccess(t('success_delete'));
       fetchPorudzbine();
@@ -133,27 +135,60 @@ export default function PorudzbinePage() {
       {/* Forma za dodavanje/izmenu */}
       <form onSubmit={handleSubmit} className="mb-4 flex gap-2 flex-wrap">
         <div>
-          <input name="korisnikId" value={form.korisnikId} onChange={handleChange} placeholder="Korisnik ID" className="border p-2 rounded" />
-          {fieldErrors.korisnikId && <div className="text-red-600 text-sm">{fieldErrors.korisnikId}</div>}
+          <input
+            name="korisnikId"
+            value={form.korisnikId}
+            onChange={handleChange}
+            placeholder="Korisnik ID"
+            className={`border p-2 rounded ${fieldErrors.korisnikId ? 'border-red-500' : ''}`}
+          />
+          {fieldErrors.korisnikId && (
+            <div className="text-red-600 text-xs mt-1">{fieldErrors.korisnikId}</div>
+          )}
         </div>
         <div>
-          <input name="ukupno" value={form.ukupno} onChange={handleChange} placeholder={t('total')} type="number" className="border p-2 rounded" />
-          {fieldErrors.ukupno && <div className="text-red-600 text-sm">{fieldErrors.ukupno}</div>}
+          <input
+            name="ukupno"
+            value={form.ukupno}
+            onChange={handleChange}
+            placeholder={t('total')}
+            type="number"
+            className={`border p-2 rounded ${fieldErrors.ukupno ? 'border-red-500' : ''}`}
+          />
+          {fieldErrors.ukupno && (
+            <div className="text-red-600 text-xs mt-1">{fieldErrors.ukupno}</div>
+          )}
         </div>
         <div>
-          <input name="status" value={form.status} onChange={handleChange} placeholder={t('status')} className="border p-2 rounded" />
-          {fieldErrors.status && <div className="text-red-600 text-sm">{fieldErrors.status}</div>}
+          <input
+            name="status"
+            value={form.status}
+            onChange={handleChange}
+            placeholder={t('status')}
+            className={`border p-2 rounded ${fieldErrors.status ? 'border-red-500' : ''}`}
+          />
+          {fieldErrors.status && (
+            <div className="text-red-600 text-xs mt-1">{fieldErrors.status}</div>
+          )}
         </div>
         <div>
-          <input name="email" value={form.email} onChange={handleChange} placeholder="Email" className="border p-2 rounded" />
-          {fieldErrors.email && <div className="text-red-600 text-sm">{fieldErrors.email}</div>}
+          <input
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Email"
+            className={`border p-2 rounded ${fieldErrors.email ? 'border-red-500' : ''}`}
+          />
+          {fieldErrors.email && (
+            <div className="text-red-600 text-xs mt-1">{fieldErrors.email}</div>
+          )}
         </div>
         <button type="submit" className="bg-violet-600 text-white px-3 py-1 rounded shadow hover:bg-violet-700 transition">
-          { t('success_update')}
+          {t('success_update') }
         </button>
         {editId && (
           <button type="button" onClick={() => { setEditId(null); setForm({ korisnikId: '', ukupno: '', status: '', email: '' }); }} className="bg-gray-300 px-3 py-1 rounded">
-            Otkaži
+            {t('cancel')}
           </button>
         )}
       </form>
@@ -198,7 +233,7 @@ export default function PorudzbinePage() {
             onClick={() => setPage(page - 1)}
             className={`px-3 py-1 rounded ${page === 1 ? 'bg-gray-200 text-gray-400' : 'bg-violet-600 text-white hover:bg-violet-700'}`}
           >
-            {t('prev')}
+            {t('prethodna')}
           </button>
           <span>
             {page} / {Math.ceil(total / pageSize)}
@@ -208,7 +243,7 @@ export default function PorudzbinePage() {
             onClick={() => setPage(page + 1)}
             className={`px-3 py-1 rounded ${page >= Math.ceil(total / pageSize) ? 'bg-gray-200 text-gray-400' : 'bg-violet-600 text-white hover:bg-violet-700'}`}
           >
-            {t('next')}
+            {t('sljedeca')}
           </button>
         </div>
       )}

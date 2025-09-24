@@ -11,5 +11,6 @@
   "invalid_email": "Email is not valid.",
   "success_create": "Order created successfully.",
   "success_update": "Update Order.",
-  "success_delete": "Order deleted successfully."
+  "success_delete": "Order deleted successfully.",
+  "cancel": "Cancel"
 }

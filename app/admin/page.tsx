@@ -35,21 +35,11 @@ const proizvodSchema = (t: (key: string) => string) => z.object({
   kolicina: z.number().min(1, { message: t('kolicina_error') }),
 });
 
-const porudzbinaSchema = (t: (key: string) => string) => z.object({
-  korisnikId: z.string().min(1, { message: t('korisnikId_error') }),
-  ukupno: z.number().min(0, { message: t('ukupno_error') }),
-  status: z.string().min(2, { message: t('status_error') }),
-  kreiran: z.string().optional(),
-  email: z.string().email({ message: t('email_error') }).optional(),
-  idPlacanja: z.string().optional(),
-});
-
 
 export default function AdminHome() {
   const { t } = useTranslation(['home', 'korisnici']);
   const [tab, setTab] = useState<'korisnici' | 'proizvodi' | 'porudzbine'>('korisnici');
   const [porudzbine, setPorudzbine] = useState<Porudzbina[]>([]);
-  const [porudzbinaForm, setPorudzbinaForm] = useState({ korisnikId: '', korisnik: '', ukupno: 0, status: '', kreiran: '', email: '', idPlacanja: '' });
   const [editPorudzbinaId, setEditPorudzbinaId] = useState<string | null>(null);
   const [proizvodForm, setProizvodForm] = useState({ naziv: '', cena: 0, slika: '', opis: '', karakteristike: '', kategorija: '', kolicina: 1 });
   const [proizvodi, setProizvodi] = React.useState<Proizvod[]>([]);
@@ -293,70 +283,7 @@ export default function AdminHome() {
       .then(data => setKorisnici(data.korisnici || []));
   };
 
-  const handlePorudzbinaDelete = async (id: string) => {
-    await fetch('/api/porudzbine', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id }),
-    });
-    fetch('/api/porudzbine?page=1&pageSize=10')
-      .then(res => res.json())
-      .then(data => setPorudzbine(data.porudzbine || []));
-  };
 
-  const handlePorudzbinaEdit = (p: Porudzbina) => {
-    setPorudzbinaForm({
-      korisnikId: p.korisnikId ?? '',
-      korisnik: p.korisnikId ?? '',
-      ukupno: p.ukupno,
-      status: p.status,
-      kreiran: p.kreiran as unknown as string,
-      email: p.email ?? '',
-      idPlacanja: p.idPlacanja ?? ''
-    });
-    setEditPorudzbinaId(p.id);
-  };
-
-  // Dodaj funkciju za kreiranje nove porudžbine
-  const handlePorudzbinaSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const parse = porudzbinaSchema(t).safeParse(porudzbinaForm);
-    if (!parse.success) {
-      alert('Greška u validaciji: ' + parse.error.issues.map(e => e.message).join(', '));
-      return;
-    }
-    await fetch('/api/porudzbine', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(porudzbinaForm),
-    });
-    setPorudzbinaForm({ korisnikId: '', korisnik: '', ukupno: 0, status: '', kreiran: '', email: '', idPlacanja: '' });
-    fetch('/api/porudzbine?page=1&pageSize=10')
-      .then(res => res.json())
-      .then(data => setPorudzbine(data.porudzbine || []));
-  };
-
-  const handlePorudzbinaUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!editPorudzbinaId) return;
-    await fetch('/api/porudzbine', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id: editPorudzbinaId,
-        korisnikId: porudzbinaForm.korisnikId, // dodaj ovo polje!
-        ukupno: porudzbinaForm.ukupno,
-        status: porudzbinaForm.status,
-        email: porudzbinaForm.email, // ako treba
-        idPlacanja: porudzbinaForm.idPlacanja, // ako treba
-      }),
-    });
-    setPorudzbinaForm({ korisnikId: '', korisnik: '', ukupno: 0, status: '', kreiran: '', email: '', idPlacanja: '' });
-    setEditPorudzbinaId(null);
-    fetch('/api/porudzbine?page=1&pageSize=10')
-      .then(res => res.json())
-      .then(data => setPorudzbine(data.porudzbine || []));
-  };
 
   return (
     <div className="px-2 bg-gray-50 min-h-screen w-full">

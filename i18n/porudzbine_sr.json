@@ -11,5 +11,7 @@
   "invalid_email": "Email nije validan.",
   "success_create": "Porudžbina uspešno kreirana.",
   "success_update": "Izmjeni porudžbinu.",
-  "success_delete": "Porudžbina uspešno obrisana."
+  "success_delete": "Porudžbina uspešno obrisana.",
+  "cancel": "Otkaži"
+
 }
