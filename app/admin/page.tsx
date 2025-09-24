@@ -230,7 +230,7 @@ export default function AdminHome() {
   // Dodavanje korisnika
   const handleKorisnikSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const parse = korisnikSchema(t).safeParse(korisnikForm);
+    const parse = korisnikSchema((key) => t(key, { ns: 'korisnici' })).safeParse(korisnikForm);
     if (!parse.success) {
       // Mapiraj greške po polju
       const fieldErrors: { [key: string]: string } = {};
@@ -360,7 +360,7 @@ export default function AdminHome() {
 
   return (
     <div className="px-2 bg-gray-50 min-h-screen w-full">
-      {/* <h1 className="text-3xl font-bold mb-8 text-violet-700">{t('admin_panel')}</h1> */}
+
       <div className="flex gap-4 mb-8">
         <button
           onClick={() => setTab('korisnici')}
@@ -649,7 +649,7 @@ export default function AdminHome() {
               <button
                 type="submit"
                className="bg-violet-600 text-white px-6 py-2 rounded-lg mt-4">
-              
+
                 {editPorudzbinaId ? t('save_changes', { ns: 'proizvodi' }) : t('dodaj', { ns: 'proizvodi' })}
               </button>
             </form>
