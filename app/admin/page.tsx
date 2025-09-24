@@ -697,49 +697,6 @@ export default function AdminHome() {
       {tab === 'porudzbine' && (
         <div className="bg-white rounded-xl shadow-lg p-8">
           <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('order_list')}</h2>
-          <form className="flex flex-col gap-4" onSubmit={editPorudzbinaId ? handlePorudzbinaUpdate : handlePorudzbinaSubmit}>
-            <input
-              type="text"
-              placeholder={t('user_id')}
-              value={porudzbinaForm.korisnikId}
-              onChange={e => setPorudzbinaForm(f => ({ ...f, korisnikId: e.target.value }))}
-              className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
-            />
-            <input
-              type="number"
-              placeholder={t('total')}
-              value={porudzbinaForm.ukupno}
-              onChange={e => setPorudzbinaForm(f => ({ ...f, ukupno: Number(e.target.value) }))}
-              className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
-            />
-            <input
-              type="text"
-              placeholder={t('status')}
-              value={porudzbinaForm.status}
-              onChange={e => setPorudzbinaForm(f => ({ ...f, status: e.target.value }))}
-              className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
-            />
-            <input
-              type="email"
-              placeholder={t('email')}
-              value={porudzbinaForm.email}
-              onChange={e => setPorudzbinaForm(f => ({ ...f, email: e.target.value }))}
-              className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
-            />
-            <input
-              type="text"
-              placeholder={t('payment_id')}
-              value={porudzbinaForm.idPlacanja}
-              onChange={e => setPorudzbinaForm(f => ({ ...f, idPlacanja: e.target.value }))}
-              className="border border-violet-200 p-3 rounded-lg flex-1 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-violet-400"
-            />
-            <button
-              type="submit"
-              className="bg-violet-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-violet-700 transition"
-            >
-              {editPorudzbinaId ? t('save_changes') : t('add')}
-            </button>
-          </form>
           <div className="overflow-x-auto">
             <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">
               <thead>
@@ -749,7 +706,6 @@ export default function AdminHome() {
                   <th className="px-8 py-3 text-left align-middle">{t('total')}</th>
                   <th className="px-8 py-3 text-left align-middle">{t('status')}</th>
                   <th className="px-8 py-3 text-left align-middle">{t('created')}</th>
-                  <th className="px-8 py-3 text-left align-middle">{t('actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -760,10 +716,6 @@ export default function AdminHome() {
                     <td className="px-8 py-3 text-left align-middle">{p.ukupno} EUR</td>
                     <td className="px-8 py-3 text-left align-middle">{p.status}</td>
                     <td className="px-8 py-3 text-left align-middle">{new Date(p.kreiran).toLocaleDateString()}</td>
-                    <td className="px-8 py-3 text-left align-middle flex gap-2">
-                      <button className="text-blue-600 hover:underline" onClick={() => handlePorudzbinaEdit(p)}>{t('edit')}</button>
-                      <button className="text-red-600 hover:underline" onClick={() => handlePorudzbinaDelete(p.id)}>{t('delete')}</button>
-                    </td>
                   </tr>
                 ))}
               </tbody>
