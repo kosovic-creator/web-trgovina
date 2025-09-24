@@ -10,8 +10,9 @@
   "required": "Polje je obavezno.",
   "invalid_email": "Email nije validan.",
   "success_create": "Porudžbina uspešno kreirana.",
-  "success_update": "Izmjeni porudžbinu.",
+  "success_update": "Porudžbina uspešno ažurirana.",
   "success_delete": "Porudžbina uspešno obrisana.",
-  "cancel": "Otkaži"
+  "cancel": "Otkaži",
+  "update": "Ažuriraj"
 
 }

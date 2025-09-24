@@ -115,6 +115,16 @@ export default function PorudzbinePage() {
     }
   };
 
+  useEffect(() => {
+    if (success || error) {
+      const timer = setTimeout(() => {
+        setSuccess(null);
+        setError(null);
+      }, 3000); // 3 sekunde
+      return () => clearTimeout(timer);
+    }
+  }, [success, error]);
+
   if (!session?.user) {
     return (
       <div className="flex flex-col items-center gap-2 text-red-600 mt-8">
@@ -184,7 +194,7 @@ export default function PorudzbinePage() {
           )}
         </div>
         <button type="submit" className="bg-violet-600 text-white px-3 py-1 rounded shadow hover:bg-violet-700 transition">
-          {t('success_update') }
+          {t('update') }
         </button>
         {editId && (
           <button type="button" onClick={() => { setEditId(null); setForm({ korisnikId: '', ukupno: '', status: '', email: '' }); }} className="bg-gray-300 px-3 py-1 rounded">

@@ -10,7 +10,8 @@
   "required": "Field is required.",
   "invalid_email": "Email is not valid.",
   "success_create": "Order created successfully.",
-  "success_update": "Update Order.",
+  "success_update": "Order updated successfully.",
   "success_delete": "Order deleted successfully.",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "update": "Update"
 }
