@@ -12,35 +12,35 @@ import { z } from 'zod';
 
 
 // Zod šeme
-const korisnikSchema = z.object({
-  ime: z.string().min(2, { message: 'Ime mora imati najmanje 2 karaktera' }),
-  prezime: z.string().min(2, { message: 'Prezime mora imati najmanje 2 karaktera' }),
-  email: z.string().email({ message: 'Email nije validan' }),
-  telefon: z.string().min(5).max(15).regex(/^\+?[0-9\s]*$/, { message: 'Telefon nije validan' }).optional(),
-  drzava: z.string().min(2, { message: 'Država mora imati najmanje 2 karaktera' }),
-  grad: z.string().min(2, { message: 'Grad mora imati najmanje 2 karaktera' }).optional(),
-  postanskiBroj: z.string().min(2, { message: 'Poštanski broj mora imati najmanje 2 karaktera' }).optional(),
-  adresa: z.string().min(2, { message: 'Adresa mora imati najmanje 2 karaktera' }).optional(),
-  uloga: z.enum(['korisnik', 'admin']),
-  lozinka: z.string().min(6, { message: 'Lozinka mora imati najmanje 6 karaktera' }),
+const korisnikSchema = (t: (key: string) => string) => z.object({
+  ime: z.string().min(2, { message: t('ime_error') }),
+  prezime: z.string().min(2, { message: t('prezime_error') }),
+  email: z.string().email({ message: t('email_error') }),
+  telefon: z.string().min(5, { message: t('telefon_error') }).max(15).regex(/^\+?[0-9\s]*$/, { message: t('telefon_error') }).optional(),
+  drzava: z.string().min(2, { message: t('drzava_error') }),
+  grad: z.string().min(2, { message: t('grad_error') }).optional(),
+  postanskiBroj: z.string().min(2, { message: t('postanskiBroj_error') }).optional(),
+  adresa: z.string().min(2, { message: t('adresa_error') }).optional(),
+  uloga: z.enum(['korisnik', 'admin'], { message: t('uloga_error') }),
+  lozinka: z.string().min(6, { message: t('lozinka_error') }),
 });
 
-const proizvodSchema = z.object({
-  naziv: z.string().min(2, { message: 'Naziv mora imati najmanje 2 karaktera' }),
-  cena: z.number().min(0, { message: 'Cena mora biti pozitivna' }),
+const proizvodSchema = (t: (key: string) => string) => z.object({
+  naziv: z.string().min(2, { message: t('naziv_error') }),
+  cena: z.number().min(0, { message: t('cena_error') }),
   slika: z.string().optional(),
   opis: z.string().optional(),
   karakteristike: z.string().optional(),
   kategorija: z.string().optional(),
-  kolicina: z.number().min(1),
+  kolicina: z.number().min(1, { message: t('kolicina_error') }),
 });
 
-const porudzbinaSchema = z.object({
-  korisnikId: z.string().min(1),
-  ukupno: z.number().min(0, { message: 'Ukupno mora biti pozitivno' }),
-  status: z.string().min(2, { message: 'Status mora imati najmanje 2 karaktera' }),
+const porudzbinaSchema = (t: (key: string) => string) => z.object({
+  korisnikId: z.string().min(1, { message: t('korisnikId_error') }),
+  ukupno: z.number().min(0, { message: t('ukupno_error') }),
+  status: z.string().min(2, { message: t('status_error') }),
   kreiran: z.string().optional(),
-  email: z.string().email().optional(),
+  email: z.string().email({ message: t('email_error') }).optional(),
   idPlacanja: z.string().optional(),
 });
 
@@ -97,7 +97,7 @@ export default function AdminHome() {
 
   const handleProizvodSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const parse = proizvodSchema.safeParse(proizvodForm);
+    const parse = proizvodSchema(t).safeParse(proizvodForm);
     if (!parse.success) {
       alert('Greška u validaciji: ' + parse.error.issues.map(e => e.message).join(', '));
       return;
@@ -225,7 +225,7 @@ export default function AdminHome() {
   // Dodavanje korisnika
   const handleKorisnikSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const parse = korisnikSchema.safeParse(korisnikForm);
+    const parse = korisnikSchema(t).safeParse(korisnikForm);
     if (!parse.success) {
       // Mapiraj greške po polju
       const fieldErrors: { [key: string]: string } = {};
@@ -315,7 +315,7 @@ export default function AdminHome() {
   // Dodaj funkciju za kreiranje nove porudžbine
   const handlePorudzbinaSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const parse = porudzbinaSchema.safeParse(porudzbinaForm);
+    const parse = porudzbinaSchema(t).safeParse(porudzbinaForm);
     if (!parse.success) {
       alert('Greška u validaciji: ' + parse.error.issues.map(e => e.message).join(', '));
       return;

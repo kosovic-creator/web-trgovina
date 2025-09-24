@@ -19,12 +19,16 @@
   "obrisi": "Obriši",
   "dodaj": "Dodaj",
   "odustani": "Odustani",
-  "prezime_min": "Prezime mora imati najmanje 3 znaka.",
-  "greska_registracija": "Greška pri registraciji.",
-  "registracija_uspesna": "Uspešna registracija.",
-  "proverite_email": "Molimo proverite svoj email za verifikaciju.",
-  "email_invalid": "Nevažeća email adresa.",
-  "lozinka_min": "Lozinka mora imati najmanje 6 znakova.",
-  "ime_min": "Ime mora imati najmanje 3 znaka."
-
+  "ime_error": "Ime mora imati najmanje 2 karaktera",
+  "prezime_error": "Prezime mora imati najmanje 2 karaktera",
+  "email_error": "Email nije validan",
+  "telefon_error": "Telefon nije validan",
+  "drzava_error": "Država mora imati najmanje 2 karaktera",
+  "grad_error": "Grad mora imati najmanje 2 karaktera",
+  "postanskiBroj_error": "Poštanski broj mora imati najmanje 2 karaktera",
+  "adresa_error": "Adresa mora imati najmanje 2 karaktera",
+  "uloga_error": "Odaberi ulogu",
+  "lozinka_error": "Lozinka mora imati najmanje 6 karaktera"
 }
+
+

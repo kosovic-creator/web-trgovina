@@ -19,11 +19,14 @@
   "izmeni": "Edit",
   "dodaj": "Add",
   "odustani": "Cancel",
-  "prezime_min": "Last name must be at least 3 characters long.",
-  "greska_registracija": "Registration error.",
-  "registracija_uspesna": "Registration successful.",
-  "proverite_email": "Please check your email for verification.",
-  "email_invalid": "Invalid email address.",
-  "lozinka_min": "Password must be at least 6 characters long.",
-  "ime_min": "Name must be at least 3 characters long."
+  "ime_error": "Name must be at least 2 characters",
+  "prezime_error": "Last Name must be at least 2 characters",
+  "email_error": "Email is not valid",
+  "telefon_error": "Phone is not valid",
+  "drzava_error": "Country must be at least 2 characters",
+  "grad_error": "City must be at least 2 characters",
+  "postanskiBroj_error": "Postal Code must be at least 2 characters",
+  "adresa_error": "Address must be at least 2 characters",
+  "uloga_error": "Select a role",
+  "lozinka_error": "Password must be at least 6 characters"
 }
