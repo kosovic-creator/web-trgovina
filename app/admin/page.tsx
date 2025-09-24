@@ -297,7 +297,7 @@ export default function AdminHome() {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="px-2 bg-gray-50 min-h-screen w-full">
       {/* <h1 className="text-3xl font-bold mb-8 text-violet-700">{t('admin_panel')}</h1> */}
       <div className="flex gap-4 mb-8">
         <button
@@ -329,8 +329,8 @@ export default function AdminHome() {
         </button>
       </div>
       {tab === 'korisnici' && (
-        <div>
-          <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <div className="w-full">
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-8 w-full">
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('add_new_user')}</h2>
             <form
               onSubmit={editKorisnikId ? handleKorisnikUpdate : handleKorisnikSubmit}
@@ -419,22 +419,22 @@ export default function AdminHome() {
               </button>
             </form>
           </div>
-          <div className="bg-white rounded-xl shadow-lg p-8">
+          <div className="bg-white rounded-xl shadow-lg p-8 w-full">
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('user_list')}</h2>
-            <div className="overflow-x-auto">
-              <table className="min-w-full border border-gray-200 rounded-lg">
+            <div className="overflow-x-auto w-full">
+              <table className="w-full border border-gray-200 rounded-lg table-auto">
                 <thead className="bg-violet-100">
                   <tr>
-                    <th className="px-4 py-2 text-left">{t('ime', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left">{t('prezime', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left">{t('email', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left">{t('telefon', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left">{t('drzava', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left">{t('grad', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left">{t('postanskiBroj', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left">{t('adresa', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left">{t('uloga', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left">{t('akcije', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left min-w-[140px]">{t('ime', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left min-w-[140px]">{t('prezime', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left min-w-[200px]">{t('email', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left min-w-[140px]">{t('telefon', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left min-w-[140px]">{t('drzava', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left min-w-[140px]">{t('grad', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left min-w-[140px]">{t('postanskiBroj', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left min-w-[200px]">{t('adresa', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left min-w-[120px]">{t('uloga', { ns: 'korisnici' })}</th>
+                    <th className="px-4 py-2 text-left min-w-[160px]">{t('akcije', { ns: 'korisnici' })}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -452,15 +452,15 @@ export default function AdminHome() {
                       <td className="px-4 py-2 flex gap-2">
                         <button
                           onClick={() => handleKorisnikEdit(k)}
-                          className="bg-violet-500 text-white px-3 py-1 rounded hover:bg-violet-600 transition"
+                          className="text-blue-600 hover:underline"
                         >
                           {t('spremi', { ns: 'korisnici' })}
                         </button>
                         <button
                           onClick={() => handleKorisnikDelete(k.id)}
-                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                          className="text-red-600 hover:underline"
                         >
-                          {t('odustani', { ns: 'korisnici' })}
+                          {t('obrisi', { ns: 'korisnici' })}
                         </button>
                       </td>
                     </tr>
@@ -472,11 +472,11 @@ export default function AdminHome() {
         </div>
       )}
       {tab === 'proizvodi' && (
-        <div>
-          <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <div className="w-full">
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-8 w-full">
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('add_new_product')}</h2>
             {/* Polje za pretragu proizvoda */}
-            <div className="mb-6 flex items-center gap-2 max-w-md">
+            <div className="mb-6 flex items-center gap-2 max-full">
               <div className="relative w-full">
                 <input
                   type="text"
@@ -564,7 +564,7 @@ export default function AdminHome() {
             </form>
           </div>
           {/* Filterirani prikaz proizvoda u tabeli */}
-          <div className="bg-white rounded-xl shadow-lg p-8">
+          <div className="bg-white rounded-xl shadow-lg p-8 w-full">
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('product_list')}</h2>
             <div className="overflow-x-auto">
               <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">

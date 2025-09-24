@@ -15,6 +15,8 @@
   "korisnik": "User",
   "admin": "Admin",
   "spremi": "Save",
+  "obrisi": "Delete",
+  "izmeni": "Edit",
   "dodaj": "Add",
   "odustani": "Cancel",
   "prezime_min": "Last name must be at least 3 characters long.",

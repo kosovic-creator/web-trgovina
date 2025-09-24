@@ -1,6 +1,5 @@
 "use client";
 
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import Navbar from '../components/Navbar';
@@ -9,32 +8,18 @@ import { useState } from 'react';
 import { SessionProvider } from "next-auth/react";
 import { KorpaProvider } from "@/components/KorpaContext";
 
-
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className="w-full bg-gray-50">
         <SessionProvider>
           <KorpaProvider>
-            <div>
-              <Navbar setSidebarOpen={setSidebarOpen} />
-
+            <div className="flex min-h-screen w-full">
               <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-              <div style={{ marginLeft: sidebarOpen ? '14rem' : 0, transition: 'margin-left 0.3s' }}>
+              <div className="flex-1 transition-all duration-300 bg-gray-50">
+                <Navbar setSidebarOpen={setSidebarOpen} />
                 {children}
               </div>
             </div>
