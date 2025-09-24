@@ -8,5 +8,7 @@
   "must_login": "Morate biti prijavljeni da biste pristupili korpi.",
   "total": "Ukupno",
   "checkout": "Plaćanje",
-  "login": "Prijava"
+  "login": "Prijava",
+  "artikal_dod": "Artikal dodat u korpu",
+  "artikal_izb": "Artikal uklonjen iz korpe"
 }

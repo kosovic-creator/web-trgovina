@@ -143,21 +143,27 @@ export default function ProizvodiPage() {
             )}
           </div>
       )}
-      <div className="flex justify-center items-center gap-2">
-        <button className="bg-violet-600 text-white px-3 py-1 rounded shadow hover:bg-violet-700 transition"
-          disabled={page === 1}
-          onClick={() => setPage(p => p - 1)}
-        >
-          {t('prethodna')}
-        </button>
-        <span>Stranica {page}</span>
-        <button className="bg-violet-600 text-white px-3 py-1 rounded shadow hover:bg-violet-700 transition"
-          disabled={page * pageSize >= total}
-          onClick={() => setPage(p => p + 1)}
-        >
-          {t('sljedeca')}
-        </button>
-      </div>
+      {total > 10 && (
+        <div className="flex justify-center items-center gap-2">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+            className={`px-3 py-1 rounded ${page === 1 ? 'bg-gray-200 text-gray-400' : 'bg-violet-600 text-white hover:bg-violet-700'}`}
+          >
+            {t('prethodna')}
+          </button>
+          <span>
+            {page} / {Math.ceil(total / pageSize)}
+          </span>
+          <button
+            disabled={page >= Math.ceil(total / pageSize)}
+            onClick={() => setPage(page + 1)}
+            className={`px-3 py-1 rounded ${page >= Math.ceil(total / pageSize) ? 'bg-gray-200 text-gray-400' : 'bg-violet-600 text-white hover:bg-violet-700'}`}
+          >
+            {t('sljedeca')}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -8,6 +8,8 @@
   "must_login": "You must be logged in to access the cart.",
   "total": "Total",
   "checkout": "Checkout",
-  "login": "Login"
+  "login": "Login",
+  "artikal_dod": "Item added to cart",
+  "artikal_izb": "Item removed from cart"
 
 }

@@ -92,16 +92,16 @@ export default function KorpaPage() {
       if (response.ok) {
         await isprazniKorpu();
 
-        toast.success('Porudžbina uspešno poslata!');
+        toast.success(t('artikal_dod'),{ duration: 3000 });
         return true;
       } else {
 
-        toast.error('Greška pri slanju porudžbine.');
+        toast.error(t('error'),{ duration: 3000 });
         return false;
       }
     } catch {
 
-      toast.error('Greška pri slanju porudžbine.');
+      toast.error(t('error'),{ duration: 3000 });
       return false;
     }
   };
