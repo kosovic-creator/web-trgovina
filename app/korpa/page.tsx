@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import StripeButton from '@/components/Stripe Checkout';
 import { useKorpa } from "@/components/KorpaContext";
 import { FaShoppingCart, FaTrashAlt, FaPlus, FaMinus } from "react-icons/fa";
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function KorpaPage() {
   const { t } = useTranslation('korpa');
@@ -90,18 +91,20 @@ export default function KorpaPage() {
       });
       if (response.ok) {
         await isprazniKorpu();
-        alert('Porudžbina uspešno poslata!');
+        toast.success('Porudžbina uspešno poslata!');
       } else {
-        alert('Greška pri slanju porudžbine.');
+        toast.error('Greška pri slanju porudžbine.');
       }
     } catch {
-      alert('Greška pri slanju porudžbine.');
+      toast.error('Greška pri slanju porudžbine.');
     }
   };
 
   const handleZavrsiKupovinu = async () => {
     await potvrdiPorudzbinu();
-    router.push('/porudzbine');
+    setTimeout(() => {
+      router.push('/porudzbine');
+    }, 1500); // Sačekaj 1.5 sekundu
   };
 
   if (loading) return <div className="p-4">{t('loading') || "Učitavanje..."}</div>;
@@ -112,7 +115,7 @@ export default function KorpaPage() {
           <FaUser />
           <span>{t('must_login')}</span>
         </div>
-        <a href="/auth/prijava" className="text-blue-600 underline mt-2">Prijavi se</a>
+        <a href="/auth/prijava" className="text-blue-600 underline mt-2">{t('login')}</a>
       </div>
     );
   }
@@ -124,108 +127,111 @@ export default function KorpaPage() {
   );
 
   return (
-    <div className="p-4 flex flex-col md:flex-row gap-8">
-      <div className="flex-1">
-        <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
-          <FaShoppingCart className="text-violet-600" />
-          {t('title')}
-        </h1>
-        <div className="bg-white rounded shadow p-4 mb-4">
-          <table className="w-full mb-2 border border-violet-200 rounded-lg shadow-md text-sm">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="px-8 py-3 text-left align-middle">{t('product')}</th>
-                <th className="px-8 py-3 text-left align-middle">{t('quantity')}</th>
-                <th className="px-8 py-3 text-left align-middle">{t('price')}</th>
-                <th className="px-8 py-3 text-left align-middle">{t('actions')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {stavke.map((s) => (
-                <tr key={s.id} className="border-b">
-                  <td className="px-8 py-3 text-left align-middle flex items-center gap-2">
-                    {s.proizvod?.slika && (
-                      <Image src={s.proizvod.slika} alt={s.proizvod.naziv || ''} width={48} height={48} className="object-contain rounded" />
-                    )}
-                    <span className="font-semibold">{s.proizvod?.naziv}</span>
-                  </td>
-                  <td className="px-8 py-3 text-left align-middle">
-                    <div className="flex items-center gap-2">
-                      <button
-                        className="px-2 py-1 border rounded hover:bg-gray-100"
-                        onClick={() => handleKolicina(s.id, s.kolicina - 1)}
-                        disabled={s.kolicina <= 1}
-                        aria-label="Smanji količinu"
-                      >
-                        <FaMinus />
-                      </button>
-                      <span className="px-2">{s.kolicina}</span>
-                      <button
-                        className="px-2 py-1 border rounded hover:bg-gray-100"
-                        onClick={() => handleKolicina(s.id, s.kolicina + 1)}
-                        aria-label="Povećaj količinu"
-                      >
-                        <FaPlus />
-                      </button>
-                    </div>
-                  </td>
-                  <td className="px-8 py-3 text-left align-middle font-bold">{s.proizvod ? (s.proizvod.cena * s.kolicina).toFixed(2) : '0.00'} EUR</td>
-                  <td className="px-8 py-3 text-left align-middle">
-                    <button
-                      className="text-red-600 hover:text-red-800"
-                      onClick={() => handleDelete(s.id)}
-                      aria-label="Ukloni iz korpe"
-                    >
-                      <FaTrashAlt />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className="w-full md:w-96">
-        <div className="bg-white rounded shadow p-4">
-          <h2 className="font-semibold mb-2 flex items-center gap-2">
+    <>
+      <Toaster position="top-center" />
+      <div className="p-4 flex flex-col md:flex-row gap-8">
+        <div className="flex-1">
+          <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
             <FaShoppingCart className="text-violet-600" />
             {t('title')}
-          </h2>
-          <div className="flex justify-between mb-1">
-            <span>{t('quantity')}:</span>
-            <span>{stavke.reduce((acc, s) => acc + s.kolicina, 0)}</span>
-          </div>
-          <div className="flex justify-between mb-1">
-            <span>Subtotal</span>
-            <span>{stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0).toFixed(2)} EUR</span>
-          </div>
-          <div className="flex justify-between mb-1">
-            <span>Dostava</span>
-            <span>0.00 EUR</span>
-          </div>
-          <div className="flex justify-between font-bold text-lg mt-2 mb-4">
-            <span>Ukupno</span>
-            <span>{stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0).toFixed(2)} EUR</span>
-          </div>
-          <button className="w-full flex items-center justify-center gap-2 bg-yellow-400 text-gray-900 py-2 rounded font-bold mb-2" onClick={() => window.location.href = '/placanje/paypal'}>
-            {/* PayPal dugme */}
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="32" height="32" rx="6" fill="#fff" />
-              <path d="M10 22L12 10H18C21 10 22 12 21.5 14.5C21 17 19 18 16.5 18H14.5L14 22H10Z" fill="#003087" />
-              <path d="M14 22L14.5 18H16.5C19 18 21 17 21.5 14.5C22 12 21 10 18 10H12L10 22H14Z" fill="#009CDE" fillOpacity={0.7} />
-              <path d="M14.5 18L15 14H17C18.5 14 19 15 18.5 16C18 17 17 18 15.5 18H14.5Z" fill="#012169" />
-            </svg>
-            PayPal
-          </button>
-          <div className="mt-4">
-            <StripeButton amount={stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0)} />
-            <button className="w-full bg-green-600 text-white py-2 rounded font-bold" onClick={handleZavrsiKupovinu}>
-              Završi kupovinu
-            </button>
+          </h1>
+          <div className="bg-white rounded shadow p-4 mb-4">
+            <table className="w-full mb-2 border border-violet-200 rounded-lg shadow-md text-sm">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="px-8 py-3 text-left align-middle">{t('product')}</th>
+                  <th className="px-8 py-3 text-left align-middle">{t('quantity')}</th>
+                  <th className="px-8 py-3 text-left align-middle">{t('price')}</th>
+                  <th className="px-8 py-3 text-left align-middle">{t('actions')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stavke.map((s) => (
+                  <tr key={s.id} className="border-b">
+                    <td className="px-8 py-3 text-left align-middle flex items-center gap-2">
+                      {s.proizvod?.slika && (
+                        <Image src={s.proizvod.slika} alt={s.proizvod.naziv || ''} width={48} height={48} className="object-contain rounded" />
+                      )}
+                      <span className="font-semibold">{s.proizvod?.naziv}</span>
+                    </td>
+                    <td className="px-8 py-3 text-left align-middle">
+                      <div className="flex items-center gap-2">
+                        <button
+                          className="px-2 py-1 border rounded hover:bg-gray-100"
+                          onClick={() => handleKolicina(s.id, s.kolicina - 1)}
+                          disabled={s.kolicina <= 1}
+                          aria-label="Smanji količinu"
+                        >
+                          <FaMinus />
+                        </button>
+                        <span className="px-2">{s.kolicina}</span>
+                        <button
+                          className="px-2 py-1 border rounded hover:bg-gray-100"
+                          onClick={() => handleKolicina(s.id, s.kolicina + 1)}
+                          aria-label="Povećaj količinu"
+                        >
+                          <FaPlus />
+                        </button>
+                      </div>
+                    </td>
+                    <td className="px-8 py-3 text-left align-middle font-bold">{s.proizvod ? (s.proizvod.cena * s.kolicina).toFixed(2) : '0.00'} EUR</td>
+                    <td className="px-8 py-3 text-left align-middle">
+                      <button
+                        className="text-red-600 hover:text-red-800"
+                        onClick={() => handleDelete(s.id)}
+                        aria-label="Ukloni iz korpe"
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
+        <div className="w-full md:w-96">
+          <div className="bg-white rounded shadow p-4">
+            <h2 className="font-semibold mb-2 flex items-center gap-2">
+              <FaShoppingCart className="text-violet-600" />
+              {t('title')}
+            </h2>
+            <div className="flex justify-between mb-1">
+              <span>{t('quantity')}:</span>
+              <span>{stavke.reduce((acc, s) => acc + s.kolicina, 0)}</span>
+            </div>
+            <div className="flex justify-between mb-1">
+              <span>Subtotal</span>
+              <span>{stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0).toFixed(2)} EUR</span>
+            </div>
+            <div className="flex justify-between mb-1">
+              <span>Dostava</span>
+              <span>0.00 EUR</span>
+            </div>
+            <div className="flex justify-between font-bold text-lg mt-2 mb-4">
+              <span>Ukupno</span>
+              <span>{stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0).toFixed(2)} EUR</span>
+            </div>
+            <button className="w-full flex items-center justify-center gap-2 bg-yellow-400 text-gray-900 py-2 rounded font-bold mb-2" onClick={() => window.location.href = '/placanje/paypal'}>
+              {/* PayPal dugme */}
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="32" height="32" rx="6" fill="#fff" />
+                <path d="M10 22L12 10H18C21 10 22 12 21.5 14.5C21 17 19 18 16.5 18H14.5L14 22H10Z" fill="#003087" />
+                <path d="M14 22L14.5 18H16.5C19 18 21 17 21.5 14.5C22 12 21 10 18 10H12L10 22H14Z" fill="#009CDE" fillOpacity={0.7} />
+                <path d="M14.5 18L15 14H17C18.5 14 19 15 18.5 16C18 17 17 18 15.5 18H14.5Z" fill="#012169" />
+              </svg>
+              PayPal
+            </button>
+            <div className="mt-4">
+              <StripeButton amount={stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0)} />
+              <button className="w-full bg-green-600 text-white py-2 rounded font-bold" onClick={handleZavrsiKupovinu}>
+                Završi kupovinu
+              </button>
+            </div>
+          </div>
 
+        </div>
       </div>
-    </div>
+    </>
   );
 }

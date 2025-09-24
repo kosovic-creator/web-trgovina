@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { FaBoxOpen, FaCartPlus, FaSearch, FaTimes } from "react-icons/fa";
 import '@/i18n/config';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 export default function ProizvodiPage() {
@@ -31,7 +32,12 @@ export default function ProizvodiPage() {
   const handleDodajUKorpu = async (proizvod: Proizvod) => {
     const korisnikId = session?.user?.id;
     if (!korisnikId) {
-      alert('Morate biti prijavljeni za dodavanje u korpu!');
+      toast.error(
+        <span>
+          Morate biti prijavljeni za dodavanje u korpu!{' '}
+          <a href="/auth/prijava" className="underline text-blue-600 ml-2">Prijavi se</a>
+        </span>
+      );
       return;
     }
     await fetch('/api/korpa', {
@@ -55,6 +61,7 @@ export default function ProizvodiPage() {
 
   return (
     <div className="p-4">
+      <Toaster position="top-center" />
       <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
         <FaBoxOpen className="text-violet-600" />
         {t('title')}

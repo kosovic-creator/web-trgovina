@@ -6,6 +6,7 @@ import { FaClipboardList, FaUser, FaTrash, FaEdit } from "react-icons/fa";
 import { useSession } from 'next-auth/react';
 import { z } from 'zod';
 import '@/i18n/config';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function PorudzbinePage() {
   const { t } = useTranslation('porudzbine');
@@ -76,9 +77,9 @@ export default function PorudzbinePage() {
     });
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error ? t(data.error) : t('error'));
+      toast.error(data.error ? t(data.error) : t('error'));
     } else {
-      setSuccess(editId ? t('success_update') : t('success_create'));
+      toast.success(editId ? t('success_update') : t('success_create'));
       setForm({ korisnikId: '', ukupno: '', status: '', email: '' });
       setEditId(null);
       fetchPorudzbine();
@@ -108,9 +109,9 @@ export default function PorudzbinePage() {
     });
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error ? t(data.error) : t('error'));
+      toast.error(data.error ? t(data.error) : t('error'));
     } else {
-      setSuccess(t('success_delete'));
+      toast.success(t('success_delete'));
       fetchPorudzbine();
     }
   };
@@ -132,12 +133,15 @@ export default function PorudzbinePage() {
           <FaUser />
           <span>{t('must_login')}</span>
         </div>
-        <a href="/auth/prijava" className="text-blue-600 underline mt-2">Prijavi se</a>
+        <a href="/auth/prijava" className="text-blue-600 underline mt-2">{t('login')}</a>
       </div>
     );
   }
   return (
-    <div className="p-4">
+    <>
+    <Toaster position="top-right" reverseOrder={false} />
+
+ <div className="p-4">
       <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
         <FaClipboardList className="text-violet-600" />
         {t('title')}
@@ -203,8 +207,8 @@ export default function PorudzbinePage() {
         )}
       </form>
       {/* Prikaz poruka */}
-      {error && <div className="text-red-600 mb-2">{error}</div>}
-      {success && <div className="text-green-600 mb-2">{success}</div>}
+      {/* {error && <div className="text-red-600 mb-2">{error}</div>}
+      {success && <div className="text-green-600 mb-2">{success}</div>} */}
       {/* Tabela */}
       <table className="w-full border border-gray-300 mb-4 rounded shadow overflow-hidden">
         <thead>
@@ -256,7 +260,10 @@ export default function PorudzbinePage() {
             {t('sljedeca')}
           </button>
         </div>
-      )}
+   )}
     </div>
+    </>
+
+
   );
 }

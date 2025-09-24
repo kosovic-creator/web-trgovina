@@ -13,5 +13,6 @@
   "success_update": "Order updated successfully.",
   "success_delete": "Order deleted successfully.",
   "cancel": "Cancel",
-  "update": "Update"
+  "update": "Update",
+  "login": "Login"
 }

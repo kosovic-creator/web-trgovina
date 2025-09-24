@@ -7,5 +7,6 @@
   "empty": "Vaša korpa je prazna.",
   "must_login": "Morate biti prijavljeni da biste pristupili korpi.",
   "total": "Ukupno",
-  "checkout": "Plaćanje"
+  "checkout": "Plaćanje",
+  "login": "Prijava"
 }
