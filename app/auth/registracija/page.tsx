@@ -55,15 +55,15 @@ export default function RegistracijaPage() {
         setSuccess(true);
       }
     } catch {
-      setError(t('greska_registracija'));
+      setError(t('error_occurred'));
     }
   };
 
   if (success) {
     return (
       <div className="p-4 max-w-md mx-auto text-center">
-        <h2 className="text-xl font-bold mb-4 text-green-600">{t('registracija_uspesna')}</h2>
-        <p className="mb-4">{t('proverite_email')}</p>
+        <h2 className="text-xl font-bold mb-4 text-green-600">{t('register_success')}</h2>
+        <p className="mb-4">{t('check_email')}</p>
       </div>
     );
   }

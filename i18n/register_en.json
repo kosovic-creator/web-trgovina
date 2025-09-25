@@ -10,5 +10,10 @@
   "city": "City",
   "postal_code": "Postal Code",
   "address": "Address",
-  "have_account": "Already have an account? Log in"
+  "have_account": "Already have an account? Log in",
+  "register_success": "You have successfully registered. You can log in.",
+  "check_email": "Please check your email for verification.",
+  "error_occurred": "An error occurred. Please try again.",
+  "invalid_email": "Invalid email address.",
+  "weak_password": "Password must be at least 6 characters long."
 }
