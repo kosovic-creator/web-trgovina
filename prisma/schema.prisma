@@ -52,10 +52,23 @@ model Proizvod {
   azuriran            DateTime    @updatedAt
   stavkeKorpe         StavkaKorpe[]
   stavkePorudzbine    StavkaPorudzbine[]
+  prevodi             ProizvodTranslation[]
+}
+model ProizvodTranslation {
+  id          String   @id @default(uuid())
+  proizvodId  String
+  jezik       String   // npr. "en", "sr"
+  naziv       String?
+  opis        String?
+  karakteristike String?
+  kategorija          String
+  proizvod    Proizvod @relation(fields: [proizvodId], references: [id], onDelete: Cascade)
+
+  @@unique([proizvodId, jezik])
 }
 
 model StavkaKorpe {
-  id            String      @id @default(uuid())
+  id       String      @id @default(uuid())
   korisnikId    String
   proizvodId    String
   kolicina      Int         @default(1)

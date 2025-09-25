@@ -5,7 +5,8 @@ import Image from 'next/image';
 import { Proizvod } from '@/types';
 
 export default function ProizvodPage() {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params && typeof params.id === 'string' ? params.id : Array.isArray(params?.id) ? params?.id[0] : undefined;
   const [proizvod, setProizvod] = useState<Proizvod | null>(null);
   const [loading, setLoading] = useState(true);
 

@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 
 export default function VerifikacijaEmail() {
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const token = searchParams ? searchParams.get("token") : null;
   const [status, setStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 

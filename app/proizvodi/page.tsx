@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { FaBoxOpen, FaCartPlus, FaSearch, FaTimes } from "react-icons/fa";
 import '@/i18n/config';
 import toast, { Toaster } from 'react-hot-toast';
+import { fetchProizvod } from '@/lib/fetchProizvod';
 
 
 export default function ProizvodiPage() {
@@ -167,3 +168,6 @@ export default function ProizvodiPage() {
     </div>
   );
 }
+
+
+
