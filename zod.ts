@@ -29,3 +29,12 @@ export const korisnikSchema = (t: TranslateFn) => z.object({
     lozinka: z.string().min(6, { message: t('lozinka_error') }),
     slika: z.string().optional(), // Dodaj ovo!
 });
+export const proizvodSchema = (t: TranslateFn) => z.object({
+  naziv: z.string().min(2, { message: t('naziv_error') }),
+  cena: z.number().min(0, { message: t('cena_error') }),
+  slika: z.string().optional(),
+  opis: z.string().optional(),
+  karakteristike: z.string().optional(),
+  kategorija: z.string().optional(),
+  kolicina: z.number().min(1, { message: t('kolicina_error') }),
+});

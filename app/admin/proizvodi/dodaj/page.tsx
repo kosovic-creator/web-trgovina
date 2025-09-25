@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { proizvodSchema } from '@/zod';
+
+
 
 function DodajProizvodPage() {
   const router = useRouter();
@@ -16,6 +19,7 @@ function DodajProizvodPage() {
     slika: '',
   });
   const [error, setError] = useState<string | null>(null);
+    const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -26,6 +30,20 @@ function DodajProizvodPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+      setFieldErrors({});
+      const parse = proizvodSchema(t).safeParse({
+          ...form,
+          cena: Number(form.cena),
+          kolicina: Number(form.kolicina),
+      });
+      if (!parse.success) {
+          const newFieldErrors: { [key: string]: string } = {};
+          parse.error.issues.forEach(issue => {
+              if (issue.path[0]) newFieldErrors[String(issue.path[0])] = issue.message;
+          });
+          setFieldErrors(newFieldErrors);
+          return;
+      }
     const res = await fetch('/api/proizvodi', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -60,6 +78,7 @@ function DodajProizvodPage() {
                       placeholder={t('proizvodi:naziv_placeholder')}
                       required
                   />
+                  {fieldErrors.naziv && <p className="text-red-500 text-sm mt-1">{fieldErrors.naziv}</p>}
               </div>
               <div className="mb-4">
                   <label className="block text-gray-700 font-medium mb-2" htmlFor="cena">
@@ -75,6 +94,7 @@ function DodajProizvodPage() {
                       placeholder={t('proizvodi:cena_placeholder')}
                       required
                   />
+                  {fieldErrors.cena && <p className="text-red-500 text-sm mt-1">{fieldErrors.cena}</p>}
               </div>
               <div className="mb-4">
                   <label className="block text-gray-700 font-medium mb-2" htmlFor="opis">
@@ -88,10 +108,11 @@ function DodajProizvodPage() {
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder={t('proizvodi:opis_placeholder')}
                   />
+                  {fieldErrors.opis && <p className="text-red-500 text-sm mt-1">{fieldErrors.opis}</p>}
               </div>
               <div className="mb-4">
                   <label className="block text-gray-700 font-medium mb-2" htmlFor="karakteristike">
-                     {t('proizvodi:karakteristike')}
+                      {t('proizvodi:karakteristike')}
                   </label>
                   <input
                       id="karakteristike"
@@ -102,6 +123,7 @@ function DodajProizvodPage() {
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder={t('proizvodi:karakteristike_placeholder')}
                   />
+                  {fieldErrors.karakteristike && <p className="text-red-500 text-sm mt-1">{fieldErrors.karakteristike}</p>}
               </div>
               <div className="mb-4">
                   <label className="block text-gray-700 font-medium mb-2" htmlFor="kategorija">
@@ -116,6 +138,7 @@ function DodajProizvodPage() {
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder={t('proizvodi:kategorija_placeholder')}
                   />
+                  {fieldErrors.kategorija && <p className="text-red-500 text-sm mt-1">{fieldErrors.kategorija}</p>}
               </div>
               <div className="mb-4">
                   <label className="block text-gray-700 font-medium mb-2" htmlFor="kolicina">
@@ -131,6 +154,7 @@ function DodajProizvodPage() {
                       placeholder={t('proizvodi:kolicina_placeholder')}
                       required
                   />
+                  {fieldErrors.kolicina && <p className="text-red-500 text-sm mt-1">{fieldErrors.kolicina}</p>}
               </div>
               <div className="mb-4">
                   <label className="block text-gray-700 font-medium mb-2" htmlFor="slika">
@@ -145,6 +169,7 @@ function DodajProizvodPage() {
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder={t('proizvodi:slika_placeholder')}
                   />
+                  {fieldErrors.slika && <p className="text-red-500 text-sm mt-1">{fieldErrors.slika}</p>}
               </div>
               <button
                   type="submit"

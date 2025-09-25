@@ -26,5 +26,15 @@
   "uspesno_obrisano": "Article has been successfully deleted.",
   "sve_proizvodi": "All articles",
   "pretraga": "Search articles",
-  "nema_proizvodi": "No articles available."
+  "nema_proizvodi": "No articles available.",
+  "ucitaj_vise": "Load more",
+  "greska_ucitavanje": "An error occurred while loading articles.",
+  "loading": "Loading...",
+  "naziv_error": "Name must be at least 2 characters long.",
+  "cena_error": "Price must be a number greater than or equal to zero.",
+  "kolicina_error": "Quantity must be a number greater than or equal to 1.",
+  "slika_error": "Image must be a valid URL.",
+  "opis_error": "Description must be at least 10 characters long.",
+  "karakteristike_error": "Features must be at least 10 characters long.",
+  "kategorija_error": "Category must be at least 2 characters long."
 }
