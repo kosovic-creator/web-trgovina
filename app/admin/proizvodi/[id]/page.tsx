@@ -1,11 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 function IzmeniProizvodPage() {
   const params = useParams<{ id: string }>();
   const id = params?.id;
   const router = useRouter();
+  const { t } = useTranslation(['proizvodi']);
   type ProizvodForm = {
     naziv?: string;
     cena?: number | string;
@@ -31,7 +33,9 @@ function IzmeniProizvodPage() {
   if (!form) return <div>Učitavanje...</div>;
   if (form.error) return <div>{form.error}</div>;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -56,19 +60,119 @@ function IzmeniProizvodPage() {
   };
 
   return (
-    <div>
-      <h2>Izmeni proizvod</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2 max-w-md">
-        <input name="naziv" value={form.naziv || ''} onChange={handleChange} placeholder="Naziv" required />
-        <input name="cena" value={form.cena || ''} onChange={handleChange} placeholder="Cena" required type="number" />
-        <input name="opis" value={form.opis || ''} onChange={handleChange} placeholder="Opis" />
-        <input name="karakteristike" value={form.karakteristike || ''} onChange={handleChange} placeholder="Karakteristike" />
-        <input name="kategorija" value={form.kategorija || ''} onChange={handleChange} placeholder="Kategorija" />
-        <input name="kolicina" value={form.kolicina || ''} onChange={handleChange} placeholder="Količina" required type="number" />
-        <input name="slika" value={form.slika || ''} onChange={handleChange} placeholder="Slika" />
-        <button type="submit" className="bg-violet-600 text-white px-4 py-2 rounded">Sačuvaj izmene</button>
-        {error && <div className="text-red-600">{error}</div>}
-      </form>
+      <div className="admin-container">
+          <div className="max-w-xl mx-auto bg-white rounded-xl shadow-md p-8">
+              <h2 className="text-2xl font-semibold mb-6">Dodaj/Izmeni proizvod</h2>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-2 max-w-md">
+                  <div className="mb-4">
+                      <label className="block text-gray-700 font-medium mb-2" htmlFor="naziv">
+                          Naziv proizvoda
+                      </label>
+                      <input
+                          id="naziv"
+                          name="naziv"
+                          value={form.naziv || ''}
+                          onChange={handleChange}
+                          type="text"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Unesite naziv"
+                          required
+                      />
+                  </div>
+                  <div className="mb-4">
+                      <label className="block text-gray-700 font-medium mb-2" htmlFor="cena">
+                          Cena
+                      </label>
+                      <input
+                          id="cena"
+                          name="cena"
+                          value={form.cena || ''}
+                          onChange={handleChange}
+                          type="number"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Unesite cenu"
+                          required
+                      />
+                  </div>
+                  <div className="mb-4">
+                      <label className="block text-gray-700 font-medium mb-2" htmlFor="opis">
+                          Opis
+                      </label>
+                      <textarea
+                          id="opis"
+                          name="opis"
+                          value={form.opis || ''}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Unesite opis"
+                      />
+                  </div>
+                  <div className="mb-4">
+                      <label className="block text-gray-700 font-medium mb-2" htmlFor="karakteristike">
+                          Karakteristike
+                      </label>
+                      <input
+                          id="karakteristike"
+                          name="karakteristike"
+                          value={form.karakteristike || ''}
+                          onChange={handleChange}
+                          type="text"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Unesite karakteristike"
+                      />
+                  </div>
+                  <div className="mb-4">
+                      <label className="block text-gray-700 font-medium mb-2" htmlFor="kategorija">
+                          Kategorija
+                      </label>
+                      <input
+                          id="kategorija"
+                          name="kategorija"
+                          value={form.kategorija || ''}
+                          onChange={handleChange}
+                          type="text"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Unesite kategoriju"
+                      />
+                  </div>
+                  <div className="mb-4">
+                      <label className="block text-gray-700 font-medium mb-2" htmlFor="kolicina">
+                          Količina
+                      </label>
+                      <input
+                          id="kolicina"
+                          name="kolicina"
+                          value={form.kolicina || ''}
+                          onChange={handleChange}
+                          type="number"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Unesite količinu"
+                          required
+                      />
+                  </div>
+                  <div className="mb-4">
+                      <label className="block text-gray-700 font-medium mb-2" htmlFor="slika">
+                          Slika
+                      </label>
+                      <input
+                          id="slika"
+                          name="slika"
+                          value={form.slika || ''}
+                          onChange={handleChange}
+                          type="text"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Unesite URL slike"
+                      />
+                  </div>
+                  <button
+                      type="submit"
+                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                  >
+                      Sačuvaj izmene
+                  </button>
+                  {error && <div className="text-red-600">{error}</div>}
+              </form>
+          </div>
     </div>
   );
 }

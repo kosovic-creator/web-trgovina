@@ -30,3 +30,19 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+
+@media (max-width: 1000px) {
+
+}
+
+.table-responsive {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.table-responsive table {
+  min-width: 700px;
+  width: 100%;
+}

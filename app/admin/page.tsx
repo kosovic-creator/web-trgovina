@@ -287,173 +287,177 @@ export default function AdminHome() {
 
 
   return (
-    <div className="px-2 bg-gray-50 min-h-screen w-full">
-      <div className="flex gap-4 mb-8">
-        <button
-          onClick={() => setTab('korisnici')}
-          className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 shadow-sm ${tab === 'korisnici'
-            ? 'bg-violet-600 text-white'
-            : 'bg-white text-violet-700 border border-violet-200 hover:bg-violet-50'
-            }`}
-        >
-          {t('users')}
-        </button>
-        <button
-          onClick={() => setTab('proizvodi')}
-          className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 shadow-sm ${tab === 'proizvodi'
-            ? 'bg-violet-600 text-white'
-            : 'bg-white text-violet-700 border border-violet-200 hover:bg-violet-50'
-            }`}
-        >
-          {t('products')}
-        </button>
-        <button
-          onClick={() => setTab('porudzbine')}
-          className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 shadow-sm ${tab === 'porudzbine'
-            ? 'bg-violet-600 text-white'
-            : 'bg-white text-violet-700 border border-violet-200 hover:bg-violet-50'
-            }`}
-        >
-          {t('orders')}
-        </button>
-      </div>
-      {tab === 'korisnici' && (
-        <div className="w-full">
-          <div className="bg-white rounded-xl shadow-lg p-8 mb-8 w-full">
-            <button
-              onClick={() => router.push('/admin/korisnici/dodaj')}
-              className="bg-violet-600 text-white px-6 py-2 rounded-lg mb-4"
-            >
-              {t('add_new_user')}
-            </button>
-            <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('user_list')}</h2>
-            <div className="overflow-x-auto w-full">
-              <table className="w-full border border-gray-200 rounded-lg table-auto">
-                <thead className="bg-violet-100">
-                  <tr>
-                    <th className="px-4 py-2 text-left min-w-[140px]">{t('ime', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left min-w-[140px]">{t('prezime', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left min-w-[200px]">{t('email', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left min-w-[140px]">{t('telefon', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left min-w-[140px]">{t('drzava', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left min-w-[140px]">{t('grad', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left min-w-[140px]">{t('postanskiBroj', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left min-w-[200px]">{t('adresa', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left min-w-[120px]">{t('uloga', { ns: 'korisnici' })}</th>
-                    <th className="px-4 py-2 text-left min-w-[160px]">{t('akcije', { ns: 'korisnici' })}</th>
+    <div className="admin-container w-full max-w-screen-2xl mx-auto">
+      <div className="px-2 bg-gray-50 min-h-screen w-full">
+        <div className="flex gap-4 mb-8">
+          <button
+            onClick={() => setTab('korisnici')}
+            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 shadow-sm ${tab === 'korisnici'
+              ? 'bg-violet-600 text-white'
+              : 'bg-white text-violet-700 border border-violet-200 hover:bg-violet-50'
+              }`}
+          >
+            {t('users')}
+          </button>
+          <button
+            onClick={() => setTab('proizvodi')}
+            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 shadow-sm ${tab === 'proizvodi'
+              ? 'bg-violet-600 text-white'
+              : 'bg-white text-violet-700 border border-violet-200 hover:bg-violet-50'
+              }`}
+          >
+            {t('products')}
+          </button>
+          <button
+            onClick={() => setTab('porudzbine')}
+            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 shadow-sm ${tab === 'porudzbine'
+              ? 'bg-violet-600 text-white'
+              : 'bg-white text-violet-700 border border-violet-200 hover:bg-violet-50'
+              }`}
+          >
+            {t('orders')}
+          </button>
+        </div>
+        {tab === 'korisnici' && (
+          <div className="w-full">
+            <div className="bg-white rounded-xl shadow-lg p-8 mb-8 w-full">
+              <button
+                onClick={() => router.push('/admin/korisnici/dodaj')}
+                className="bg-violet-600 text-white px-6 py-2 rounded-lg mb-4"
+              >
+                {t('add_new_user')}
+              </button>
+              <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('user_list')}</h2>
+              <div className="overflow-x-auto w-full">
+                <table className="min-w-max w-full table-auto">
+                  <thead>
+                    <tr>
+                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('ime', { ns: 'korisnici' })}</th>
+                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('prezime', { ns: 'korisnici' })}</th>
+                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('email', { ns: 'korisnici' })}</th>
+                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('telefon', { ns: 'korisnici' })}</th>
+                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('drzava', { ns: 'korisnici' })}</th>
+                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('grad', { ns: 'korisnici' })}</th>
+                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('postanskiBroj', { ns: 'korisnici' })}</th>
+                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('adresa', { ns: 'korisnici' })}</th>
+                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('uloga', { ns: 'korisnici' })}</th>
+                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('akcije', { ns: 'korisnici' })}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {korisnici.map((k, idx) => (
+                      <tr key={k.id} className={idx % 2 === 0 ? "bg-white" : "bg-violet-50"}>
+                        <td className="px-4 py-2">{k.ime}</td>
+                        <td className="px-4 py-2">{k.prezime}</td>
+                        <td className="px-4 py-2">{k.email}</td>
+                        <td className="px-4 py-2">{k.telefon}</td>
+                        <td className="px-4 py-2">{k.drzava}</td>
+                        <td className="px-4 py-2">{k.grad}</td>
+                        <td className="px-4 py-2">{k.postanskiBroj}</td>
+                        <td className="px-4 py-2">{k.adresa}</td>
+                        <td className="px-4 py-2">{t(k.uloga, { ns: 'korisnici' })}</td>
+                        <td className="px-4 py-2 flex gap-2">
+                          <button
+                            onClick={() => router.push(`/admin/korisnici/${k.id}`)}
+                            className="text-blue-600 hover:underline"
+                          >
+                            {t('izmeni', { ns: 'korisnici' })}
+                          </button>
+                          <button
+                            onClick={() => handleKorisnikDelete(k.id)}
+                            className="text-red-600 hover:underline"
+                          >
+                            {t('obrisi', { ns: 'korisnici' })}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+        {tab === 'proizvodi' && (
+          <div className="w-full">
+            <div className="bg-white rounded-xl shadow-lg p-8 mb-8 w-full">
+              <button
+                onClick={() => router.push('/admin/proizvodi/dodaj')}
+                className="bg-violet-600 text-white px-6 py-2 rounded-lg mb-4"
+              >
+                {t('add_new_product')}
+              </button>
+              <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('product_list')}</h2>
+              {/* Filterirani prikaz proizvoda u tabeli */}
+              <div className="overflow-x-auto w-full">
+                <div className="table-responsive">
+                  <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">
+                    <thead>
+                      <tr className="bg-violet-100 text-violet-700">
+                        <th className="px-8 py-3 text-left align-middle">{t('image')}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('product_name')}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('price')}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('karakteristike') || 'Karakteristike'}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('kategorija') || 'Kategorija'}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('quantity')}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('created')}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('actions')}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {proizvodi.filter(p => p.naziv.toLowerCase().includes(search?.toLowerCase() || ""))
+                        .map((p) => (
+                          <tr key={p.id} className="hover:bg-violet-50 transition">
+                            <td className="px-8 py-3 text-left align-middle">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover rounded-lg" /> : '-'}</td>
+                            <td className="px-8 py-3 text-left align-middle">{p.naziv}</td>
+                            <td className="px-8 py-3 text-left align-middle">{p.cena} EUR</td>
+                            <td className="px-8 py-3 text-left align-middle">{p.karakteristike}</td>
+                            <td className="px-8 py-3 text-left align-middle">{p.kategorija}</td>
+                            <td className="px-8 py-3 text-left align-middle">{p.kolicina}</td>
+                            <td className="px-8 py-3 text-left align-middle">{p.kreiran ? new Date(p.kreiran).toLocaleDateString() : '-'}</td>
+                            <td className="px-8 py-3 text-left align-middle flex gap-2">
+                              <button className="text-blue-600 hover:underline" onClick={() => router.push(`/admin/proizvodi/${p.id}`)}>{t('edit')}</button>
+                              <button className="text-red-600 hover:underline" onClick={() => handleProizvodDelete(p.id)}>{t('delete')}</button>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {tab === 'porudzbine' && (
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('order_list')}</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">
+                <thead>
+                  <tr className="bg-violet-100 text-violet-700">
+                    <th className="px-8 py-3 text-left align-middle">{t('id')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('user')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('total')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('status')}</th>
+                    <th className="px-8 py-3 text-left align-middle">{t('created')}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {korisnici.map((k, idx) => (
-                    <tr key={k.id} className={idx % 2 === 0 ? "bg-white" : "bg-violet-50"}>
-                      <td className="px-4 py-2">{k.ime}</td>
-                      <td className="px-4 py-2">{k.prezime}</td>
-                      <td className="px-4 py-2">{k.email}</td>
-                      <td className="px-4 py-2">{k.telefon}</td>
-                      <td className="px-4 py-2">{k.drzava}</td>
-                      <td className="px-4 py-2">{k.grad}</td>
-                      <td className="px-4 py-2">{k.postanskiBroj}</td>
-                      <td className="px-4 py-2">{k.adresa}</td>
-                      <td className="px-4 py-2">{t(k.uloga, { ns: 'korisnici' })}</td>
-                      <td className="px-4 py-2 flex gap-2">
-                        <button
-                          onClick={() => router.push(`/admin/korisnici/${k.id}`)}
-                          className="text-blue-600 hover:underline"
-                        >
-                          {t('izmeni', { ns: 'korisnici' })}
-                        </button>
-                        <button
-                          onClick={() => handleKorisnikDelete(k.id)}
-                          className="text-red-600 hover:underline"
-                        >
-                          {t('obrisi', { ns: 'korisnici' })}
-                        </button>
-                      </td>
+                  {porudzbine.map((p) => (
+                    <tr key={p.id} className="hover:bg-violet-50 transition">
+                      <td className="px-8 py-3 text-left align-middle">{p.id}</td>
+                      <td className="px-8 py-3 text-left align-middle">{p.korisnikId}</td>
+                      <td className="px-8 py-3 text-left align-middle">{p.ukupno} EUR</td>
+                      <td className="px-8 py-3 text-left align-middle">{p.status}</td>
+                      <td className="px-8 py-3 text-left align-middle">{new Date(p.kreiran).toLocaleDateString()}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
-        </div>
-      )}
-      {tab === 'proizvodi' && (
-        <div className="w-full">
-          <div className="bg-white rounded-xl shadow-lg p-8 mb-8 w-full">
-            <button
-              onClick={() => router.push('/admin/proizvodi/dodaj')}
-              className="bg-violet-600 text-white px-6 py-2 rounded-lg mb-4"
-            >
-              {t('add_new_product')}
-            </button>
-            <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('product_list')}</h2>
-            {/* Filterirani prikaz proizvoda u tabeli */}
-            <div className="overflow-x-auto">
-              <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">
-                <thead>
-                  <tr className="bg-violet-100 text-violet-700">
-                    <th className="px-8 py-3 text-left align-middle">{t('image')}</th>
-                    <th className="px-8 py-3 text-left align-middle">{t('product_name')}</th>
-                    <th className="px-8 py-3 text-left align-middle">{t('price')}</th>
-                    <th className="px-8 py-3 text-left align-middle">{t('karakteristike') || 'Karakteristike'}</th>
-                    <th className="px-8 py-3 text-left align-middle">{t('kategorija') || 'Kategorija'}</th>
-                    <th className="px-8 py-3 text-left align-middle">{t('quantity')}</th>
-                    <th className="px-8 py-3 text-left align-middle">{t('created')}</th>
-                    <th className="px-8 py-3 text-left align-middle">{t('actions')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {proizvodi.filter(p => p.naziv.toLowerCase().includes(search?.toLowerCase() || ""))
-                    .map((p) => (
-                      <tr key={p.id} className="hover:bg-violet-50 transition">
-                        <td className="px-8 py-3 text-left align-middle">{p.slika ? <Image src={p.slika} alt={p.naziv} width={48} height={48} className="object-cover rounded-lg" /> : '-'}</td>
-                        <td className="px-8 py-3 text-left align-middle">{p.naziv}</td>
-                        <td className="px-8 py-3 text-left align-middle">{p.cena} EUR</td>
-                        <td className="px-8 py-3 text-left align-middle">{p.karakteristike}</td>
-                        <td className="px-8 py-3 text-left align-middle">{p.kategorija}</td>
-                        <td className="px-8 py-3 text-left align-middle">{p.kolicina}</td>
-                        <td className="px-8 py-3 text-left align-middle">{p.kreiran ? new Date(p.kreiran).toLocaleDateString() : '-'}</td>
-                        <td className="px-8 py-3 text-left align-middle flex gap-2">
-                          <button className="text-blue-600 hover:underline" onClick={() => router.push(`/admin/proizvodi/${p.id}`)}>{t('edit')}</button>
-                          <button className="text-red-600 hover:underline" onClick={() => handleProizvodDelete(p.id)}>{t('delete')}</button>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      )}
-      {tab === 'porudzbine' && (
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('order_list')}</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">
-              <thead>
-                <tr className="bg-violet-100 text-violet-700">
-                  <th className="px-8 py-3 text-left align-middle">{t('id')}</th>
-                  <th className="px-8 py-3 text-left align-middle">{t('user')}</th>
-                  <th className="px-8 py-3 text-left align-middle">{t('total')}</th>
-                  <th className="px-8 py-3 text-left align-middle">{t('status')}</th>
-                  <th className="px-8 py-3 text-left align-middle">{t('created')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {porudzbine.map((p) => (
-                  <tr key={p.id} className="hover:bg-violet-50 transition">
-                    <td className="px-8 py-3 text-left align-middle">{p.id}</td>
-                    <td className="px-8 py-3 text-left align-middle">{p.korisnikId}</td>
-                    <td className="px-8 py-3 text-left align-middle">{p.ukupno} EUR</td>
-                    <td className="px-8 py-3 text-left align-middle">{p.status}</td>
-                    <td className="px-8 py-3 text-left align-middle">{new Date(p.kreiran).toLocaleDateString()}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

@@ -21,7 +21,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
               <div className="flex-1 transition-all duration-300 bg-gray-50">
                 <Navbar setSidebarOpen={setSidebarOpen} />
-                {children}
+                <div className="w-full max-w-screen-2xl mx-auto">
+                  {children}
+                </div>
               </div>
             </div>
             <Toaster position="top-right" />
