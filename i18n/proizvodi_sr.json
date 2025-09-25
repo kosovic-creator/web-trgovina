@@ -38,5 +38,6 @@
   "slika_error": "Slika mora biti validan URL.",
   "opis_error": "Opis mora imati najmanje 10 karaktera.",
   "karakteristike_error": "Karakteristike moraju imati najmanje 10 karaktera.",
-  "kategorija_error": "Kategorija mora imati najmanje 2 karaktera."
+  "kategorija_error": "Kategorija mora imati najmanje 2 karaktera.",
+  "izmjeni_artikal": "Izmeni artikal"
 }

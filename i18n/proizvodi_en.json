@@ -36,5 +36,6 @@
   "slika_error": "Image must be a valid URL.",
   "opis_error": "Description must be at least 10 characters long.",
   "karakteristike_error": "Features must be at least 10 characters long.",
-  "kategorija_error": "Category must be at least 2 characters long."
+  "kategorija_error": "Category must be at least 2 characters long.",
+  "izmjeni_artikal": "Edit article"
 }

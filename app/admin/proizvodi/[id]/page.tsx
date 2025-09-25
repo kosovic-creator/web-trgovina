@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { proizvodSchema } from '@/zod';
 
 function IzmeniProizvodPage() {
   const params = useParams<{ id: string }>();
@@ -21,6 +22,7 @@ function IzmeniProizvodPage() {
 
   const [form, setForm] = useState<ProizvodForm | null>(null);
   const [error, setError] = useState<string | null>(null);
+    const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     if (id) {
@@ -42,6 +44,20 @@ function IzmeniProizvodPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+      setFieldErrors({});
+      const parse = proizvodSchema(t).safeParse({
+          ...form,
+          cena: Number(form.cena),
+          kolicina: Number(form.kolicina),
+      });
+      if (!parse.success) {
+          const newFieldErrors: { [key: string]: string } = {};
+          parse.error.issues.forEach(issue => {
+              if (issue.path[0]) newFieldErrors[String(issue.path[0])] = issue.message;
+          });
+          setFieldErrors(newFieldErrors);
+          return;
+      }
     const res = await fetch('/api/proizvodi', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -62,115 +78,121 @@ function IzmeniProizvodPage() {
   return (
       <div className="admin-container">
           <div className="max-w-xl mx-auto bg-white rounded-xl shadow-md p-8">
-              <h2 className="text-2xl font-semibold mb-6">Dodaj/Izmeni proizvod</h2>
+              <h2 className="text-2xl font-semibold mb-6">{t('proizvodi:izmjeni_artikal')}</h2>
               <form onSubmit={handleSubmit} className="flex flex-col gap-2 max-w-md">
                   <div className="mb-4">
                       <label className="block text-gray-700 font-medium mb-2" htmlFor="naziv">
-                          Naziv proizvoda
+                          {t('proizvodi:naziv')}
                       </label>
                       <input
                           id="naziv"
                           name="naziv"
-                          value={form.naziv || ''}
+                          value={form.naziv || ""}
                           onChange={handleChange}
-                          type="text"
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Unesite naziv"
+                          placeholder={t('proizvodi:naziv_placeholder')}
                           required
                       />
+                      {fieldErrors.naziv && <p className="text-red-500 text-sm mt-1">{fieldErrors.naziv}</p>}
                   </div>
                   <div className="mb-4">
                       <label className="block text-gray-700 font-medium mb-2" htmlFor="cena">
-                          Cena
+                          {t('proizvodi:cena')}
                       </label>
                       <input
                           id="cena"
                           name="cena"
-                          value={form.cena || ''}
-                          onChange={handleChange}
                           type="number"
+                          value={form.cena || ""}
+                          onChange={handleChange}
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Unesite cenu"
+                          placeholder={t('proizvodi:cena_placeholder')}
                           required
                       />
+                      {fieldErrors.cena && <p className="text-red-500 text-sm mt-1">{fieldErrors.cena}</p>}
                   </div>
                   <div className="mb-4">
                       <label className="block text-gray-700 font-medium mb-2" htmlFor="opis">
-                          Opis
+                          {t('proizvodi:opis')}
                       </label>
                       <textarea
                           id="opis"
                           name="opis"
-                          value={form.opis || ''}
+                          value={form.opis || ""}
                           onChange={handleChange}
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Unesite opis"
+                          placeholder={t('proizvodi:opis_placeholder')}
                       />
+                      {fieldErrors.opis && <p className="text-red-500 text-sm mt-1">{fieldErrors.opis}</p>}
                   </div>
                   <div className="mb-4">
                       <label className="block text-gray-700 font-medium mb-2" htmlFor="karakteristike">
-                          Karakteristike
+                          {t('proizvodi:karakteristike')}
                       </label>
                       <input
                           id="karakteristike"
                           name="karakteristike"
-                          value={form.karakteristike || ''}
+                          value={form.karakteristike || ""}
                           onChange={handleChange}
                           type="text"
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Unesite karakteristike"
+                          placeholder={t('proizvodi:karakteristike_placeholder')}
                       />
+                      {fieldErrors.karakteristike && <p className="text-red-500 text-sm mt-1">{fieldErrors.karakteristike}</p>}
                   </div>
                   <div className="mb-4">
                       <label className="block text-gray-700 font-medium mb-2" htmlFor="kategorija">
-                          Kategorija
+                          {t('proizvodi:kategorija')}
                       </label>
                       <input
                           id="kategorija"
                           name="kategorija"
-                          value={form.kategorija || ''}
+                          value={form.kategorija || ""}
                           onChange={handleChange}
                           type="text"
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Unesite kategoriju"
+                          placeholder={t('proizvodi:kategorija_placeholder')}
                       />
+                      {fieldErrors.kategorija && <p className="text-red-500 text-sm mt-1">{fieldErrors.kategorija}</p>}
                   </div>
                   <div className="mb-4">
                       <label className="block text-gray-700 font-medium mb-2" htmlFor="kolicina">
-                          Količina
+                          {t('proizvodi:kolicina')}
                       </label>
                       <input
                           id="kolicina"
                           name="kolicina"
-                          value={form.kolicina || ''}
+                          value={form.kolicina || ""}
                           onChange={handleChange}
                           type="number"
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Unesite količinu"
+                          placeholder={t('proizvodi:kolicina_placeholder')}
                           required
                       />
+                      {fieldErrors.kolicina && <p className="text-red-500 text-sm mt-1">{fieldErrors.kolicina}</p>}
                   </div>
                   <div className="mb-4">
                       <label className="block text-gray-700 font-medium mb-2" htmlFor="slika">
-                          Slika
+                          {t('proizvodi:slika')}
                       </label>
                       <input
                           id="slika"
                           name="slika"
-                          value={form.slika || ''}
+                          value={form.slika || ""}
                           onChange={handleChange}
                           type="text"
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Unesite URL slike"
+                          placeholder={t('proizvodi:slika_placeholder')}
                       />
+                      {/* {fieldErrors.slika && <p className="text-red-500 text-sm mt-1">{fieldErrors.slika}</p>} */}
                   </div>
                   <button
                       type="submit"
                       className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
                   >
-                      Sačuvaj izmene
+                      {t('proizvodi:sacuvaj')}
                   </button>
-                  {error && <div className="text-red-600">{error}</div>}
+                  {error && <div className="text-red-600 mt-4">{error}</div>}
               </form>
           </div>
     </div>

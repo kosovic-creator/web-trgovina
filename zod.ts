@@ -33,8 +33,8 @@ export const proizvodSchema = (t: TranslateFn) => z.object({
   naziv: z.string().min(2, { message: t('naziv_error') }),
   cena: z.number().min(0, { message: t('cena_error') }),
   slika: z.string().optional(),
-  opis: z.string().optional(),
-  karakteristike: z.string().optional(),
-  kategorija: z.string().optional(),
+  opis: z.string().min(10, { message: t('opis_error') }),
+  karakteristike: z.string().min(10, { message: t('karakteristike_error') }).optional(),
+  kategorija: z.string().min(2, { message: t('kategorija_error') }).optional(),
   kolicina: z.number().min(1, { message: t('kolicina_error') }),
 });
