@@ -1,6 +1,7 @@
+'use client';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FaBoxOpen, FaClipboardList, FaUser } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
@@ -16,6 +17,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
   const { t, i18n } = useTranslation('sidebar');
   const pathname = usePathname();
   const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     if (open) {
@@ -36,13 +38,21 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
         <ul className="space-y-2">
 
           <li>
-            <Link
-              href="/proizvodi"
-              className={`flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition ${pathname === '/proizvodi' ? 'bg-violet-100 font-bold' : ''}`}
+            <button
+              onClick={() => router.push('/proizvodi?lang=sr')}
+              className="flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition"
             >
-              <FaBoxOpen className="text-violet-600" /> {t('products')}
-            </Link>
+              <FaBoxOpen className="text-violet-600" /> Crnogorski
+            </button>
           </li>
+  <li>
+    <button
+      onClick={() => router.push('/proizvodi?lang=en')}
+      className="flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition"
+    >
+      <FaBoxOpen className="text-violet-600" /> Engleski
+    </button>
+  </li>
           {/* Porudzbine */}
           {session?.user && (
             <li>
@@ -65,14 +75,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
               </Link>
             </li>
           )}
-          <li>
-            <Link
-              href="/proizvod/1?lang=en"
-              className="flex items-center gap-2 py-2 px-4 rounded text-red-600 hover:bg-violet-50 transition w-full"
-            >
-             Prevod
-            </Link>
-          </li>
+
         </ul>
       </nav>
       <div className="flex gap-2 p-4 border-t mt-auto">

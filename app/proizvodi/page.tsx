@@ -22,11 +22,19 @@ export default function ProizvodiPage() {
 
 
   useEffect(() => {
-    fetch(`/api/proizvodi?page=${page}&pageSize=${pageSize}`)
+    const lang = typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('lang') || 'sr'
+      : 'sr';
+
+    fetch(`/api/proizvod?lang=${lang}`, {
+      cache: 'no-store'
+    })
       .then(res => res.json())
       .then(data => {
-        setProizvodi(data.proizvodi);
-        setTotal(data.total);
+        // Ako API vraća niz, koristi:
+        setProizvodi(Array.isArray(data) ? data : data.proizvodi || []);
+        // Ako API vraća total, koristi:
+        setTotal(data.total || (Array.isArray(data) ? data.length : 0));
       });
   }, [page, pageSize]);
 
@@ -55,9 +63,9 @@ export default function ProizvodiPage() {
   };
 
   // Filterirani proizvodi po imenu
-  const filteredProizvodi = proizvodi.filter(p =>
-    p.naziv.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredProizvodi = Array.isArray(proizvodi)
+    ? proizvodi.filter(p => p.naziv.toLowerCase().includes(search.toLowerCase()))
+    : [];
 
 
   return (
@@ -120,7 +128,7 @@ export default function ProizvodiPage() {
             {filteredProizvodi.length === 0 ? (
               <div className="col-span-3 text-center text-gray-500">{t('empty')}</div>
             ) : (
-                filteredProizvodi.map((p: Proizvod) => (
+                filteredProizvodi.map(p => (
                   <div key={p.id} className="border rounded-lg p-4 flex flex-col items-center shadow hover:shadow-lg transition cursor-pointer" onClick={() => setSelectedProizvod(p)}>
                     {p.slika && <Image src={p.slika} alt={p.naziv} width={80} height={80} className="object-cover mb-2 rounded" />}
                     <div className="font-semibold text-lg mb-1">{p.naziv}</div>
@@ -134,13 +142,13 @@ export default function ProizvodiPage() {
                     )}
                     <button
                       className="flex items-center gap-2 bg-violet-600 text-white px-4 py-2 rounded shadow hover:bg-violet-700 transition mt-2"
-                  onClick={e => { e.stopPropagation(); handleDodajUKorpu(p); }}
-                >
-                  <FaCartPlus />
-                  {t('add_to_cart')}
-                </button>
-              </div>
-            ))
+                      onClick={e => { e.stopPropagation(); handleDodajUKorpu(p); }}
+                    >
+                      <FaCartPlus />
+                      {t('add_to_cart')}
+                    </button>
+                  </div>
+                ))
             )}
           </div>
       )}
