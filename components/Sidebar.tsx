@@ -65,11 +65,14 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
               </Link>
             </li>
           )}
-          {/* <li>
-            <button className="flex items-center gap-2 py-2 px-4 rounded text-red-600 hover:bg-violet-50 transition w-full cursor-pointer">
-              <FaSignOutAlt /> {t('logout')}
-            </button>
-          </li> */}
+          <li>
+            <Link
+              href="/proizvod/1?lang=en"
+              className="flex items-center gap-2 py-2 px-4 rounded text-red-600 hover:bg-violet-50 transition w-full"
+            >
+             Prevod
+            </Link>
+          </li>
         </ul>
       </nav>
       <div className="flex gap-2 p-4 border-t mt-auto">
