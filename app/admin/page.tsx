@@ -4,11 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '@/i18n/config';
 import Image from 'next/image';
-import { FaSearch, FaTimes } from "react-icons/fa";
 import { Korisnik } from '@/types';
 import { Porudzbina } from '@/types';
 import { Proizvod } from '@/types';
 import { z } from 'zod';
+import { useRouter } from 'next/navigation';
 
 
 // Zod šeme
@@ -37,6 +37,7 @@ const proizvodSchema = (t: (key: string) => string) => z.object({
 
 
 export default function AdminHome() {
+  const router = useRouter();
   const { t } = useTranslation(['home', 'korisnici']);
   const [tab, setTab] = useState<'korisnici' | 'proizvodi' | 'porudzbine'>('korisnici');
   const [porudzbine, setPorudzbine] = useState<Porudzbina[]>([]);
@@ -287,7 +288,6 @@ export default function AdminHome() {
 
   return (
     <div className="px-2 bg-gray-50 min-h-screen w-full">
-
       <div className="flex gap-4 mb-8">
         <button
           onClick={() => setTab('korisnici')}
@@ -320,125 +320,12 @@ export default function AdminHome() {
       {tab === 'korisnici' && (
         <div className="w-full">
           <div className="bg-white rounded-xl shadow-lg p-8 mb-8 w-full">
-            <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('add_new_user')}</h2>
-            <form onSubmit={editKorisnikId ? handleKorisnikUpdate : handleKorisnikSubmit} className="flex flex-col gap-4">
-              <input
-                type="text"
-                placeholder="Ime"
-                value={korisnikForm.ime}
-                onChange={e => setKorisnikForm(f => ({ ...f, ime: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.ime && (
-                <span className="text-red-600 text-sm">{errors.ime}</span>
-              )}
-
-              <input
-                type="text"
-                placeholder="Prezime"
-                value={korisnikForm.prezime}
-                onChange={e => setKorisnikForm(f => ({ ...f, prezime: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.prezime && (
-                <span className="text-red-600 text-sm">{errors.prezime}</span>
-              )}
-
-              <input
-                type="email"
-                placeholder="Email"
-                value={korisnikForm.email}
-                onChange={e => setKorisnikForm(f => ({ ...f, email: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.email && (
-                <span className="text-red-600 text-sm">{errors.email}</span>
-              )}
-
-              <input
-                type="text"
-                placeholder="Telefon"
-                value={korisnikForm.telefon}
-                onChange={e => setKorisnikForm(f => ({ ...f, telefon: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.telefon && (
-                <span className="text-red-600 text-sm">{errors.telefon}</span>
-              )}
-
-              <input
-                type="text"
-                placeholder="Država"
-                value={korisnikForm.drzava}
-                onChange={e => setKorisnikForm(f => ({ ...f, drzava: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.drzava && (
-                <span className="text-red-600 text-sm">{errors.drzava}</span>
-              )}
-
-              <input
-                type="text"
-                placeholder="Grad"
-                value={korisnikForm.grad}
-                onChange={e => setKorisnikForm(f => ({ ...f, grad: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.grad && (
-                <span className="text-red-600 text-sm">{errors.grad}</span>
-              )}
-
-              <input
-                type="text"
-                placeholder="Poštanski broj"
-                value={korisnikForm.postanskiBroj}
-                onChange={e => setKorisnikForm(f => ({ ...f, postanskiBroj: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.postanskiBroj && (
-                <span className="text-red-600 text-sm">{errors.postanskiBroj}</span>
-              )}
-
-              <input
-                type="text"
-                placeholder="Adresa"
-                value={korisnikForm.adresa}
-                onChange={e => setKorisnikForm(f => ({ ...f, adresa: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.adresa && (
-                <span className="text-red-600 text-sm">{errors.adresa}</span>
-              )}
-
-              <select
-                value={korisnikForm.uloga}
-                onChange={e => setKorisnikForm(f => ({ ...f, uloga: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg"
-              >
-                <option value="korisnik">Korisnik</option>
-                <option value="admin">Admin</option>
-              </select>
-              {errors.uloga && (
-                <span className="text-red-600 text-sm">{errors.uloga}</span>
-              )}
-
-              <input
-                type="password"
-                placeholder="Lozinka"
-                value={korisnikForm.lozinka}
-                onChange={e => setKorisnikForm(f => ({ ...f, lozinka: e.target.value }))}
-                className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.lozinka && (
-                <span className="text-red-600 text-sm">{errors.lozinka}</span>
-              )}
-
-              <button type="submit" className="bg-violet-600 text-white px-6 py-2 rounded-lg mt-4">
-                {editKorisnikId ? 'Ažuriraj korisnika' : 'Dodaj korisnika'}
-              </button>
-            </form>
-          </div>
-          <div className="bg-white rounded-xl shadow-lg p-8 w-full">
+            <button
+              onClick={() => router.push('/admin/korisnici/dodaj')}
+              className="bg-violet-600 text-white px-6 py-2 rounded-lg mb-4"
+            >
+              {t('add_new_user')}
+            </button>
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('user_list')}</h2>
             <div className="overflow-x-auto w-full">
               <table className="w-full border border-gray-200 rounded-lg table-auto">
@@ -470,10 +357,10 @@ export default function AdminHome() {
                       <td className="px-4 py-2">{t(k.uloga, { ns: 'korisnici' })}</td>
                       <td className="px-4 py-2 flex gap-2">
                         <button
-                          onClick={() => handleKorisnikEdit(k)}
+                          onClick={() => router.push(`/admin/korisnici/${k.id}`)}
                           className="text-blue-600 hover:underline"
                         >
-                          {t('spremi', { ns: 'korisnici' })}
+                          {t('izmeni', { ns: 'korisnici' })}
                         </button>
                         <button
                           onClick={() => handleKorisnikDelete(k.id)}
@@ -493,97 +380,14 @@ export default function AdminHome() {
       {tab === 'proizvodi' && (
         <div className="w-full">
           <div className="bg-white rounded-xl shadow-lg p-8 mb-8 w-full">
-            <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('add_new_product')}</h2>
-            {/* Polje za pretragu proizvoda */}
-            <div className="mb-6 flex items-center gap-2 max-full">
-              <div className="relative w-full">
-                <input
-                  type="text"
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                  placeholder={t('search_placeholder', { ns: 'proizvodi' })}
-                  className="w-full border border-violet-300 rounded-lg p-3 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-violet-400"
-                />
-                <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-violet-400 text-lg" />
-                {search && (
-                  <button
-                    type="button"
-                    onClick={() => setSearch("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-violet-600 focus:outline-none"
-                    aria-label="Clear search"
-                  >
-                    <FaTimes className="text-lg" />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <form className="flex flex-col gap-4" onSubmit={editPorudzbinaId ? handleProizvodUpdate : handleProizvodSubmit}>
-              <input
-                type="text"
-                placeholder={t('product_name')}
-                value={proizvodForm.naziv}
-                onChange={e => setProizvodForm(f => ({ ...f, naziv: e.target.value }))}
-                 className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.naziv && <span className="text-red-600 text-sm">{errors.naziv}</span>}
-
-              <input
-                type="number"
-                placeholder={t('price')}
-                value={proizvodForm.cena}
-                onChange={e => setProizvodForm(f => ({ ...f, cena: Number(e.target.value) }))}
-                 className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.cena && <span className="text-red-600 text-sm">{errors.cena}</span>}
-
-              <input
-                type="text"
-                placeholder={t('characteristics')}
-                value={proizvodForm.karakteristike}
-                onChange={e => setProizvodForm(f => ({ ...f, karakteristike: e.target.value }))}
-                 className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.karakteristike && <span className="text-red-600 text-sm">{errors.karakteristike}</span>}
-
-              <input
-                type="text"
-                placeholder={t('category')}
-                value={proizvodForm.kategorija}
-                onChange={e => setProizvodForm(f => ({ ...f, kategorija: e.target.value }))}
-                 className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.kategorija && <span className="text-red-600 text-sm">{errors.kategorija}</span>}
-
-              <input
-                type="text"
-                placeholder={t('description')}
-                value={proizvodForm.opis}
-                onChange={e => setProizvodForm(f => ({ ...f, opis: e.target.value }))}
-                 className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.opis && <span className="text-red-600 text-sm">{errors.opis}</span>}
-
-              <input
-                type="number"
-                placeholder={t('količina')}
-                value={proizvodForm.kolicina}
-                onChange={e => setProizvodForm(f => ({ ...f, kolicina: Number(e.target.value) }))}
-                 className="border border-violet-200 p-3 rounded-lg"
-              />
-              {errors.kolicina && <span className="text-red-600 text-sm">{errors.kolicina}</span>}
-
-              <button
-                type="submit"
-               className="bg-violet-600 text-white px-6 py-2 rounded-lg mt-4">
-
-                {editPorudzbinaId ? t('save_changes', { ns: 'proizvodi' }) : t('dodaj', { ns: 'proizvodi' })}
-              </button>
-            </form>
-          </div>
-          {/* Filterirani prikaz proizvoda u tabeli */}
-          <div className="bg-white rounded-xl shadow-lg p-8 w-full">
+            <button
+              onClick={() => router.push('/admin/proizvodi/dodaj')}
+              className="bg-violet-600 text-white px-6 py-2 rounded-lg mb-4"
+            >
+              {t('add_new_product')}
+            </button>
             <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('product_list')}</h2>
+            {/* Filterirani prikaz proizvoda u tabeli */}
             <div className="overflow-x-auto">
               <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">
                 <thead>
@@ -610,7 +414,7 @@ export default function AdminHome() {
                         <td className="px-8 py-3 text-left align-middle">{p.kolicina}</td>
                         <td className="px-8 py-3 text-left align-middle">{p.kreiran ? new Date(p.kreiran).toLocaleDateString() : '-'}</td>
                         <td className="px-8 py-3 text-left align-middle flex gap-2">
-                          <button className="text-blue-600 hover:underline" onClick={() => handleProizvodEdit(p.id)}>{t('edit')}</button>
+                          <button className="text-blue-600 hover:underline" onClick={() => router.push(`/admin/proizvodi/${p.id}`)}>{t('edit')}</button>
                           <button className="text-red-600 hover:underline" onClick={() => handleProizvodDelete(p.id)}>{t('delete')}</button>
                         </td>
                       </tr>
