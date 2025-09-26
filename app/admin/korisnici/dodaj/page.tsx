@@ -75,7 +75,7 @@ function DodajKorisnikaPage() {
 
   return (
     <div className="admin-container">
-      <div className="max-w-xl mx-auto bg-white rounded-xl shadow-md p-8">
+      <div className="max-w-xl mx-auto rounded-xl  p-8">
         <h2 className=" text-blue-600 px-6 py-2 rounded-lg text-2xl font-semibold mb-6">{t('korisnici:dodaj_korisnika')}</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2 max-w-md">
           <div className="mb-4">

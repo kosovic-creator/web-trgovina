@@ -328,7 +328,7 @@ export default function AdminHome() {
 
               <div className="overflow-x-auto w-full">
                 <div className="table-responsive">
-                  <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">
+                  <table className="min-w-[600px] w-full border border-violet-200 rounded-lg  text-xs sm:text-sm">
                     <thead>
                       <tr className="bg-violet-100 text-violet-700">
                         <th className="px-8 py-3 text-left align-middle">{t('ime', { ns: 'korisnici' })}</th>
@@ -344,7 +344,7 @@ export default function AdminHome() {
                       </tr>
                     </thead>
                     <tbody>
-                      {korisnici.map((k, idx) => (
+                      {korisnici.map((k) => (
                         <tr key={k.id} className="hover:bg-violet-50 transition">
                           <td className="px-8 py-3 text-left align-middle">{k.ime}</td>
                           <td className="px-8 py-3 text-left align-middle">{k.prezime}</td>
@@ -355,7 +355,7 @@ export default function AdminHome() {
                           <td className="px-8 py-3 text-left align-middle">{k.postanskiBroj}</td>
                           <td className="px-8 py-3 text-left align-middle">{k.adresa}</td>
                           <td className="px-8 py-3 text-left align-middle">{k.uloga}</td>
-                          <td className="px-8 py-3 text-left align-middle flex gap-2">
+                          <td className="px-8 py-3 text-left align-middle flex flex-col sm:flex-row gap-2">
                             <button
                               onClick={() => router.push(`/admin/korisnici/${k.id}`)}
                               className="text-blue-600 hover:underline"

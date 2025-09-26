@@ -23,6 +23,10 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   const data = await request.json();
   const { id, ...rest } = data;
+  if (rest.postanskiBroj !== undefined && rest.postanskiBroj !== null) {
+    const parsedBroj = parseInt(rest.postanskiBroj);
+    rest.postanskiBroj = isNaN(parsedBroj) ? undefined : parsedBroj;
+  }
   const korisnik = await prisma.korisnik.update({ where: { id }, data: rest });
   return NextResponse.json({ korisnik });
 }

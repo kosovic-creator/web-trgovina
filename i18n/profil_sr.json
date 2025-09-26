@@ -15,5 +15,26 @@
   "postal_code": "Poštanski broj",
   "city": "Grad",
   "country": "Država",
-  "surname": "Prezime"
+  "surname": "Prezime",
+  "korisnik_izmjenjen": "Korisnik je uspješno izmijenjen.",
+  "error_izmjena_korisnika": "Došlo je do greške prilikom izmjene korisnika.",
+  "error_fetch_korisnik": "Došlo je do greške prilikom učitavanja podataka o korisniku.",
+  "loading": "Učitavanje...",
+  "change_password": "Promijeni lozinku",
+  "old_password": "Stara lozinka",
+  "new_password": "Nova lozinka",
+  "confirm_new_password": "Potvrdi novu lozinku",
+  "password_mismatch": "Lozinke se ne podudaraju.",
+  "password_changed": "Lozinka je uspješno promijenjena.",
+  "error_change_password": "Došlo je do greške prilikom promjene lozinke.",
+  "current_password_required": "Trenutna lozinka je obavezna.",
+  "new_password_required": "Nova lozinka je obavezna.",
+  "confirm_password_required": "Potvrda nove lozinke je obavezna.",
+  "invalid_current_password": "Trenutna lozinka nije ispravna.",
+  "edit_profile": "Uredi profil",
+  "izmjeni_profil": "Izmijeni profil",
+  "obrisi_korisnika": "Obriši korisnika",
+  "sacuvaj_izmjene": "Sačuvaj izmjene",
+  "odkazivanje": "Otkazivanje"
+
 }
