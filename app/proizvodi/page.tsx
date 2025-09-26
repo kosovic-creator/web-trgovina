@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { FaBoxOpen, FaCartPlus, FaSearch, FaTimes } from "react-icons/fa";
 import '@/i18n/config';
 import toast, { Toaster } from 'react-hot-toast';
+import { useSearchParams } from 'next/navigation';
 
 
 
@@ -19,24 +20,20 @@ export default function ProizvodiPage() {
   const [pageSize] = useState(10);
   const [search, setSearch] = useState("");
   const [selectedProizvod, setSelectedProizvod] = useState<Proizvod | null>(null);
+  const searchParams = useSearchParams();
+  const lang = searchParams?.get('lang') || 'sr';
 
 
   useEffect(() => {
-    const lang = typeof window !== 'undefined'
-      ? new URLSearchParams(window.location.search).get('lang') || 'sr'
-      : 'sr';
-
     fetch(`/api/proizvod?lang=${lang}`, {
       cache: 'no-store'
     })
       .then(res => res.json())
       .then(data => {
-        // Ako API vraća niz, koristi:
         setProizvodi(Array.isArray(data) ? data : data.proizvodi || []);
-        // Ako API vraća total, koristi:
         setTotal(data.total || (Array.isArray(data) ? data.length : 0));
       });
-  }, [page, pageSize]);
+  }, [lang, page, pageSize]); // Dodaj lang kao dependency
 
   const handleDodajUKorpu = async (proizvod: Proizvod) => {
     const korisnikId = session?.user?.id;

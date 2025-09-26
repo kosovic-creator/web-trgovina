@@ -41,7 +41,6 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
               <button
                 onClick={() => {
                   router.push('/proizvodi?lang=sr');
-                  router.refresh();
                 }}
                 className="flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition"
               >
@@ -52,7 +51,6 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
               <button
                 onClick={() => {
                   router.push('/proizvodi?lang=en');
-                  router.refresh();
                 }}
                 className="flex items-center gap-2 py-2 px-4 rounded hover:bg-violet-50 transition"
               >
