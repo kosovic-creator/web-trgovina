@@ -25,15 +25,11 @@ export default function ProizvodiPage() {
 
 
   useEffect(() => {
-    fetch(`/api/proizvod?lang=${lang}`, {
-      cache: 'no-store'
-    })
+    // Fetch podataka iz baze na osnovu jezika
+    fetch(`/api/proizvodi?lang=${lang}`)
       .then(res => res.json())
-      .then(data => {
-        setProizvodi(Array.isArray(data) ? data : data.proizvodi || []);
-        setTotal(data.total || (Array.isArray(data) ? data.length : 0));
-      });
-  }, [lang, page, pageSize]); // Dodaj lang kao dependency
+      .then(setProizvodi);
+  }, [lang]);
 
   const handleDodajUKorpu = async (proizvod: Proizvod) => {
     const korisnikId = session?.user?.id;
