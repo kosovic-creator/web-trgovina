@@ -1,4 +1,5 @@
 {
+  "proizvodi": "Artikli",
   "dodaj_artikal": "Dodaj artikal",
   "naslov": "Artikli menadžment",
  "naziv": "Naziv proizvoda",
@@ -39,5 +40,21 @@
   "opis_error": "Opis mora imati najmanje 10 karaktera.",
   "karakteristike_error": "Karakteristike moraju imati najmanje 10 karaktera.",
   "kategorija_error": "Kategorija mora imati najmanje 2 karaktera.",
-  "izmjeni_artikal": "Izmeni artikal"
+  "izmjeni_artikal": "Izmeni artikal",
+  "pronadji_artikal": "Pronađi artikal...",
+  "sve_kategorije": "Sve kategorije",
+  "dodaj_u_korpu": "Dodaj u korpu",
+  "ukloni_iz_korpe": "Ukloni iz korpe",
+  "kolicina_korpa": "Količina u korpi",
+  "ukupno": "Ukupno",
+  "prazna_korpa": "Vaša korpa je prazna.",
+  "nastavi_kupovinu": "Nastavi kupovinu",
+  "idi_na_kasu": "Idi na kasu",
+  "ukupna_cena": "Ukupna cena",
+  "kolicina_error_korpa": "Količina mora biti broj veći ili jednak 1.",
+  "artikal_dodato": "Artikal je dodat u korpu.",
+  "artikal_uklonjen": "Artikal je uklonjen iz korpe.",
+  "kolicina_azurirana": "Količina artikla je ažurirana.",
+  "greska_korpa": "Došlo je do greške prilikom ažuriranja korpe.",
+  "nema_na_zalihama": "Nema na zalihama."
 }

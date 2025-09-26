@@ -1,6 +1,12 @@
 {
-  "imjeni_korisnika": "Izmjeni korisnika",
-  "dodaj_korisnika": "Dodaj korisnika",
+  "korisnici": "Korisnici",
+  "izmjeni": "Izmjeni",
+  "izmjeni_korisnika": "Izmjeni Korisnika",
+  "dodaj_korisnika": "Dodaj Korisnika",
+  "obrisi": "Obriši",
+  "potvrdi_obrisi": "Da li ste sigurni da želite da obrišete ovog korisnika?",
+  "svi_korisnici": "Svi korisnici",
+  "pretraga": "Pretraga korisnika",
   "ime": "Ime",
   "ime_placeholder": "Unesite ime",
   "prezime": "Prezime",
@@ -38,6 +44,11 @@
   "slika_error": "Slika mora biti validan URL.",
   "greska_pri_cuvanju": "Došlo je do greške pri čuvanju korisnika. Pokušajte ponovo.",
   "korisnik_dodat": "Korisnik je uspešno dodat.",
-  "korisnik_izmjenjen": "Korisnik je uspešno izmenjen."
+  "korisnik_izmjenjen": "Korisnik je uspešno izmenjen.",
+  "korisnik_obrisan": "Korisnik je uspešno obrisan.",
+  "nema_korisnika": "Nema korisnika za prikaz.",
+  "ucitavanje": "Učitavanje...",
+  "greska_ucitavanja": "Došlo je do greške pri učitavanju korisnika."
+ 
 }
 

@@ -73,7 +73,7 @@ export default function ProizvodiPage() {
       <Toaster position="top-center" />
       <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
         <FaBoxOpen className="text-violet-600" />
-        {t('title')}
+        {t('proizvodi')}
       </h1>
       <div className="mb-6 flex items-center gap-2 max-w-md">
         <div className="relative w-full">
@@ -81,7 +81,7 @@ export default function ProizvodiPage() {
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder={t('search_placeholder') || 'Pretraži proizvode...'}
+            placeholder={t('pronadji_artikal') }
             className="w-full border border-violet-300 rounded-lg p-3 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-violet-400"
           />
           <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-violet-400 text-lg" />
@@ -114,7 +114,7 @@ export default function ProizvodiPage() {
             onClick={() => handleDodajUKorpu(selectedProizvod)}
           >
             <FaCartPlus />
-            {t('add_to_cart')}
+            {t('dodaj_u_korpu')}
           </button>
           <button
             className="text-violet-600 underline mt-2"
@@ -134,18 +134,18 @@ export default function ProizvodiPage() {
                     <div className="font-semibold text-lg mb-1">{p.naziv}</div>
                     <div className="text-gray-600 mb-1">{p.opis}</div>
                     <div className="text-gray-600 mb-1">{p.karakteristike}</div>
-                    <div className="text-gray-600 mb-1">Kategorija: {p.kategorija}</div>
+                    <div className="text-gray-600 mb-1">{t('kategorija')}: {p.kategorija}</div>
                     <div className="mt-2 font-bold text-violet-700">{p.cena} €</div>
                     <div className={`text-xs font-semibold mt-1 ${p.kolicina === 0 ? 'text-red-600' : 'text-gray-400'}`}>{t('kolicina')}: {p.kolicina}</div>
                     {p.kolicina === 0 && (
-                      <div className="text-red-600 text-sm font-bold mb-2">Nema na zalihama</div>
+                      <div className="text-red-600 text-sm font-bold mb-2">{t('nema_na_zalihama')}</div>
                     )}
                     <button
                       className="flex items-center gap-2 bg-violet-600 text-white px-4 py-2 rounded shadow hover:bg-violet-700 transition mt-2"
                       onClick={e => { e.stopPropagation(); handleDodajUKorpu(p); }}
                     >
                       <FaCartPlus />
-                      {t('add_to_cart')}
+                      {t('dodaj_u_korpu')}
                     </button>
                   </div>
                 ))

@@ -1,15 +1,19 @@
 {
-  "title": "Cart",
-  "product": "Product",
-  "quantity": "Quantity",
-  "price": "Price",
-  "actions": "Actions",
-  "empty": "Your cart is empty.",
-  "must_login": "You must be logged in to access the cart.",
-  "total": "Total",
-  "checkout": "Checkout",
-  "login": "Login",
+  "naslov": "Cart",
+  "proizvod": "Product",
+  "kolicina": "Quantity",
+  "cena": "Price",
+  "akcije": "Actions",
+  "prazna": "Your cart is empty.",
+  "morate_biti_prijavljeni": "You must be logged in to access the cart.",
+  "ukupno": "Total",
+  "placanje": "Checkout",
+  "prijava": "Login",
   "artikal_dod": "Item added to cart",
-  "artikal_izb": "Item removed from cart"
-
+  "artikal_izb": "Item removed from cart",
+  "kolicina_azur": "Quantity updated",
+  "ukloni": "Remove from cart",
+  "nastavi_kupovinu": "Continue shopping",
+  "dostava": "Delivery",
+  "zavrsi_kupovinu": "Finish shopping"
 }

@@ -1,5 +1,11 @@
-{"imjeni_korisnika": "Edit User",
+{
   "korisnici": "Users",
+  "izmjeni_korisnika": "Edit User",
+  "izmjeni": "Edit",
+  "obrisi": "Delete",
+  "potvrdi_obrisi": "Are you sure you want to delete this user?",
+  "svi_korisnici": "All Users",
+  "pretraga": "Search Users",
   "dodaj_korisnika": "Add User",
   "ime": "Name",
   "ime_placeholder": "Enter name",

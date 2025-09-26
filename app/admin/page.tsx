@@ -38,7 +38,7 @@ const proizvodSchema = (t: (key: string) => string) => z.object({
 
 export default function AdminHome() {
   const router = useRouter();
-  const { t } = useTranslation(['home', 'korisnici']);
+  const { t } = useTranslation(['korisnici', 'proizvodi', 'porudzbine']);
   const [tab, setTab] = useState<'korisnici' | 'proizvodi' | 'porudzbine'>('korisnici');
   const [porudzbine, setPorudzbine] = useState<Porudzbina[]>([]);
   const [editPorudzbinaId, setEditPorudzbinaId] = useState<string | null>(null);
@@ -284,8 +284,6 @@ export default function AdminHome() {
       .then(data => setKorisnici(data.korisnici || []));
   };
 
-
-
   return (
     <div className="admin-container w-full max-w-screen-2xl mx-auto">
       <div className="px-2 bg-gray-50 min-h-screen w-full">
@@ -297,7 +295,7 @@ export default function AdminHome() {
               : 'bg-white text-violet-700 border border-violet-200 hover:bg-violet-50'
               }`}
           >
-            {t('users')}
+            {t('korisnici', { ns: 'korisnici' })}
           </button>
           <button
             onClick={() => setTab('proizvodi')}
@@ -306,7 +304,7 @@ export default function AdminHome() {
               : 'bg-white text-violet-700 border border-violet-200 hover:bg-violet-50'
               }`}
           >
-            {t('products')}
+            {t('proizvodi', { ns: 'proizvodi' })}
           </button>
           <button
             onClick={() => setTab('porudzbine')}
@@ -315,7 +313,7 @@ export default function AdminHome() {
               : 'bg-white text-violet-700 border border-violet-200 hover:bg-violet-50'
               }`}
           >
-            {t('orders')}
+            {t('porudzbine', { ns: 'porudzbine' })}
           </button>
         </div>
         {tab === 'korisnici' && (
@@ -325,55 +323,57 @@ export default function AdminHome() {
                 onClick={() => router.push('/admin/korisnici/dodaj')}
                 className="bg-violet-600 text-white px-6 py-2 rounded-lg mb-4"
               >
-                {t('add_new_user')}
+                {t('dodaj_korisnika', { ns: 'korisnici' })}
               </button>
-              <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('user_list')}</h2>
+
               <div className="overflow-x-auto w-full">
-                <table className="min-w-max w-full table-auto">
-                  <thead>
-                    <tr>
-                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('ime', { ns: 'korisnici' })}</th>
-                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('prezime', { ns: 'korisnici' })}</th>
-                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('email', { ns: 'korisnici' })}</th>
-                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('telefon', { ns: 'korisnici' })}</th>
-                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('drzava', { ns: 'korisnici' })}</th>
-                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('grad', { ns: 'korisnici' })}</th>
-                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('postanskiBroj', { ns: 'korisnici' })}</th>
-                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('adresa', { ns: 'korisnici' })}</th>
-                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('uloga', { ns: 'korisnici' })}</th>
-                      <th className="px-6 py-3 text-left bg-gray-100 font-semibold">{t('akcije', { ns: 'korisnici' })}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {korisnici.map((k, idx) => (
-                      <tr key={k.id} className={idx % 2 === 0 ? "bg-white" : "bg-violet-50"}>
-                        <td className="px-4 py-2">{k.ime}</td>
-                        <td className="px-4 py-2">{k.prezime}</td>
-                        <td className="px-4 py-2">{k.email}</td>
-                        <td className="px-4 py-2">{k.telefon}</td>
-                        <td className="px-4 py-2">{k.drzava}</td>
-                        <td className="px-4 py-2">{k.grad}</td>
-                        <td className="px-4 py-2">{k.postanskiBroj}</td>
-                        <td className="px-4 py-2">{k.adresa}</td>
-                        <td className="px-4 py-2">{t(k.uloga, { ns: 'korisnici' })}</td>
-                        <td className="px-4 py-2 flex gap-2">
-                          <button
-                            onClick={() => router.push(`/admin/korisnici/${k.id}`)}
-                            className="text-blue-600 hover:underline"
-                          >
-                            {t('izmeni', { ns: 'korisnici' })}
-                          </button>
-                          <button
-                            onClick={() => handleKorisnikDelete(k.id)}
-                            className="text-red-600 hover:underline"
-                          >
-                            {t('obrisi', { ns: 'korisnici' })}
-                          </button>
-                        </td>
+                <div className="table-responsive">
+                  <table className="w-full border border-violet-200 rounded-lg shadow-md text-sm">
+                    <thead>
+                      <tr className="bg-violet-100 text-violet-700">
+                        <th className="px-8 py-3 text-left align-middle">{t('ime', { ns: 'korisnici' })}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('prezime', { ns: 'korisnici' })}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('email', { ns: 'korisnici' })}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('telefon', { ns: 'korisnici' })}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('drzava', { ns: 'korisnici' })}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('grad', { ns: 'korisnici' })}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('postanskiBroj', { ns: 'korisnici' })}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('adresa', { ns: 'korisnici' })}</th>
+                        <th className="px-8 py-3 text-left align-middle">{t('uloga', { ns: 'korisnici' })}</th>
+                        <th className="px-8 py-3 text-left align-middle"></th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {korisnici.map((k, idx) => (
+                        <tr key={k.id} className="hover:bg-violet-50 transition">
+                          <td className="px-8 py-3 text-left align-middle">{k.ime}</td>
+                          <td className="px-8 py-3 text-left align-middle">{k.prezime}</td>
+                          <td className="px-8 py-3 text-left align-middle">{k.email}</td>
+                          <td className="px-8 py-3 text-left align-middle">{k.telefon}</td>
+                          <td className="px-8 py-3 text-left align-middle">{k.drzava}</td>
+                          <td className="px-8 py-3 text-left align-middle">{k.grad}</td>
+                          <td className="px-8 py-3 text-left align-middle">{k.postanskiBroj}</td>
+                          <td className="px-8 py-3 text-left align-middle">{k.adresa}</td>
+                          <td className="px-8 py-3 text-left align-middle">{k.uloga}</td>
+                          <td className="px-8 py-3 text-left align-middle flex gap-2">
+                            <button
+                              onClick={() => router.push(`/admin/korisnici/${k.id}`)}
+                              className="text-blue-600 hover:underline"
+                            >
+                              {t('izmjeni', { ns: 'korisnici' })}
+                            </button>
+                            <button
+                              onClick={() => handleKorisnikDelete(k.id)}
+                              className="text-red-600 hover:underline"
+                            >
+                              {t('obrisi', { ns: 'korisnici' })}
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -385,9 +385,8 @@ export default function AdminHome() {
                 onClick={() => router.push('/admin/proizvodi/dodaj')}
                 className="bg-violet-600 text-white px-6 py-2 rounded-lg mb-4"
               >
-                {t('add_new_product')}
+                {t('dodaj_artikal', { ns: 'proizvodi' })}
               </button>
-              <h2 className="font-semibold mb-6 text-xl text-violet-700">{t('product_list')}</h2>
               {/* Filterirani prikaz proizvoda u tabeli */}
               <div className="overflow-x-auto w-full">
                 <div className="table-responsive">

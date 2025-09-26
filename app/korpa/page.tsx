@@ -139,16 +139,16 @@ export default function KorpaPage() {
         <div className="flex-1">
           <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
             <FaShoppingCart className="text-violet-600" />
-            {t('title')}
+            {t('naslov')}
           </h1>
           <div className="bg-white rounded shadow p-4 mb-4">
             <table className="w-full mb-2 border border-violet-200 rounded-lg shadow-md text-sm">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="px-8 py-3 text-left align-middle">{t('product')}</th>
-                  <th className="px-8 py-3 text-left align-middle">{t('quantity')}</th>
-                  <th className="px-8 py-3 text-left align-middle">{t('price')}</th>
-                  <th className="px-8 py-3 text-left align-middle">{t('actions')}</th>
+                  <th className="px-8 py-3 text-left align-middle">{t('proizvod')}</th>
+                  <th className="px-8 py-3 text-left align-middle">{t('kolicina')}</th>
+                  <th className="px-8 py-3 text-left align-middle">{t('cena')}</th>
+                  <th className="px-8 py-3 text-left align-middle">{t('akcije')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -200,22 +200,22 @@ export default function KorpaPage() {
           <div className="bg-white rounded shadow p-4">
             <h2 className="font-semibold mb-2 flex items-center gap-2">
               <FaShoppingCart className="text-violet-600" />
-              {t('title')}
+              {t('naslov')}
             </h2>
             <div className="flex justify-between mb-1">
-              <span>{t('quantity')}:</span>
+              <span>{t('kolicina')}:</span>
               <span>{stavke.reduce((acc, s) => acc + s.kolicina, 0)}</span>
             </div>
             <div className="flex justify-between mb-1">
-              <span>Subtotal</span>
+              <span>{t('ukupno')}:</span>
               <span>{stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0).toFixed(2)} EUR</span>
             </div>
             <div className="flex justify-between mb-1">
-              <span>Dostava</span>
+              <span>{t('dostava')}:</span>
               <span>0.00 EUR</span>
             </div>
             <div className="flex justify-between font-bold text-lg mt-2 mb-4">
-              <span>Ukupno</span>
+              <span>{t('ukupno')}:</span>
               <span>{stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0).toFixed(2)} EUR</span>
             </div>
             <button className="w-full flex items-center justify-center gap-2 bg-yellow-400 text-gray-900 py-2 rounded font-bold mb-2" onClick={() => window.location.href = '/placanje/paypal'}>
@@ -231,7 +231,7 @@ export default function KorpaPage() {
             <div className="mt-4">
               <StripeButton amount={stavke.reduce((acc, s) => acc + (s.proizvod ? s.proizvod.cena * s.kolicina : 0), 0)} />
               <button className="w-full bg-green-600 text-white py-2 rounded font-bold" onClick={handleZavrsiKupovinu}>
-                Završi kupovinu
+                {t('zavrsi_kupovinu')}
               </button>
             </div>
           </div>
